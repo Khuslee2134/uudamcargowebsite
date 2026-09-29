@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Бидний тухай — УУДАМ CARGO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <a class="brand" href="index.html">
+    <div class="logo-word">УУДАМ <span>CARGO</span></div>
+  </a>
+  <nav>
+    <a href="index.html">Нүүр</a>
+    <a href="calculator.html">Тооцоолуур</a>
+    <a href="about.html" style="color:var(--text)">Бидний тухай</a>
+    <a href="index.html#contact">Холбоо барих</a>
+  </nav>
+  <div class="header-actions">
+    <button id="loginButton" class="user-button" aria-label="Login or open profile">
+      <span class="user-icon" aria-hidden="true"></span>
+      <span class="user-label">Login</span>
+    </button>
+  </div>
+</header>
+
+<div id="loginModal" class="auth-modal" aria-hidden="true">
+  <div class="auth-modal-backdrop" data-close="auth-modal"></div>
+  <div class="auth-panel" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+    <button class="auth-close" data-close="auth-modal" aria-label="Close login">×</button>
+    <div class="auth-header">
+      <div class="auth-avatar">👤</div>
+      <div>
+        <p class="auth-crumb">Login</p>
+        <h3 id="loginTitle">User authentication</h3>
+      </div>
+    </div>
+
+    <div class="auth-form">
+      <label for="phoneInput">Phone number</label>
+      <input id="phoneInput" type="tel" placeholder="+976 9911-2233" inputmode="tel">
+      <button id="sendOtpBtn" class="primary-btn">Send code</button>
+
+      <div id="otpStep" class="otp-step">
+        <label for="otpInput">Verification code</label>
+        <input id="otpInput" type="text" inputmode="numeric" maxlength="6" placeholder="Enter 6-digit code">
+        <div id="authStatus" class="auth-status" aria-live="polite"></div>
+        <div class="auth-actions">
+          <button id="verifyOtpBtn" class="primary-btn">Verify & login</button>
+          <button id="resendOtpBtn" class="secondary-btn" type="button">Resend</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="eyebrow">Бидний тухай</div>
+  <h1>Эрээнээс Дархан руу — итгэлтэй, тогтмол хүргэлт</h1>
+  <p class="sub">Uudam Cargo нь Эрээн—Дархан чиглэлээр ачаа тээвэрлэдэг, харилцагчдаа ил тод, найдвартай үйлчилгээгээр дэмждэг тээврийн компани.</p>
+
+  <div class="story">
+    <div>
+      <h2>Бидний зорилго</h2>
+      <p>Худалдаа эрхлэгч, жижиг бизнес эрхлэгчдэд ачаагаа хямд, хурдан бөгөөд алдагдалгүй хүргэх нь бидний гол зорилго. Бид ачааг хил дээрээс эхлэн Дархан дахь агуулахад хүрэх хүртэл бүх шатанд хянадаг.</p>
+    </div>
+    <div>
+      <h2>Хэрхэн ажилладаг вэ</h2>
+      <p>Захиалга — Хилийн боловсруулалт — Тээвэрлэлт — Агуулахад бүртгэх — Хүргэлт. Харилцагч бүр ачааныхаа явцыг манай сайтаас код ашиглан шалгах боломжтой.</p>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="n">2018</div><div class="l">Байгуулагдсан он</div></div>
+    <div class="stat"><div class="n">40,000+</div><div class="l">Хүргэсэн ачаа</div></div>
+    <div class="stat"><div class="n">Дархан</div><div class="l">Цорын ганц агуулах, салбар</div></div>
+    <div class="stat"><div class="n">2–5 хоног</div><div class="l">Дундаж хүргэлтийн хугацаа</div></div>
+  </div>
+
+  <div class="values">
+    <h2>Бидний баримталдаг зарчим</h2>
+    <div class="value-grid">
+      <div class="value-card">
+ 
+        <h3>Ил тод байдал</h3>
+        <p>Ачааныхаа явцыг хаанаас ч, хэзээ ч шалгах боломжтой — нуугдмал зардал байхгүй.</p>
+      </div>
+      <div class="value-card">
+        <div class="ic">⚡</div>
+        <h3>Хурд</h3>
+        <p>Стандарт 2–5 хоногийн хугацаанд хил дамжуулан хүргэдэг тогтмол хуваарь.</p>
+      </div>
+      <div class="value-card">
+        <div class="ic">🛡️</div>
+        <h3>Аюулгүй байдал</h3>
+        <p>Ачаа бүрийг сав баглаа боодол, даатгалын шаардлагад нийцүүлэн зөөвөрлөнө.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="timeline">
+    <h2>Түүхэн замнал</h2>
+    <div class="t-row">
+      <div class="yr">2018</div>
+      <p><strong>Байгуулагдсан.</strong> Эрээн—Дархан чиглэлд анхны тээвэр эхэлсэн.</p>
+    </div>
+    <div class="t-row">
+      <div class="yr">2021</div>
+      <p><strong>Тэлэлт.</strong> Дархан хот дахь агуулахаа өргөтгөж, багтаамжийг нэмэгдүүлсэн.</p>
+    </div>
+    <div class="t-row">
+      <div class="yr">2024</div>
+      <p><strong>Онлайн хяналт.</strong> Ачаа хянах, зардал тооцоолох онлайн систем нэвтрүүлсэн.</p>
+    </div>
+    <div class="t-row">
+      <div class="yr">2026</div>
+      <p><strong>Өнөөдөр.</strong> Сард дунджаар 1,500 гаруй ачаа тээвэрлэдэг болсон.</p>
+    </div>
+  </div>
+
+  <div class="cta-band">
+    <div>
+      <h3>Ачаагаа илгээхэд бэлэн үү?</h3>
+      <p>Захиалга өгөх эсвэл асуултаа илгээхийн тулд бидэнтэй холбогдоорой.</p>
+    </div>
+    <a href="index.html#contact" class="cta-btn" style="display:inline-block; text-decoration:none;">Холбоо барих</a>
+  </div>
+</main>
+
+<footer>© 2026 Uudam Cargo — Бидний тухай</footer>
+<script src="auth.js"></script>
+</body>
+</html>

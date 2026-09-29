@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>УУДАМ CARGO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="logo-word">УУДАМ <span>CARGO</span></div>
+  </div>
+  <nav>
+    <a href="#track">Хайх</a>
+    <a href="https://claude.ai/artifact/JfW4UaniaqcWknwRuJvc3T">Тооцоолуур</a>
+    <a href="https://claude.ai/artifact/7ecd3FYPy4r7rJasT8dqN7">Бидний тухай</a>
+    <a href="#contact">Холбоо барих</a>
+  </nav>
+  <div class="header-actions">
+    <button id="loginButton" class="user-button" aria-label="Нэвтрэх эсвэл профайл нээх">
+      <span class="user-icon" aria-hidden="true"></span>
+      <span class="user-label">Нэвтрэх</span>
+    </button>
+    <button class="hdr-cta" onclick="document.getElementById('contact').scrollIntoView()">Хаяг холбох</button>
+  </div>
+</header>
+
+<div id="loginModal" class="auth-modal" aria-hidden="true">
+  <div class="auth-modal-backdrop" data-close="auth-modal"></div>
+  <div class="auth-panel" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+    <button class="auth-close" data-close="auth-modal" aria-label="Нэвтрэх цонх хаах">×</button>
+    <div class="auth-header">
+      <div class="auth-avatar">👤</div>
+      <div>
+        <p class="auth-crumb">Нэвтрэх</p>
+        <h3 id="loginTitle">Хэрэглэгчийн нэвтрэлт</h3>
+      </div>
+    </div>
+
+    <div class="auth-form">
+      <label for="phoneInput">Утасны дугаар</label>
+      <input id="phoneInput" type="tel" placeholder="+976 9911-2233" inputmode="tel">
+      <button id="sendOtpBtn" class="primary-btn">Код илгээх</button>
+
+      <div id="otpStep" class="otp-step">
+        <label for="otpInput">Баталгаажуулах код</label>
+        <input id="otpInput" type="text" inputmode="numeric" maxlength="6" placeholder="6 оронтой код оруулна уу">
+        <div id="authStatus" class="auth-status" aria-live="polite"></div>
+        <div class="auth-actions">
+          <button id="verifyOtpBtn" class="primary-btn">Баталгаажуулж нэвтрэх</button>
+          <button id="resendOtpBtn" class="secondary-btn" type="button">Дахин илгээх</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="hero" id="track">
+  <div class="hero-top">
+    <div class="eyebrow">Эрээн — Дархан карго</div>
+    <h1>Таны ачаа хаана байгааг мэдээрэй.</h1>
+    <p class="hero-sub">Барааны дугаараа оруулаад ирсэн эсэхийг шууд шалгаарай. Тээврийн зардлаа доод буланд байрлах тооцоолуураар урьдчилан тооцоолох боломжтой.</p>
+  </div>
+
+  <div class="track-box">
+    <h3>Ачаа шалгах</h3>
+    <p class="hint">Барааны код эсвэл утасны дугаараа оруулна уу</p>
+    <div class="track-row">
+      <input id="trackInput" type="text" placeholder="Жишээ: NC10234">
+      <button onclick="checkTrack()">Шалгах</button>
+    </div>
+    <div id="trackResult"></div>
+    <p class="sample-codes">Туршиж үзэх: <b>NC10234</b>, <b>NC10877</b> — эсвэл дурын код (олдоогүй харагдана)</p>
+  </div>
+</section>
+
+<div class="content-wrap">
+  <div class="grid3">
+    <div class="card">
+      <div class="num">2–5 хоног</div>
+      <p>Эрээн — Дархан чиглэлийн стандарт хүргэлтийн хугацаа.</p>
+    </div>
+    <div class="card">
+      <div class="num">кг / м³</div>
+      <p>Жин болон эзэлхүүнээр тооцох хосолсон үнийн систем.</p>
+    </div>
+    <div class="card">
+      <div class="num">24/7</div>
+      <p>Онлайнаар ачаагаа хянах, тооцоолуур ашиглах боломж.</p>
+    </div>
+  </div>
+</div>
+
+<section class="contact-section" id="contact">
+  <div class="eyebrow">Хаяг холбох</div>
+  <h2>Taobao, Pinduoduo дээр захиалгаа манай Эрээн хаягаар холбоорой</h2>
+  <p class="lead">Захиалга хийхдээ хүргэлтийн хаяг дээр доорх Эрээн агуулахын хаягийг бүтнээр нь хуулж тавиад, ард нь <b>өөрийн нэр, утасны дугаараа</b> заавал нэмж бичнэ үү — ингэснээр бид таны ачааг таньж, Дархан хүртэл авчирна.</p>
+
+  <div class="addr-box">
+    <div class="addr-label">Эрээн агуулахын хаяг — хуулж авах</div>
+    <div class="addr-text" id="warehouseAddr">乌有卡 17747905992 内蒙古自治区锡林郭勒盟二连浩特市 利众物流园 诺敏货运部 Uudam cargo /Таны нэр, утасны дугаар/</div>
+    <button class="copy-btn" onclick="copyAddr()" id="copyBtn">Хуулах</button>
+  </div>
+
+  <div class="contact-grid">
+    <div class="info-card">
+      <div class="info-row">
+   
+        <div>
+          <div class="t">Дархан дахь оффис (бэлэн ачаагаа авах)</div>
+          <div class="v">Дархан хот, Хонгор баг, Cargo төв, 2 давхар</div>
+        </div>
+      </div>
+      <div class="info-row">
+ 
+        <div>
+          <div class="t">Утас</div>
+          <div class="v"><a href="tel:+97699001122">+976 9900-1122</a></div>
+        </div>
+      </div>
+      <div class="info-row">
+   
+        <div>
+          <div class="t">Ажиллах цаг</div>
+          <div class="v">Даваа–Бямба, 09:00–19:00</div>
+        </div>
+      </div>
+    </div>
+
+    <a class="video-card" href="https://www.facebook.com/reel/1291225029814214" target="_blank" rel="noopener noreferrer">
+      <div class="video-thumb">
+        <div class="play-badge">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
+        </div>
+      </div>
+      <h3>Ачаа хэрхэн илгээх вэ — зааврыг үзэх</h3>
+      <p>Facebook дээрх бичлэгээр алхам алхмаар зааврыг үзнэ үү →</p>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div>© 2026 Uudam Cargo</div>
+</footer>
+
+<!-- floating calculator widget -->
+<div class="calc-widget" id="calc">
+  <div class="calc-panel" id="calcPanel">
+    <h4>Тээврийн зардал тооцоолуур</h4>
+    <div class="calc-field">
+      <label>Жин (кг)</label>
+      <input type="number" id="calcWeight" placeholder="жишээ: 5" min="0">
+    </div>
+    <div class="calc-field">
+      <label>Хэмжээ Урт×Өргөн×Өндөр (см)</label>
+      <input type="text" id="calcDims" placeholder="жишээ: 40x30x25">
+    </div>
+    <div class="calc-result" id="calcResult">
+      <div>Тооцоолсон дүн</div>
+      <div class="big" id="calcTotal">0 ₮</div>
+    </div>
+  </div>
+  <button class="calc-fab" id="calcFab" onclick="toggleCalc()" aria-label="Тооцоолуур нээх">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4" y="2" width="16" height="20" rx="2"></rect>
+      <line x1="8" y1="6" x2="16" y2="6"></line>
+      <line x1="8" y1="11" x2="8" y2="11.01"></line>
+      <line x1="12" y1="11" x2="12" y2="11.01"></line>
+      <line x1="16" y1="11" x2="16" y2="11.01"></line>
+      <line x1="8" y1="15" x2="8" y2="15.01"></line>
+      <line x1="12" y1="15" x2="12" y2="15.01"></line>
+      <line x1="16" y1="15" x2="16" y2="15.01"></line>
+      <line x1="8" y1="19" x2="8" y2="19.01"></line>
+      <line x1="12" y1="19" x2="12" y2="19.01"></line>
+      <line x1="16" y1="19" x2="16" y2="19.01"></line>
+    </svg>
+  </button>
+</div>
+
+<script>
+  function copyAddr(){
+    var text = document.getElementById('warehouseAddr').textContent;
+    var btn = document.getElementById('copyBtn');
+    function done(){
+      btn.textContent = 'Хууллаа ✓';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'Хуулах'; btn.classList.remove('copied'); }, 1800);
+    }
+    try{
+      navigator.clipboard.writeText(text).then(done).catch(function(){
+        var ta = document.createElement('textarea');
+        ta.value = text; document.body.appendChild(ta); ta.select();
+        try{ document.execCommand('copy'); done(); }catch(e){}
+        document.body.removeChild(ta);
+      });
+    }catch(e){
+      var ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      try{ document.execCommand('copy'); done(); }catch(err){}
+      document.body.removeChild(ta);
+    }
+  }
+
+  var sample = {
+    "NC10234": {status:"Дархан агуулахад ирсэн", date:"2026.09.22"},
+    "NC10877": {status:"Замд явж байна (Дархан)", date:"2026.09.24"}
+  };
+
+  function checkTrack(){
+    var val = document.getElementById('trackInput').value.trim().toUpperCase();
+    var el = document.getElementById('trackResult');
+    el.className = 'show';
+    if(!val){ el.textContent = 'Код оруулна уу.'; el.classList.add('notfound'); return; }
+    if(sample[val]){
+      el.classList.add('found');
+      el.textContent = '✓ ' + val + ' — ' + sample[val].status + ' (' + sample[val].date + ')';
+    } else {
+      el.classList.add('notfound');
+      el.textContent = '✕ ' + val + ' — одоогоор бүртгэлд ирээгүй байна.';
+    }
+  }
+
+  document.getElementById('trackInput').addEventListener('keydown', function(e){
+    if(e.key === 'Enter') checkTrack();
+  });
+
+  function toggleCalc(){
+    document.getElementById('calcPanel').classList.toggle('open');
+  }
+
+  function volumeM3(dimsStr){
+    var m = dimsStr.match(/(\d+(\.\d+)?)\s*x\s*(\d+(\.\d+)?)\s*x\s*(\d+(\.\d+)?)/i);
+    if(!m) return 0;
+    var l = parseFloat(m[1]), w = parseFloat(m[3]), h = parseFloat(m[5]);
+    return (l * w * h) / 1000000;
+  }
+
+  function recalc(){
+    var w = parseFloat(document.getElementById('calcWeight').value) || 0;
+    var dims = document.getElementById('calcDims').value.trim();
+    var weightCost = w * 2500;
+    var volCost = volumeM3(dims) * 350000;
+    var total = Math.round(Math.max(weightCost, volCost));
+    document.getElementById('calcTotal').textContent = total.toLocaleString('mn-MN') + ' ₮';
+  }
+
+  document.getElementById('calcWeight').addEventListener('input', recalc);
+  document.getElementById('calcDims').addEventListener('input', recalc);
+</script>
+<script src="auth.js"></script>
+
+</body>
+</html>

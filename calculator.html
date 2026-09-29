@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Тооцоолуур — УУДАМ CARGO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <a class="brand" href="index.html">
+    <div class="logo-word">УУДАМ <span>CARGO</span></div>
+  </a>
+  <nav>
+    <a href="index.html">Нүүр</a>
+    <a href="calculator.html" style="color:var(--text)">Тооцоолуур</a>
+    <a href="about.html">Бидний тухай</a>
+    <a href="index.html#contact">Холбоо барих</a>
+  </nav>
+  <div class="header-actions">
+    <button id="loginButton" class="user-button" aria-label="Login or open profile">
+      <span class="user-icon" aria-hidden="true"></span>
+      <span class="user-label">Login</span>
+    </button>
+  </div>
+</header>
+
+<div id="loginModal" class="auth-modal" aria-hidden="true">
+  <div class="auth-modal-backdrop" data-close="auth-modal"></div>
+  <div class="auth-panel" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+    <button class="auth-close" data-close="auth-modal" aria-label="Close login">×</button>
+    <div class="auth-header">
+      <div class="auth-avatar">👤</div>
+      <div>
+        <p class="auth-crumb">Login</p>
+        <h3 id="loginTitle">User authentication</h3>
+      </div>
+    </div>
+
+    <div class="auth-form">
+      <label for="phoneInput">Phone number</label>
+      <input id="phoneInput" type="tel" placeholder="+976 9911-2233" inputmode="tel">
+      <button id="sendOtpBtn" class="primary-btn">Send code</button>
+
+      <div id="otpStep" class="otp-step">
+        <label for="otpInput">Verification code</label>
+        <input id="otpInput" type="text" inputmode="numeric" maxlength="6" placeholder="Enter 6-digit code">
+        <div id="authStatus" class="auth-status" aria-live="polite"></div>
+        <div class="auth-actions">
+          <button id="verifyOtpBtn" class="primary-btn">Verify & login</button>
+          <button id="resendOtpBtn" class="secondary-btn" type="button">Resend</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="eyebrow">Тээврийн зардал</div>
+  <h1>Ачааныхаа үнийг урьдчилан мэдэж авах</h1>
+  <p class="sub">Жин, эзэлхүүнээ оруулаад тооцоолсон нийт дүнгээ шууд харна уу. Тариф: 1 кг = 2,500₮, 1 м³ = 350,000₮.</p>
+
+  <div class="layout">
+    <div class="panel">
+      <div class="two-col">
+        <div class="field">
+          <label>Жин (кг)</label>
+          <input type="number" id="weight" placeholder="жишээ: 5" min="0" value="5">
+        </div>
+        <div class="field">
+          <label>Ширхэг</label>
+          <input type="number" id="qty" placeholder="1" min="1" value="1">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Урт × Өргөн × Өндөр (см) — заавал биш</label>
+        <input type="text" id="dims" placeholder="жишээ: 40x30x25">
+      </div>
+    </div>
+
+    <div class="panel result-panel">
+      <div class="label">Тооцоолсон нийт дүн</div>
+      <div class="total" id="total">0 ₮</div>
+      <div class="breakdown">
+        <div class="breakdown-row"><span>Жингийн үнэ (2,500₮/кг)</span><span id="bWeightCost">0 ₮</span></div>
+        <div class="breakdown-row"><span>Эзэлхүүний үнэ (350,000₮/м³)</span><span id="bVolCost">0 ₮</span></div>
+        <div class="breakdown-row"><span>Тооцсон үндэс</span><span id="bBasis">Жингээр</span></div>
+      </div>
+      <p class="note">* Жингээр тооцсон (жин × 2,500₮) болон эзэлхүүнгээр тооцсон (м³ × 350,000₮) үнээс аль ихийг нь тооцно. Энэ бол урьдчилсан тооцоолол; эцсийн үнийг агуулахаас баталгаажуулна.</p>
+    </div>
+  </div>
+</main>
+
+<footer>© 2026 Uudam Cargo — Тээврийн зардлын тооцоолуур</footer>
+<script src="auth.js"></script>
+<script>
+  var WEIGHT_RATE = 2500;   // ₮ per kg
+  var VOLUME_RATE = 350000; // ₮ per m³
+
+  function volumeM3(dimsStr){
+    var m = dimsStr.match(/(\d+(\.\d+)?)\s*x\s*(\d+(\.\d+)?)\s*x\s*(\d+(\.\d+)?)/i);
+    if(!m) return 0;
+    var l = parseFloat(m[1]), w = parseFloat(m[3]), h = parseFloat(m[5]);
+    return (l * w * h) / 1000000; // cm³ -> m³
+  }
+
+  function calc(){
+    var w = parseFloat(document.getElementById('weight').value) || 0;
+    var qty = parseFloat(document.getElementById('qty').value) || 1;
+    var dims = document.getElementById('dims').value.trim();
+
+    var vol = volumeM3(dims);
+    var weightCost = w * WEIGHT_RATE * qty;
+    var volCost = vol * VOLUME_RATE * qty;
+    var basis = volCost > weightCost ? 'Эзэлхүүнээр' : 'Жингээр';
+
+    var total = Math.round(Math.max(weightCost, volCost));
+
+    document.getElementById('total').textContent = total.toLocaleString('mn-MN') + ' ₮';
+    document.getElementById('bWeightCost').textContent = Math.round(weightCost).toLocaleString('mn-MN') + ' ₮';
+    document.getElementById('bVolCost').textContent = Math.round(volCost).toLocaleString('mn-MN') + ' ₮';
+    document.getElementById('bBasis').textContent = basis;
+  }
+
+  ['weight','qty','dims'].forEach(function(id){
+    document.getElementById(id).addEventListener('input', calc);
+  });
+
+  calc();
+</script>
+
+</body>
+</html>
