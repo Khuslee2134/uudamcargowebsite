@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Админ — УУДАМ CARGO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <a class="brand" href="index.html">
+    <div class="logo-word">Uudam Cargo</div>
+  </a>
+  <div class="tag">Админ самбар</div>
+</header>
+
+<div id="loginWrap" style="max-width:380px; margin:60px auto; padding:0 18px;">
+  <div class="panel">
+    <h2 style="margin-bottom:16px;">Нэвтрэх</h2>
+    <div class="field" style="margin-bottom:12px;">
+      <label>Имэйл</label>
+      <input type="email" id="loginEmail" placeholder="admin@uudamcargo.mn">
+    </div>
+    <div class="field" style="margin-bottom:14px;">
+      <label>Нууц үг</label>
+      <input type="password" id="loginPass" placeholder="••••••••">
+    </div>
+    <button class="save-btn" id="loginBtn" onclick="doLogin()" style="width:100%;">Нэвтрэх</button>
+    <p id="loginError" style="color:var(--err); font-size:13px; margin-top:10px; display:none;"></p>
+  </div>
+</div>
+
+<main id="mainArea" style="display:none;">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+    <h1 style="margin-bottom:0;">Ачааны бүртгэл удирдах</h1>
+    <button class="cancel-btn" onclick="doLogout()">Гарах</button>
+  </div>
+  <p class="sub">Энд нэмсэн код, статус нь нүүр хуудасны "Ачаа шалгах" талбарт шууд харагдана.</p>
+
+  <div class="panel">
+    <h2 id="formTitle">Шинэ бүртгэл нэмэх</h2>
+    <div class="form-grid">
+      <div class="field">
+        <label>Барааны код</label>
+        <input type="text" id="fCode" placeholder="жишээ: NC10234">
+      </div>
+      <div class="field">
+        <label>Утасны дугаар</label>
+        <input type="text" id="fPhone" placeholder="жишээ: 99001122">
+      </div>
+      <div class="field">
+        <label>Огноо</label>
+        <input type="text" id="fDate" placeholder="2026.09.29">
+      </div>
+      <div class="field">
+        <label>Үнэ (₮)</label>
+        <input type="text" id="fPrice" placeholder="жишээ: 25,000₮">
+      </div>
+    </div>
+    <div class="save-row">
+      <button class="save-btn" id="saveBtn" onclick="saveRecord()">Хадгалах</button>
+      <button class="cancel-btn" id="cancelBtn" onclick="resetForm()" style="display:none;">Цуцлах</button>
+      <span class="save-status" id="saveStatus"></span>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Бүх бүртгэл</h2>
+    <table id="recTable">
+      <thead>
+        <tr><th>Код</th><th>Утас</th><th>Огноо</th><th>Үнэ</th><th></th></tr>
+      </thead>
+      <tbody id="recBody"></tbody>
+    </table>
+    <div class="empty" id="emptyMsg" style="display:none;">Бүртгэл алга байна.</div>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  var SUPABASE_URL = "https://ipnfmpcdajuwuiggfqsp.supabase.co";
+  var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlwbmZtcGNkYWp1d3VpZ2dmcXNwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3MjYzMDAsImV4cCI6MjEwNjMwMjMwMH0.jGx9XPs9Bux31IhTAtuEVI43NPALrt0-iTtZ-kLwnvA";
+  var sb = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+  var editingCode = null;
+  var liveChannel = null;
+
+  async function init(){
+    if(!sb){
+      document.getElementById('loginError').style.display = 'block';
+      document.getElementById('loginError').textContent = 'Сан холбогдсонгүй. Хуудсыг дахин ачаална уу.';
+      return;
+    }
+    var { data } = await sb.auth.getSession();
+    if(data && data.session){
+      showAdmin();
+    } else {
+      document.getElementById('loginWrap').style.display = 'block';
+    }
+    sb.auth.onAuthStateChange(function(event, session){
+      if(session){ showAdmin(); } else { showLogin(); }
+    });
+  }
+
+  async function doLogin(){
+    var email = document.getElementById('loginEmail').value.trim();
+    var pass = document.getElementById('loginPass').value;
+    var errEl = document.getElementById('loginError');
+    errEl.style.display = 'none';
+    if(!email || !pass){
+      errEl.textContent = 'Имэйл, нууц үгээ бөглөнө үү.';
+      errEl.style.display = 'block';
+      return;
+    }
+    document.getElementById('loginBtn').disabled = true;
+    var { error } = await sb.auth.signInWithPassword({ email: email, password: pass });
+    document.getElementById('loginBtn').disabled = false;
+    if(error){
+      errEl.textContent = 'Нэвтрэхэд алдаа гарлаа: имэйл эсвэл нууц үг буруу.';
+      errEl.style.display = 'block';
+    }
+  }
+
+  async function doLogout(){
+    if(liveChannel){ sb.removeChannel(liveChannel); liveChannel = null; }
+    await sb.auth.signOut();
+  }
+
+  function showLogin(){
+    document.getElementById('loginWrap').style.display = 'block';
+    document.getElementById('mainArea').style.display = 'none';
+  }
+
+  function showAdmin(){
+    document.getElementById('loginWrap').style.display = 'none';
+    document.getElementById('mainArea').style.display = 'block';
+    loadList();
+    if(!liveChannel){
+      liveChannel = sb.channel('tracking-changes')
+        .on('postgres_changes', {event:'*', schema:'public', table:'tracking'}, function(){ loadList(); })
+        .subscribe();
+    }
+  }
+
+  async function loadList(){
+    var { data, error } = await sb.from('tracking').select('*').order('date', {ascending:false}).limit(200);
+    if(error){
+      document.getElementById('emptyMsg').style.display = 'block';
+      document.getElementById('emptyMsg').textContent = 'Жагсаалт ачаалахад алдаа гарлаа.';
+      return;
+    }
+    renderTable(data || []);
+  }
+
+  function renderTable(rows){
+    var body = document.getElementById('recBody');
+    var empty = document.getElementById('emptyMsg');
+    body.innerHTML = '';
+    if(!rows.length){
+      empty.style.display = 'block';
+      empty.textContent = 'Бүртгэл алга байна.';
+      return;
+    }
+    empty.style.display = 'none';
+    rows.forEach(function(d){
+      var tr = document.createElement('tr');
+      var code = d.code;
+      tr.innerHTML =
+        '<td data-label="Код" class="code-cell">' + escapeHtml(code) + '</td>' +
+        '<td data-label="Утас">' + escapeHtml(d.phone || '') + '</td>' +
+        '<td data-label="Огноо">' + escapeHtml(d.date || '') + '</td>' +
+        '<td data-label="Үнэ">' + escapeHtml(d.price || '') + '</td>' +
+        '<td data-label=""><div class="row-actions">' +
+          '<button onclick="editRecord(\'' + code.replace(/'/g,"\\'") + '\')">Засах</button>' +
+          '<button class="del" onclick="deleteRecord(\'' + code.replace(/'/g,"\\'") + '\')">Устгах</button>' +
+        '</div></td>';
+      body.appendChild(tr);
+    });
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  async function editRecord(code){
+    var { data } = await sb.from('tracking').select('*').eq('code', code).maybeSingle();
+    if(!data) return;
+    editingCode = code;
+    document.getElementById('formTitle').textContent = 'Бүртгэл засах — ' + code;
+    document.getElementById('fCode').value = code;
+    document.getElementById('fCode').disabled = true;
+    document.getElementById('fPhone').value = data.phone || '';
+    document.getElementById('fPrice').value = data.price || '';
+    document.getElementById('fDate').value = data.date || '';
+    document.getElementById('cancelBtn').style.display = 'inline-block';
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function resetForm(){
+    editingCode = null;
+    document.getElementById('formTitle').textContent = 'Шинэ бүртгэл нэмэх';
+    document.getElementById('fCode').value = '';
+    document.getElementById('fCode').disabled = false;
+    document.getElementById('fPhone').value = '';
+    document.getElementById('fPrice').value = '';
+    document.getElementById('fDate').value = '';
+    document.getElementById('cancelBtn').style.display = 'none';
+    document.getElementById('saveStatus').textContent = '';
+  }
+
+  async function saveRecord(){
+    var code = (editingCode || document.getElementById('fCode').value.trim().toUpperCase());
+    var phone = document.getElementById('fPhone').value.trim();
+    var price = document.getElementById('fPrice').value.trim();
+    var date = document.getElementById('fDate').value.trim();
+    var statusEl = document.getElementById('saveStatus');
+
+    if(!code || !price){
+      statusEl.style.color = 'var(--err)';
+      statusEl.textContent = 'Код болон үнэ заавал бөглөнө үү.';
+      return;
+    }
+
+    document.getElementById('saveBtn').disabled = true;
+    statusEl.style.color = 'var(--muted)';
+    statusEl.textContent = 'Хадгалж байна…';
+    var { error } = await sb.from('tracking').upsert(
+      { code: code, phone: phone, price: price, date: date },
+      { onConflict: 'code' }
+    );
+    if(!error){
+      statusEl.style.color = 'var(--ok)';
+      statusEl.textContent = 'Хадгаллаа ✓';
+      resetForm();
+      loadList();
+    } else {
+      statusEl.style.color = 'var(--err)';
+      statusEl.textContent = 'Алдаа гарлаа: ' + error.message;
+    }
+    document.getElementById('saveBtn').disabled = false;
+  }
+
+  async function deleteRecord(code){
+    if(!confirm(code + ' кодыг устгах уу?')) return;
+    var { error } = await sb.from('tracking').delete().eq('code', code);
+    if(error){ alert('Устгахад алдаа гарлаа.'); } else { loadList(); }
+  }
+
+  init();
+</script>
+
+</body>
+</html>

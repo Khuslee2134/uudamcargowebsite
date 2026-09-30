@@ -13,51 +13,26 @@
 
 <header>
   <a class="brand" href="index.html">
-    <div class="logo-word">УУДАМ <span>CARGO</span></div>
+    <div class="logo-word">Uudam Cargo</div>
   </a>
   <nav>
     <a href="index.html">Нүүр</a>
     <a href="calculator.html">Тооцоолуур</a>
-    <a href="about.html" style="color:var(--text)">Бидний тухай</a>
-    <a href="index.html#contact">Холбоо барих</a>
   </nav>
   <div class="header-actions">
-    <button id="loginButton" class="user-button" aria-label="Login or open profile">
-      <span class="user-icon" aria-hidden="true"></span>
-      <span class="user-label">Login</span>
+    <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleDrawer()" aria-label="Цэс нээх">
+      <span></span>
+      <span></span>
+      <span></span>
     </button>
   </div>
 </header>
 
-<div id="loginModal" class="auth-modal" aria-hidden="true">
-  <div class="auth-modal-backdrop" data-close="auth-modal"></div>
-  <div class="auth-panel" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
-    <button class="auth-close" data-close="auth-modal" aria-label="Close login">×</button>
-    <div class="auth-header">
-      <div class="auth-avatar">👤</div>
-      <div>
-        <p class="auth-crumb">Login</p>
-        <h3 id="loginTitle">User authentication</h3>
-      </div>
-    </div>
-
-    <div class="auth-form">
-      <label for="phoneInput">Phone number</label>
-      <input id="phoneInput" type="tel" placeholder="+976 9911-2233" inputmode="tel">
-      <button id="sendOtpBtn" class="primary-btn">Send code</button>
-
-      <div id="otpStep" class="otp-step">
-        <label for="otpInput">Verification code</label>
-        <input id="otpInput" type="text" inputmode="numeric" maxlength="6" placeholder="Enter 6-digit code">
-        <div id="authStatus" class="auth-status" aria-live="polite"></div>
-        <div class="auth-actions">
-          <button id="verifyOtpBtn" class="primary-btn">Verify & login</button>
-          <button id="resendOtpBtn" class="secondary-btn" type="button">Resend</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<nav class="nav-drawer" id="navDrawer">
+  <button class="drawer-close" onclick="toggleDrawer()" aria-label="Хаах">×</button>
+  <a href="#" style="color:var(--text)">Бидний тухай</a>
+  <a href="index.html#contact">Холбоо барих</a>
+</nav>
 
 <main>
   <div class="eyebrow">Бидний тухай</div>
@@ -86,17 +61,17 @@
     <h2>Бидний баримталдаг зарчим</h2>
     <div class="value-grid">
       <div class="value-card">
- 
-        <h3>Ил тод байдал</h3>
-        <p>Ачааныхаа явцыг хаанаас ч, хэзээ ч шалгах боломжтой — нуугдмал зардал байхгүй.</p>
+        <div class="ic">✓</div>
+        <h3>Ил тонгайдлал</h3>
+        <p>Ачааныхаа явцыг хаанаас ч, хэзээ ч шалгах боломжтой — нуугдмол зардал байхгүй.</p>
       </div>
       <div class="value-card">
-        <div class="ic">⚡</div>
+        <div class="ic">→</div>
         <h3>Хурд</h3>
-        <p>Стандарт 2–5 хоногийн хугацаанд хил дамжуулан хүргэдэг тогтмол хуваарь.</p>
+        <p>Стандарт 2–5 хоногийн хугацаанаар хил дамжуулан хүргэдэг тогтмол хуваараар.</p>
       </div>
       <div class="value-card">
-        <div class="ic">🛡️</div>
+        <div class="ic">⊡</div>
         <h3>Аюулгүй байдал</h3>
         <p>Ачаа бүрийг сав баглаа боодол, даатгалын шаардлагад нийцүүлэн зөөвөрлөнө.</p>
       </div>
@@ -128,11 +103,24 @@
       <h3>Ачаагаа илгээхэд бэлэн үү?</h3>
       <p>Захиалга өгөх эсвэл асуултаа илгээхийн тулд бидэнтэй холбогдоорой.</p>
     </div>
-    <a href="index.html#contact" class="cta-btn" style="display:inline-block; text-decoration:none;">Холбоо барих</a>
+    <button class="cta-btn">Холбоо барих</button>
   </div>
 </main>
 
 <footer>© 2026 Uudam Cargo — Бидний тухай</footer>
-<script src="auth.js"></script>
+
+<script>
+  function toggleDrawer(){
+    document.getElementById('navDrawer').classList.toggle('open');
+  }
+  document.addEventListener('click', function(e){
+    var drawer = document.getElementById('navDrawer');
+    var btn = document.getElementById('hamburgerBtn');
+    if(!drawer.contains(e.target) && !btn.contains(e.target) && drawer.classList.contains('open')){
+      drawer.classList.remove('open');
+    }
+  });
+</script>
+
 </body>
 </html>

@@ -13,52 +13,26 @@
 
 <header>
   <div class="brand">
-    <div class="logo-word">УУДАМ <span>CARGO</span></div>
+    <div class="logo-word">Uudam Cargo</div>
   </div>
   <nav>
-    <a href="#track">Хайх</a>
-    <a href="https://claude.ai/artifact/JfW4UaniaqcWknwRuJvc3T">Тооцоолуур</a>
-    <a href="https://claude.ai/artifact/7ecd3FYPy4r7rJasT8dqN7">Бидний тухай</a>
-    <a href="#contact">Холбоо барих</a>
+    <a href="calculator.html">Тооцоолуур</a>
   </nav>
   <div class="header-actions">
-    <button id="loginButton" class="user-button" aria-label="Нэвтрэх эсвэл профайл нээх">
-      <span class="user-icon" aria-hidden="true"></span>
-      <span class="user-label">Нэвтрэх</span>
-    </button>
     <button class="hdr-cta" onclick="document.getElementById('contact').scrollIntoView()">Хаяг холбох</button>
+    <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleDrawer()" aria-label="Цэс нээх">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </div>
 </header>
 
-<div id="loginModal" class="auth-modal" aria-hidden="true">
-  <div class="auth-modal-backdrop" data-close="auth-modal"></div>
-  <div class="auth-panel" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
-    <button class="auth-close" data-close="auth-modal" aria-label="Нэвтрэх цонх хаах">×</button>
-    <div class="auth-header">
-      <div class="auth-avatar">👤</div>
-      <div>
-        <p class="auth-crumb">Нэвтрэх</p>
-        <h3 id="loginTitle">Хэрэглэгчийн нэвтрэлт</h3>
-      </div>
-    </div>
-
-    <div class="auth-form">
-      <label for="phoneInput">Утасны дугаар</label>
-      <input id="phoneInput" type="tel" placeholder="+976 9911-2233" inputmode="tel">
-      <button id="sendOtpBtn" class="primary-btn">Код илгээх</button>
-
-      <div id="otpStep" class="otp-step">
-        <label for="otpInput">Баталгаажуулах код</label>
-        <input id="otpInput" type="text" inputmode="numeric" maxlength="6" placeholder="6 оронтой код оруулна уу">
-        <div id="authStatus" class="auth-status" aria-live="polite"></div>
-        <div class="auth-actions">
-          <button id="verifyOtpBtn" class="primary-btn">Баталгаажуулж нэвтрэх</button>
-          <button id="resendOtpBtn" class="secondary-btn" type="button">Дахин илгээх</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<nav class="nav-drawer" id="navDrawer">
+  <button class="drawer-close" onclick="toggleDrawer()" aria-label="Хаах">×</button>
+  <a href="about.html">Бидний тухай</a>
+  <a href="#contact">Холбоо барих</a>
+</nav>
 
 <section class="hero" id="track">
   <div class="hero-top">
@@ -75,7 +49,7 @@
       <button onclick="checkTrack()">Шалгах</button>
     </div>
     <div id="trackResult"></div>
-    <p class="sample-codes">Туршиж үзэх: <b>NC10234</b>, <b>NC10877</b> — эсвэл дурын код (олдоогүй харагдана)</p>
+    <p class="sample-codes">Туршиж үзэх: <b>AA0780010234</b>,</p>
   </div>
 </section>
 
@@ -106,32 +80,6 @@
     <div class="addr-text" id="warehouseAddr">乌有卡 17747905992 内蒙古自治区锡林郭勒盟二连浩特市 利众物流园 诺敏货运部 Uudam cargo /Таны нэр, утасны дугаар/</div>
     <button class="copy-btn" onclick="copyAddr()" id="copyBtn">Хуулах</button>
   </div>
-
-  <div class="contact-grid">
-    <div class="info-card">
-      <div class="info-row">
-   
-        <div>
-          <div class="t">Дархан дахь оффис (бэлэн ачаагаа авах)</div>
-          <div class="v">Дархан хот, Хонгор баг, Cargo төв, 2 давхар</div>
-        </div>
-      </div>
-      <div class="info-row">
- 
-        <div>
-          <div class="t">Утас</div>
-          <div class="v"><a href="tel:+97699001122">+976 9900-1122</a></div>
-        </div>
-      </div>
-      <div class="info-row">
-   
-        <div>
-          <div class="t">Ажиллах цаг</div>
-          <div class="v">Даваа–Бямба, 09:00–19:00</div>
-        </div>
-      </div>
-    </div>
-
     <a class="video-card" href="https://www.facebook.com/reel/1291225029814214" target="_blank" rel="noopener noreferrer">
       <div class="video-thumb">
         <div class="play-badge">
@@ -141,6 +89,32 @@
       <h3>Ачаа хэрхэн илгээх вэ — зааврыг үзэх</h3>
       <p>Facebook дээрх бичлэгээр алхам алхмаар зааврыг үзнэ үү →</p>
     </a>
+  </div>
+
+  <div class="contact-grid-simplified">
+    <div class="info-card">
+      <div class="info-row">
+       
+        <div>
+          <div class="t">Дархан дахь хаяг</div>
+          <div class="v">Дархан хот, Хээтэй хороолол 5-4</div>
+        </div>
+      </div>
+      <div class="info-row">
+   
+        <div>
+          <div class="t">Утас</div>
+          <div class="v"><a>88348160</a></div>
+        </div>
+      </div>
+      <div class="info-row">
+      
+        <div>
+          <div class="t">Ажиллах цаг</div>
+          <div class="v">Даваа–Бямба, 11:00–19:00</div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -182,7 +156,29 @@
   </button>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+  function toggleDrawer(){
+    document.getElementById('navDrawer').classList.toggle('open');
+  }
+  document.addEventListener('click', function(e){
+    var drawer = document.getElementById('navDrawer');
+    var btn = document.getElementById('hamburgerBtn');
+    if(!drawer.contains(e.target) && !btn.contains(e.target) && drawer.classList.contains('open')){
+      drawer.classList.remove('open');
+    }
+  });
+
+  var SUPABASE_URL = "https://ipnfmpcdajuwuiggfqsp.supabase.co";
+  var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlwbmZtcGNkYWp1d3VpZ2dmcXNwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3MjYzMDAsImV4cCI6MjEwNjMwMjMwMH0.jGx9XPs9Bux31IhTAtuEVI43NPALrt0-iTtZ-kLwnvA";
+  var sb = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+
+  // Demo fallback data — used only if Supabase isn't reachable
+  var sample = {
+    "NC10234": {price:"25,000₮", date:"2026.09.22"},
+    "NC10877": {price:"41,500₮", date:"2026.09.24"}
+  };
+
   function copyAddr(){
     var text = document.getElementById('warehouseAddr').textContent;
     var btn = document.getElementById('copyBtn');
@@ -206,25 +202,46 @@
     }
   }
 
-  var sample = {
-    "NC10234": {status:"Дархан агуулахад ирсэн", date:"2026.09.22"},
-    "NC10877": {status:"Замд явж байна (Дархан)", date:"2026.09.24"}
-  };
-
-  function checkTrack(){
+  async function checkTrack(){
     var val = document.getElementById('trackInput').value.trim().toUpperCase();
     var el = document.getElementById('trackResult');
     el.className = 'show';
     if(!val){ el.textContent = 'Код оруулна уу.'; el.classList.add('notfound'); return; }
+    el.textContent = 'Шалгаж байна…';
+
+    if(sb){
+      try{
+        var byCode = await sb.from('tracking').select('*').eq('code', val).maybeSingle();
+        el.className = 'show';
+        if(byCode.data){
+          var d = byCode.data;
+          el.classList.add('found');
+          el.textContent = '✓ ' + d.code + ' — ' + (d.date || '—') + (d.price ? ' · Үнэ: ' + d.price : '');
+          return;
+        }
+        // not found by code — try matching by phone number instead
+        var byPhone = await sb.from('tracking').select('*').eq('phone', val).limit(1).maybeSingle();
+        if(byPhone.data){
+          var qd = byPhone.data;
+          el.classList.add('found');
+          el.textContent = '✓ ' + qd.code + ' — ' + (qd.date || '—') + (qd.price ? ' · Үнэ: ' + qd.price : '');
+          return;
+        }
+        el.classList.add('notfound');
+        el.textContent = '✕ ' + val + ' — одоогоор бүртгэлд ирээгүй байна.';
+        return;
+      }catch(e){ /* fall through to demo data below */ }
+    }
+
+    el.className = 'show';
     if(sample[val]){
       el.classList.add('found');
-      el.textContent = '✓ ' + val + ' — ' + sample[val].status + ' (' + sample[val].date + ')';
+      el.textContent = '✓ ' + val + ' — ' + sample[val].date + ' · Үнэ: ' + sample[val].price;
     } else {
       el.classList.add('notfound');
       el.textContent = '✕ ' + val + ' — одоогоор бүртгэлд ирээгүй байна.';
     }
   }
-
   document.getElementById('trackInput').addEventListener('keydown', function(e){
     if(e.key === 'Enter') checkTrack();
   });
@@ -232,14 +249,12 @@
   function toggleCalc(){
     document.getElementById('calcPanel').classList.toggle('open');
   }
-
   function volumeM3(dimsStr){
     var m = dimsStr.match(/(\d+(\.\d+)?)\s*x\s*(\d+(\.\d+)?)\s*x\s*(\d+(\.\d+)?)/i);
     if(!m) return 0;
     var l = parseFloat(m[1]), w = parseFloat(m[3]), h = parseFloat(m[5]);
     return (l * w * h) / 1000000;
   }
-
   function recalc(){
     var w = parseFloat(document.getElementById('calcWeight').value) || 0;
     var dims = document.getElementById('calcDims').value.trim();
@@ -248,11 +263,9 @@
     var total = Math.round(Math.max(weightCost, volCost));
     document.getElementById('calcTotal').textContent = total.toLocaleString('mn-MN') + ' ₮';
   }
-
   document.getElementById('calcWeight').addEventListener('input', recalc);
   document.getElementById('calcDims').addEventListener('input', recalc);
 </script>
-<script src="auth.js"></script>
 
 </body>
 </html>

@@ -13,21 +13,30 @@
 
 <header>
   <a class="brand" href="index.html">
-    <div class="logo-word">УУДАМ <span>CARGO</span></div>
+    <div class="logo-word">Uudam Cargo</div>
   </a>
   <nav>
     <a href="index.html">Нүүр</a>
     <a href="calculator.html">Тооцоолуур</a>
-    <a href="about.html">Бидний тухай</a>
   </nav>
   <div class="header-actions">
     <button id="loginButton" class="user-button" aria-label="Нэвтрэх эсвэл профайл нээх">
-      <span class="user-icon" aria-hidden="true"></span>
+      <span class="user-icon" aria-hidden="true">👤</span>
       <span class="user-label">Нэвтрэх</span>
     </button>
-    <button class="hdr-cta" onclick="document.getElementById('contact')?.scrollIntoView()">Хаяг холбох</button>
+    <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleDrawer()" aria-label="Цэс нээх">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </div>
 </header>
+
+<nav class="nav-drawer" id="navDrawer">
+  <button class="drawer-close" onclick="toggleDrawer()" aria-label="Хаах">×</button>
+  <a href="about.html">Бидний тухай</a>
+  <a href="index.html#contact">Холбоо барих</a>
+</nav>
 
 <div id="loginModal" class="auth-modal" aria-hidden="true">
   <div class="auth-modal-backdrop" data-close="auth-modal"></div>
@@ -88,6 +97,18 @@
 
 <footer>© 2026 Uudam Cargo — Профайл</footer>
 
+<script>
+  function toggleDrawer(){
+    document.getElementById('navDrawer').classList.toggle('open');
+  }
+  document.addEventListener('click', function(e){
+    var drawer = document.getElementById('navDrawer');
+    var btn = document.getElementById('hamburgerBtn');
+    if(!drawer.contains(e.target) && !btn.contains(e.target) && drawer.classList.contains('open')){
+      drawer.classList.remove('open');
+    }
+  });
+</script>
 <script src="auth.js"></script>
 </body>
 </html>
