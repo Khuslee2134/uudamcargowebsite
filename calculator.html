@@ -13,26 +13,36 @@
 
 <header>
   <a class="brand" href="index.html">
-    <div class="logo-word">Uudam Cargo</div>
+    <div class="logo-word">УУДАМ <span>CARGO</span></div>
   </a>
   <nav>
     <a href="index.html">Нүүр</a>
-    <a href="#" style="color:var(--text)">Тооцоолуур</a>
+    <a href="#" style="color:var(--amber)">Тооцоолуур</a>
   </nav>
   <div class="header-actions">
-    <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleDrawer()" aria-label="Цэс нээх">
-      <span></span>
-      <span></span>
-      <span></span>
+    <button class="menu-btn" onclick="toggleMenu()" aria-label="Цэс">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
     </button>
   </div>
 </header>
 
-<nav class="nav-drawer" id="navDrawer">
-  <button class="drawer-close" onclick="toggleDrawer()" aria-label="Хаах">×</button>
-  <a href="about.html">Бидний тухай</a>
-  <a href="index.html#contact">Холбоо барих</a>
-</nav>
+<div class="side-drawer" id="sideDrawer">
+  <div class="drawer-overlay" onclick="toggleMenu()"></div>
+  <div class="drawer-panel">
+    <button class="drawer-close" onclick="toggleMenu()" aria-label="Хаах">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="4" y1="4" x2="20" y2="20"></line>
+        <line x1="20" y1="4" x2="4" y2="20"></line>
+      </svg>
+    </button>
+    <a href="about.html">Бидний тухай</a>
+    <a href="index.html#contact">Холбоо барих</a>
+  </div>
+</div>
 
 <main>
   <div class="eyebrow">Тээврийн зардал</div>
@@ -71,22 +81,12 @@
   </div>
 </main>
 
-<footer>© 2026 Uudam Cargo — Тэюврийн зардлын тооцоолуур</footer>
+<footer>© 2026 Uudam Cargo — Тээврийн зардлын тооцоолуур</footer>
 
 <script>
-  function toggleDrawer(){
-    document.getElementById('navDrawer').classList.toggle('open');
+  function toggleMenu(){
+    document.getElementById('sideDrawer').classList.toggle('open');
   }
-  document.addEventListener('click', function(e){
-    var drawer = document.getElementById('navDrawer');
-    var btn = document.getElementById('hamburgerBtn');
-    if(!drawer.contains(e.target) && !btn.contains(e.target) && drawer.classList.contains('open')){
-      drawer.classList.remove('open');
-    }
-  });
-</script>
-
-<script>
   var WEIGHT_RATE = 2500;   // ₮ per kg
   var VOLUME_RATE = 350000; // ₮ per m³
 

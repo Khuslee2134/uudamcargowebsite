@@ -13,9 +13,14 @@
 
 <header>
   <a class="brand" href="index.html">
-    <div class="logo-word">Uudam Cargo</div>
+    <div class="logo-word">УУДАМ <span>CARGO</span></div>
   </a>
   <div class="tag">Админ самбар</div>
+
+  <div class="header-user" id="headerUser" style="display:none;">
+    <span id="userEmailTag">admin</span>
+    <button class="cancel-btn" type="button" onclick="doLogout()">Гарах</button>
+  </div>
 </header>
 
 <div id="loginWrap" style="max-width:380px; margin:60px auto; padding:0 18px;">
@@ -33,32 +38,45 @@
     <p id="loginError" style="color:var(--err); font-size:13px; margin-top:10px; display:none;"></p>
   </div>
 </div>
-
 <main id="mainArea" style="display:none;">
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-    <h1 style="margin-bottom:0;">Ачааны бүртгэл удирдах</h1>
-    <button class="cancel-btn" onclick="doLogout()">Гарах</button>
-  </div>
+  <h1>Ачааны бүртгэл удирдах</h1>
   <p class="sub">Энд нэмсэн код, статус нь нүүр хуудасны "Ачаа шалгах" талбарт шууд харагдана.</p>
 
   <div class="panel">
-    <h2 id="formTitle">Шинэ бүртгэл нэмэх</h2>
+    <h2 id="formTitle" style="margin:0 0 12px;">Шинэ бүртгэл нэмэх</h2>
+    <div class="field" style="margin:0 0 16px; max-width:180px;">
+      <label>Бүс</label>
+      <select id="fRegion" style="width:100%;">
+        <option value="Эрээн">Эрээн</option>
+        <option value="Дархан">Дархан</option>
+      </select>
+    </div>
     <div class="form-grid">
       <div class="field">
         <label>Барааны код</label>
-        <input type="text" id="fCode" placeholder="жишээ: NC10234">
+        <input type="text" id="fCode" >
       </div>
       <div class="field">
         <label>Утасны дугаар</label>
-        <input type="text" id="fPhone" placeholder="жишээ: 99001122">
+        <input type="text" id="fPhone" >
+      </div>
+      <div class="field" id="priceField" >
+        <label>Үнэ (₮)</label>
+        <input type="text" id="fPrice" >
       </div>
       <div class="field">
         <label>Огноо</label>
-        <input type="text" id="fDate" placeholder="2026.09.29">
+        <input type="text" id="fDate" >
       </div>
       <div class="field">
-        <label>Үнэ (₮)</label>
-        <input type="text" id="fPrice" placeholder="жишээ: 25,000₮">
+        <label>Төлөв</label>
+        <select id="fStatus">
+          <option value="Эрээнээс ачигдсан">Эрээнээс ачигдсан</option>
+          <option value="Дарханд буусан">Дарханд буусан</option>
+          <option value="Хүргэлтийн захиалга">Хүргэлтийн захиалга</option>
+          <option value="Хэрэглэгчид очсон">Хэрэглэгчид очсон</option>
+          <option value="Хүргэгдсэн">Хүргэгдсэн</option>
+        </select>
       </div>
     </div>
     <div class="save-row">
@@ -67,12 +85,11 @@
       <span class="save-status" id="saveStatus"></span>
     </div>
   </div>
-
   <div class="panel">
     <h2>Бүх бүртгэл</h2>
     <table id="recTable">
       <thead>
-        <tr><th>Код</th><th>Утас</th><th>Огноо</th><th>Үнэ</th><th></th></tr>
+        <tr><th>Код</th><th>Утас</th><th>Огноо</th><th>Үнэ</th><th>Төлөв</th><th></th></tr>
       </thead>
       <tbody id="recBody"></tbody>
     </table>
@@ -88,20 +105,37 @@
   var editingCode = null;
   var liveChannel = null;
 
+  function updatePriceFieldVisibility(){
+    var region = document.getElementById('fRegion') ? document.getElementById('fRegion').value : 'Эрээн';
+    var priceField = document.getElementById('priceField');
+    var priceInput = document.getElementById('fPrice');
+    if(priceField){
+      var showPrice = region === 'Дархан';
+      priceField.style.display = showPrice ? 'block' : 'none';
+      if(priceInput && !showPrice){
+        priceInput.value = '';
+      }
+    }
+  }
+
   async function init(){
     if(!sb){
       document.getElementById('loginError').style.display = 'block';
       document.getElementById('loginError').textContent = 'Сан холбогдсонгүй. Хуудсыг дахин ачаална уу.';
       return;
     }
+    var regionSelect = document.getElementById('fRegion');
+    if(regionSelect){
+      regionSelect.addEventListener('change', updatePriceFieldVisibility);
+    }
     var { data } = await sb.auth.getSession();
     if(data && data.session){
-      showAdmin();
+      showAdmin(data.session.user);
     } else {
-      document.getElementById('loginWrap').style.display = 'block';
+      showLogin();
     }
     sb.auth.onAuthStateChange(function(event, session){
-      if(session){ showAdmin(); } else { showLogin(); }
+      if(session){ showAdmin(session.user); } else { showLogin(); }
     });
   }
 
@@ -130,15 +164,32 @@
   }
 
   function showLogin(){
-    document.getElementById('loginWrap').style.display = 'block';
-    document.getElementById('mainArea').style.display = 'none';
+    var headerLoginForm = document.getElementById('headerLoginForm');
+    var headerUser = document.getElementById('headerUser');
+    var loginWrap = document.getElementById('loginWrap');
+    var mainArea = document.getElementById('mainArea');
+    if(headerLoginForm){ headerLoginForm.style.display = 'flex'; }
+    if(headerUser){ headerUser.style.display = 'none'; }
+    if(loginWrap){ loginWrap.style.display = 'block'; }
+    if(mainArea){ mainArea.style.display = 'none'; }
   }
 
-  function showAdmin(){
-    document.getElementById('loginWrap').style.display = 'none';
-    document.getElementById('mainArea').style.display = 'block';
+  function showAdmin(user){
+    var headerLoginForm = document.getElementById('headerLoginForm');
+    var headerUser = document.getElementById('headerUser');
+    var userEmailTag = document.getElementById('userEmailTag');
+    var loginWrap = document.getElementById('loginWrap');
+    var mainArea = document.getElementById('mainArea');
+    if(headerLoginForm){ headerLoginForm.style.display = 'none'; }
+    if(headerUser){ headerUser.style.display = 'flex'; }
+    if(userEmailTag){ userEmailTag.textContent = (user && user.email) || ''; }
+    if(loginWrap){ loginWrap.style.display = 'none'; }
+    if(mainArea){ mainArea.style.display = 'block'; }
+    if(!editingCode && document.getElementById('fDate') && !document.getElementById('fDate').value){
+      document.getElementById('fDate').value = todayStr();
+    }
     loadList();
-    if(!liveChannel){
+    if(!liveChannel && sb && sb.channel){
       liveChannel = sb.channel('tracking-changes')
         .on('postgres_changes', {event:'*', schema:'public', table:'tracking'}, function(){ loadList(); })
         .subscribe();
@@ -168,11 +219,13 @@
     rows.forEach(function(d){
       var tr = document.createElement('tr');
       var code = d.code;
+      var status = d.status || 'Эрээнээс ачигдсан';
       tr.innerHTML =
         '<td data-label="Код" class="code-cell">' + escapeHtml(code) + '</td>' +
         '<td data-label="Утас">' + escapeHtml(d.phone || '') + '</td>' +
         '<td data-label="Огноо">' + escapeHtml(d.date || '') + '</td>' +
         '<td data-label="Үнэ">' + escapeHtml(d.price || '') + '</td>' +
+        '<td data-label="Төлөв">' + escapeHtml(status) + '</td>' +
         '<td data-label=""><div class="row-actions">' +
           '<button onclick="editRecord(\'' + code.replace(/'/g,"\\'") + '\')">Засах</button>' +
           '<button class="del" onclick="deleteRecord(\'' + code.replace(/'/g,"\\'") + '\')">Устгах</button>' +
@@ -195,10 +248,23 @@
     document.getElementById('fCode').value = code;
     document.getElementById('fCode').disabled = true;
     document.getElementById('fPhone').value = data.phone || '';
+    document.getElementById('fRegion').value = 'Дархан';
+    if(data.price === '' || data.price == null){
+      document.getElementById('fRegion').value = 'Эрээн';
+    }
     document.getElementById('fPrice').value = data.price || '';
     document.getElementById('fDate').value = data.date || '';
+    document.getElementById('fStatus').value = data.status || 'Эрээнээс ачигдсан';
+    updatePriceFieldVisibility();
     document.getElementById('cancelBtn').style.display = 'inline-block';
     window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function todayStr(){
+    var d = new Date();
+    var mm = String(d.getMonth() + 1).padStart(2, '0');
+    var dd = String(d.getDate()).padStart(2, '0');
+    return d.getFullYear() + '.' + mm + '.' + dd;
   }
 
   function resetForm(){
@@ -207,8 +273,11 @@
     document.getElementById('fCode').value = '';
     document.getElementById('fCode').disabled = false;
     document.getElementById('fPhone').value = '';
+    document.getElementById('fRegion').value = 'Эрээн';
     document.getElementById('fPrice').value = '';
-    document.getElementById('fDate').value = '';
+    document.getElementById('fDate').value = todayStr();
+    document.getElementById('fStatus').value = 'Эрээнээс ачигдсан';
+    updatePriceFieldVisibility();
     document.getElementById('cancelBtn').style.display = 'none';
     document.getElementById('saveStatus').textContent = '';
   }
@@ -216,23 +285,28 @@
   async function saveRecord(){
     var code = (editingCode || document.getElementById('fCode').value.trim().toUpperCase());
     var phone = document.getElementById('fPhone').value.trim();
-    var price = document.getElementById('fPrice').value.trim();
+    var region = document.getElementById('fRegion').value;
+    var price = region === 'Дархан' ? (document.getElementById('fPrice').value || '').trim() : '';
+    var status = document.getElementById('fStatus').value;
     var date = document.getElementById('fDate').value.trim();
     var statusEl = document.getElementById('saveStatus');
 
-    if(!code || !price){
+    if(!code){
       statusEl.style.color = 'var(--err)';
-      statusEl.textContent = 'Код болон үнэ заавал бөглөнө үү.';
+      statusEl.textContent = 'Код заавал бөглөнө үү.';
+      return;
+    }
+    if(region === 'Дархан' && !price){
+      statusEl.style.color = 'var(--err)';
+      statusEl.textContent = 'Дархан сонгосон тохиолдолд үнэ заавал бөглөнө үү.';
       return;
     }
 
     document.getElementById('saveBtn').disabled = true;
     statusEl.style.color = 'var(--muted)';
     statusEl.textContent = 'Хадгалж байна…';
-    var { error } = await sb.from('tracking').upsert(
-      { code: code, phone: phone, price: price, date: date },
-      { onConflict: 'code' }
-    );
+    var record = { code: code, phone: phone, price: price, date: date, status: status };
+    var { error } = await sb.from('tracking').upsert(record, { onConflict: 'code' });
     if(!error){
       statusEl.style.color = 'var(--ok)';
       statusEl.textContent = 'Хадгаллаа ✓';
