@@ -81,6 +81,7 @@
     position:fixed; inset:0; z-index:60; display:none;
     align-items:flex-end; justify-content:center;
     background:rgba(10,20,15,0.45);
+    padding:0 0 env(safe-area-inset-bottom,0px);
   }
   .modal-overlay.open{display:flex;}
   .modal-box{
@@ -88,10 +89,11 @@
     border-radius:20px 20px 0 0; padding:26px 22px;
     padding-bottom:calc(26px + env(safe-area-inset-bottom,0px));
     position:relative; box-shadow:0 -10px 40px rgba(0,0,0,0.25);
+    max-height:calc(100vh - 16px); overflow-y:auto;
   }
   @media (min-width:640px){
-    .modal-overlay{align-items:center;}
-    .modal-box{border-radius:20px; max-width:380px;}
+    .modal-overlay{align-items:center; padding:0;}
+    .modal-box{border-radius:20px; max-width:380px; max-height:none;}
   }
   .modal-box h3{font-size:18px; font-weight:700; margin-bottom:6px; padding-right:24px;}
   .modal-sub{color:var(--muted); font-size:13.5px; margin-bottom:18px; line-height:1.5;}
@@ -112,6 +114,21 @@
     .auth-btn span{display:none;}
     .auth-btn{padding:10px; border-radius:50%; width:40px; height:40px; justify-content:center;}
     .auth-btn svg{width:18px; height:18px;}
+    .modal-overlay{
+      padding:0;
+      align-items:center;
+      justify-content:center;
+    }
+    .modal-box{
+      width:min(100%, 380px);
+      max-width:calc(100vw - 20px);
+      border-radius:18px;
+      margin:0 auto;
+      max-height:calc(100vh - 24px);
+      padding:20px 18px 18px;
+      padding-bottom:calc(18px + env(safe-area-inset-bottom,0px));
+      box-shadow:0 14px 40px rgba(0,0,0,0.22);
+    }
   }
   .menu-btn{
     width:40px; height:40px; border-radius:8px; border:1px solid var(--line); background:var(--panel);
@@ -313,7 +330,6 @@
     header{flex-wrap:wrap; row-gap:12px; padding:14px 16px;}
     .logo-word{font-size:19px;}
     nav{display:none;}
-    .hdr-cta{display:none;}
     .header-actions{gap:6px; margin-left:auto;}
     .track-row{flex-direction:column;}
     .track-row button{width:100%;}
