@@ -45,6 +45,11 @@
   <div class="panel">
     <h2 id="formTitle" style="margin:0 0 12px;">Шинэ бүртгэл нэмэх</h2>
 
+     <div class="form-grid">
+      <div class="field">
+        <label>Огноо</label>
+        <input type="text" id="fDate">
+      </div>
     <div class="field status-field" style="margin:0 0 16px; max-width:220px;">
       <label>Төлөв</label>
       <select id="fStatus">
@@ -55,23 +60,25 @@
         <option value="Хүргэгдсэн">Хүргэгдсэн</option>
       </select>
     </div>
+    </div>
 
     <div class="form-grid">
       <div class="field">
-        <label>Барааны код</label>
-        <input type="text" id="fCode">
+        <label>Нэр</label>
+        <input type="text" id="fname">
       </div>
       <div class="field">
         <label>Утасны дугаар</label>
         <input type="text" id="fPhone">
       </div>
+      <div class="field">
+        <label>Барааны код</label>
+        <input type="text" id="fCode">
+      </div>
+      
       <div class="field" id="priceField">
         <label>Үнэ (₮)</label>
         <input type="text" id="fPrice">
-      </div>
-      <div class="field">
-        <label>Огноо</label>
-        <input type="text" id="fDate">
       </div>
     </div>
 
@@ -83,9 +90,14 @@
   </div>
   <div class="panel">
     <h2>Бүх бүртгэл</h2>
+    <div class="track-row" style="margin:0 0 16px;">
+      <input id="adminSearch" type="search" placeholder="Tracking код эсвэл утасны дугаар">
+      <button class="save-btn" type="button" onclick="searchRecords()">Хайх</button>
+      <button class="cancel-btn" id="clearSearchBtn" type="button" onclick="clearSearch()" style="display:none;">Цэвэрлэх</button>
+    </div>
     <table id="recTable">
       <thead>
-        <tr><th>Код</th><th>Утас</th><th>Огноо</th><th>Үнэ</th><th>Төлөв</th><th></th></tr>
+        <tr><th>Код</th><th>Нэр</th><th>Утас</th><th>Огноо</th><th>Үнэ</th><th>Төлөв</th><th></th></tr>
       </thead>
       <tbody id="recBody"></tbody>
     </table>
@@ -100,6 +112,7 @@
   var sb = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
   var editingCode = null;
   var liveChannel = null;
+  var activeSearch = '';
 
   function updatePriceFieldVisibility(){
     var priceField = document.getElementById('priceField');
@@ -184,13 +197,46 @@
   }
 
   async function loadList(){
-    var { data, error } = await sb.from('tracking').select('*').order('date', {ascending:false}).limit(200);
-    if(error){
-      document.getElementById('emptyMsg').style.display = 'block';
-      document.getElementById('emptyMsg').textContent = 'Жагсаалт ачаалахад алдаа гарлаа.';
-      return;
+    var query = sb.from('tracking').select('*').order('date', {ascending:false});
+    var rows;
+    if(activeSearch){
+      var codeSearch = query.eq('code', activeSearch.toUpperCase()).limit(1);
+      var phoneSearch = sb.from('tracking').select('*').eq('phone', activeSearch).order('date', {ascending:false}).limit(200);
+      var results = await Promise.all([codeSearch, phoneSearch]);
+      var failed = results.find(function(result){ return result.error; });
+      if(failed){
+        document.getElementById('emptyMsg').style.display = 'block';
+        document.getElementById('emptyMsg').textContent = 'Хайлт хийхэд алдаа гарлаа.';
+        return;
+      }
+      var byCode = results[0].data || [];
+      var byPhone = results[1].data || [];
+      rows = byCode.concat(byPhone.filter(function(record){
+        return !byCode.some(function(codeRecord){ return codeRecord.code === record.code; });
+      }));
+    } else {
+      var { data, error } = await query.limit(200);
+      if(error){
+        document.getElementById('emptyMsg').style.display = 'block';
+        document.getElementById('emptyMsg').textContent = 'Жагсаалт ачаалахад алдаа гарлаа.';
+        return;
+      }
+      rows = data || [];
     }
-    renderTable(data || []);
+    renderTable(rows);
+  }
+
+  function searchRecords(){
+    activeSearch = document.getElementById('adminSearch').value.trim();
+    document.getElementById('clearSearchBtn').style.display = activeSearch ? 'inline-block' : 'none';
+    loadList();
+  }
+
+  function clearSearch(){
+    document.getElementById('adminSearch').value = '';
+    activeSearch = '';
+    document.getElementById('clearSearchBtn').style.display = 'none';
+    loadList();
   }
 
   function renderTable(rows){
@@ -199,7 +245,7 @@
     body.innerHTML = '';
     if(!rows.length){
       empty.style.display = 'block';
-      empty.textContent = 'Бүртгэл алга байна.';
+      empty.textContent = activeSearch ? 'Хайлтад тохирох бүртгэл олдсонгүй.' : 'Бүртгэл алга байна.';
       return;
     }
     empty.style.display = 'none';
@@ -209,6 +255,7 @@
       var status = d.status || 'Эрээнээс ачигдсан';
       tr.innerHTML =
         '<td data-label="Код" class="code-cell">' + escapeHtml(code) + '</td>' +
+        '<td data-label="Нэр">' + escapeHtml(d.fname || '') + '</td>' +
         '<td data-label="Утас">' + escapeHtml(d.phone || '') + '</td>' +
         '<td data-label="Огноо">' + escapeHtml(d.date || '') + '</td>' +
         '<td data-label="Үнэ">' + escapeHtml(d.price || '') + '</td>' +
@@ -234,6 +281,7 @@
     document.getElementById('formTitle').textContent = 'Бүртгэл засах — ' + code;
     document.getElementById('fCode').value = code;
     document.getElementById('fCode').disabled = true;
+    document.getElementById('fname').value = data.fname || '';
     document.getElementById('fPhone').value = data.phone || '';
     document.getElementById('fPrice').value = data.price || '';
     document.getElementById('fDate').value = data.date || '';
@@ -255,6 +303,7 @@
     document.getElementById('formTitle').textContent = 'Шинэ бүртгэл нэмэх';
     document.getElementById('fCode').value = '';
     document.getElementById('fCode').disabled = false;
+    document.getElementById('fname').value = '';
     document.getElementById('fPhone').value = '';
     document.getElementById('fPrice').value = '';
     document.getElementById('fDate').value = todayStr();
@@ -266,6 +315,7 @@
 
   async function saveRecord(){
     var code = (editingCode || document.getElementById('fCode').value.trim().toUpperCase());
+    var fname = document.getElementById('fname').value.trim();
     var phone = document.getElementById('fPhone').value.trim();
     var price = (document.getElementById('fPrice').value || '').trim();
     var status = document.getElementById('fStatus').value;
@@ -281,7 +331,7 @@
     document.getElementById('saveBtn').disabled = true;
     statusEl.style.color = 'var(--muted)';
     statusEl.textContent = 'Хадгалж байна…';
-    var record = { code: code, phone: phone, price: price, date: date, status: status };
+    var record = { code: code, fname: fname, phone: phone, price: price, date: date, status: status };
     var { error } = await sb.from('tracking').upsert(record, { onConflict: 'code' });
     if(!error){
       statusEl.style.color = 'var(--ok)';
@@ -300,6 +350,10 @@
     var { error } = await sb.from('tracking').delete().eq('code', code);
     if(error){ alert('Устгахад алдаа гарлаа.'); } else { loadList(); }
   }
+
+  document.getElementById('adminSearch').addEventListener('keydown', function(event){
+    if(event.key === 'Enter') searchRecords();
+  });
 
   init();
 </script>
