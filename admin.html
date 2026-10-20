@@ -28,12 +28,16 @@
     <h2 style="margin-bottom:16px;">Нэвтрэх</h2>
     <div class="field" style="margin-bottom:12px;">
       <label>Имэйл</label>
-      <input type="email" id="loginEmail" placeholder="admin@uudamcargo.mn">
+      <input type="email" id="loginEmail">
     </div>
     <div class="field" style="margin-bottom:14px;">
       <label>Нууц үг</label>
-      <input type="password" id="loginPass" placeholder="••••••••">
+      <input type="password" id="loginPass">
     </div>
+    <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--muted); margin-bottom:12px; cursor:pointer;">
+      <input type="checkbox" id="showPasswordToggle" style="accent-color:var(--amber); width:15px; height:15px;">
+      Нууц үгийг харуулах
+    </label>
     <button class="save-btn" id="loginBtn" onclick="doLogin()" style="width:100%;">Нэвтрэх</button>
     <p id="loginError" style="color:var(--err); font-size:13px; margin-top:10px; display:none;"></p>
   </div>
@@ -349,6 +353,16 @@
     if(!confirm(code + ' кодыг устгах уу?')) return;
     var { error } = await sb.from('tracking').delete().eq('code', code);
     if(error){ alert('Устгахад алдаа гарлаа.'); } else { loadList(); }
+  }
+
+  var showPasswordToggle = document.getElementById('showPasswordToggle');
+  var loginPassField = document.getElementById('loginPass');
+
+  if(showPasswordToggle && loginPassField){
+    showPasswordToggle.addEventListener('change', function(){
+      loginPassField.type = this.checked ? 'text' : 'password';
+      loginPassField.focus();
+    });
   }
 
   document.getElementById('adminSearch').addEventListener('keydown', function(event){
