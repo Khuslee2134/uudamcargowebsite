@@ -71,3 +71,77 @@
     fillRates: fillRates
   };
 })(window);
+
+/* ===== УУДАМ CARGO — Ачааны мэдээллийн сан ===== */
+
+const CARGO_STORAGE_KEY = "uudam_cargos_v1";
+
+function getCargoRecords() {
+  try {
+    const data = JSON.parse(
+      localStorage.getItem(CARGO_STORAGE_KEY) || "[]"
+    );
+
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveCargoRecords(cargos) {
+  localStorage.setItem(
+    CARGO_STORAGE_KEY,
+    JSON.stringify(cargos)
+  );
+}
+
+function normalizeCargoPhone(phone) {
+  let digits = String(phone || "").replace(/\D/g, "");
+
+  if (digits.startsWith("976") && digits.length === 11) {
+    digits = digits.slice(3);
+  }
+
+  return digits;
+}
+
+// Админ самбараас шинэ ачаа бүртгэх
+function saveCargo(cargo) {
+  const cargos = getCargoRecords();
+
+  const newCargo = {
+    id: cargo.id || (
+      Date.now().toString() +
+      Math.random().toString(36).slice(2, 7)
+    ),
+    customer_name: String(cargo.customer_name || "").trim(),
+    phone: normalizeCargoPhone(cargo.phone),
+    cargo_code: String(cargo.cargo_code || "").trim(),
+    price: Number(cargo.price) || 0,
+    arrival_date: cargo.arrival_date || "",
+    status: cargo.status || "Замд явж байна"
+  };
+
+  if (
+    !newCargo.customer_name ||
+    newCargo.phone.length !== 8 ||
+    !newCargo.cargo_code
+  ) {
+    throw new Error("Нэр, утас, ачааны кодоо шалгана уу.");
+  }
+
+  const duplicate = cargos.some(
+    item => item.cargo_code.toLowerCase() ===
+      newCargo.cargo_code.toLowerCase()
+  );
+
+  if (duplicate) {
+    throw new Error("Энэ ачааны код өмнө нь бүртгэгдсэн байна.");
+  }
+
+  cargos.push(newCargo);
+  saveCargoRecords(cargos);
+
+  return newCargo;
+}
+const CARGO_STORAGE_KEY = "uudam_cargos_v1";

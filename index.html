@@ -47,6 +47,7 @@
     <a href="about.html">Бидний тухай</a>
     <a href="calculator.html">Тооцоолуур</a>
     <a href="#contact" onclick="toggleMenu()">Холбоо барих</a>
+    <a href="#contact" onclick="toggleMenu()">Хаяг холбох</a>
   </div>
 </div>
 
@@ -68,6 +69,17 @@
       <h3 id="authPhoneTitle">Нэвтрэх</h3>
       <p class="modal-sub" id="authPhoneSubtitle">Утасны дугаар болон нууц үгээр нэвтэрнэ.</p>
       <div class="field">
+        <!-- Нэр -->
+<div class="field register-only" id="registerNameRow" hidden>
+  <label for="authName">Нэр</label>
+  <input
+    type="text"
+    id="authName"
+    autocomplete="name"
+    placeholder="Өөрийн нэрийг оруулна уу"
+    maxlength="100"
+  >
+</div>
         <label for="authPhone" id="authPhoneLabel">Утасны дугаар</label>
         <div class="phone-input-row">
           <input type="text" id="authPhone" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="99001122" maxlength="64">
@@ -75,8 +87,18 @@
       </div>
       <div class="field">
         <label for="authPassword">Нууц үг</label>
-        <input type="password" id="authPassword" autocomplete="current-password">
+        <input type="password" id="authPassword" autocomplete="current-password" placeholder="Нууц үгээ оруулна уу">
       </div>
+      <!-- Нууц үг давтах -->
+<div class="field register-only" id="confirmPasswordRow" hidden>
+  <label for="authConfirmPassword">Нууц үг давтах</label>
+  <input
+    type="password"
+    id="authConfirmPassword"
+    autocomplete="new-password"
+    placeholder="Нууц үгээ дахин оруулна уу"
+  >
+</div>
       <label class="check-row">
         <input type="checkbox" id="showCustomerPassword">
         Нууц үгийг харуулах
@@ -103,7 +125,6 @@
   <div class="hero-top">
     <div class="eyebrow">Эрээн — Дархан карго</div>
     <h1>Таны ачаа хаана байгааг мэдээрэй.</h1>
-    <p class="hero-sub">Барааны дугаараа оруулаад ирсэн эсэхийг шууд шалгаарай. Тээврийн зардлаа доод буланд байрлах тооцоолуураар урьдчилан тооцоолох боломжтой.</p>
   </div>
 
   <section class="profile-section" id="profileSection" hidden>
@@ -128,9 +149,8 @@
 
   <div class="track-box">
     <h3>Ачаа шалгах</h3>
-    <p class="hint">Барааны код эсвэл утасны дугаараа оруулна уу</p>
     <div class="track-row">
-      <input id="trackInput" type="text" placeholder="Ачааны код" aria-label="Ачааны код эсвэл утасны дугаар" autocomplete="off">
+      <input id="trackInput" type="text" placeholder="Ачааны код эсвэл утасны дугаар" aria-label="Ачааны код эсвэл утасны дугаар" autocomplete="off">
       <button type="button" onclick="checkTrack()">Шалгах</button>
     </div>
     <div id="trackResult" role="status"></div>
@@ -170,41 +190,45 @@
       <div class="info-row">
         <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
         <div>
-          <div class="t">Дархан дахь оффис (бэлэн ачаагаа авах)</div>
-          <div class="v">Дархан хот, Хонгор баг, Cargo төв, 2 давхар</div>
+          <div class="t">Хаяг</div>
+          <div class="v">Дархан хот</div>
         </div>
       </div>
       <div class="info-row">
         <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></div>
         <div>
           <div class="t">Утас</div>
-          <div class="v"><a href="tel:+97699001122">9900-1122</a></div>
+          <div class="v"><a href="tel:99001122">9900-1122</a></div>
         </div>
       </div>
       <div class="info-row">
         <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
         <div>
           <div class="t">Ажиллах цаг</div>
-          <div class="v">Даваа–Бямба, 09:00–19:00</div>
+          <div class="v">Даваа–Бямба (10:00–19:00)</div>
         </div>
       </div>
     </div>
 
-    <a class="video-card" href="https://www.facebook.com/reel/1291225029814214" target="_blank" rel="noopener noreferrer">
+     <a class="video-card" id="videoLink" href="zaavar.mp4" target="_blank" rel="noopener noreferrer">
       <div class="video-thumb">
         <div class="play-badge">
           <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
         </div>
       </div>
       <h3>Pinduoduo Хаяг холбох — зааврыг үзэх</h3>
-      <p>Facebook дээрх бичлэгээр алхам алхмаар зааврыг үзнэ үү →</p>
     </a>
   </div>
 </section>
 
-<footer>
-  <div>© 2026 Uudam Cargo</div>
-</footer>
+<div class="modal-overlay" id="videoModal" role="dialog" aria-modal="true" aria-label="Видео заавар">
+  <div class="video-modal">
+    <button class="video-modal-close" id="closeVideoBtn" type="button" onclick="closeVideo()" aria-label="Close video">✕</button>
+    <video id="instructionVideo" controls playsinline>
+      <source src="zaavar.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
 
 <!-- хөвөгч тооцоолуур -->
 <div class="calc-widget" id="calc">
@@ -242,25 +266,18 @@
 
 <script src="shared.js"></script>
 <script>
+  const CARGO_STORAGE_KEY = "uudam_cargos_v1";
   var $ = function (id) { return document.getElementById(id); };
-  var esc = Uudam.escapeHtml;
 
   // ---------- Хэрэглэгчийн нэвтрэлт, бүртгэл, профайл ----------
   // АНХААР: энэ нь зөвхөн demo. Хэрэглэгч, нууц үг энэ browser-ийн localStorage-д
   // хадгалагдаж байгаа тул жинхэнэ хамгаалалт биш (README-г үз).
   var CUSTOMER_USERS_KEY = 'uudam_customer_users_v1';
-  var CUSTOMER_SHIPMENTS_KEY = 'uudam_customer_shipments_v1';
   var CUSTOMER_SESSION_KEY = 'uudam_customer_session_v1';
   var ADMIN_SESSION_KEY = 'uudam_admin_session';
   var ADMIN_DEMO_EMAIL = 'admin@uudamcargo.mn';
   var ADMIN_DEMO_PASSWORD = 'Azraga1227';
-  var DONE_STATUSES = ['Авсан', 'Хүргэгдсэн'];
   var DEMO_USER = { phone: '99001122', password: '123456', name: 'Demo User' };
-  var DEFAULT_SHIPMENTS = [
-    { code: 'FA484654879', phone: '99000715', price: '6,000 ₮', date: '2026.10.12', status: 'Ирсэн' },
-    { code: 'AU451578669', phone: '97001234', price: '5,000 ₮', date: '2026.10.15', status: 'Авсан' },
-    { code: 'EF48996653', phone: '98001122', price: '1,000 ₮', date: '2026.10.18', status: 'Ирсэн' }
-  ];
 
   var authMode = 'login';
   var pendingRegistration = null;
@@ -279,33 +296,18 @@
     try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) { /* хадгалах боломжгүй */ }
   }
 
-  function removeKey(key) {
-    try { localStorage.removeItem(key); } catch (e) { /* алгасна */ }
+  function removeSessionKey(key) {
+    try { sessionStorage.removeItem(key); } catch (e) { /* алгасна */ }
   }
 
   function normalizePhoneInput(value) {
-    var digits = String(value || '').replace(/\D/g, '');
-    if (digits.length === 11 && digits.indexOf('976') === 0) digits = digits.slice(3); // +976 99001122
-    return digits;
+    var digits = String(value || '').replace(/[\s-]/g, '').replace(/\D/g, '');
+    return digits.indexOf('976') === 0 && digits.length > 8 ? digits.slice(3) : digits;
   }
 
-  // "+97699001122" эсвэл "99001122" -> "99001122"
-  function phoneDigits(value) {
-    return String(value || '').replace(/\D/g, '').slice(-8);
-  }
-
-  function maskPhone(value) {
-    var d = String(value || '').replace(/\D/g, '');
-    if (!d) return '—';
-    if (d.length < 6) return '***';
-    return d.slice(0, 2) + '****' + d.slice(-2);
-  }
-
-  function seedCustomerData() {
+  function seedCustomerUsers() {
     var users = readJSON(CUSTOMER_USERS_KEY, []);
     if (!Array.isArray(users) || !users.length) writeJSON(CUSTOMER_USERS_KEY, [DEMO_USER]);
-    var shipments = readJSON(CUSTOMER_SHIPMENTS_KEY, []);
-    if (!Array.isArray(shipments) || !shipments.length) writeJSON(CUSTOMER_SHIPMENTS_KEY, DEFAULT_SHIPMENTS);
   }
 
   function getUsers() {
@@ -315,13 +317,13 @@
 
   function setSession(user) {
     currentUser = { phone: user.phone, name: user.name || 'Хэрэглэгч' };
-    writeJSON(CUSTOMER_SESSION_KEY, currentUser);
+    try { sessionStorage.setItem(CUSTOMER_SESSION_KEY, JSON.stringify(currentUser)); } catch (e) { /* хадгалах боломжгүй */ }
     return currentUser;
   }
 
   function loginUser(phone, password) {
     var found = getUsers().find(function (user) {
-      return user.phone === phone && user.password === password;
+      return normalizePhoneInput(user.phone) === normalizePhoneInput(phone) && user.password === password;
     });
     return found ? setSession(found) : null;
   }
@@ -333,22 +335,41 @@
     tab.setAttribute('aria-selected', active ? 'true' : 'false');
   }
 
-  function setAuthMode(mode) {
-    authMode = mode;
-    var isLogin = mode === 'login';
-    $('authPhoneTitle').textContent = isLogin ? 'Нэвтрэх' : 'Бүртгүүлэх';
-    $('authPhoneSubtitle').textContent = isLogin
-      ? 'Утасны дугаар болон нууц үгээр нэвтэрнэ.'
-      : 'Шинээр хэрэглэгч бүртгэж, утасны дугаарт баталгаажуулах код илгээнэ.';
-    $('sendOtpBtn').textContent = isLogin ? 'Нэвтрэх' : 'Код илгээх';
-    $('authPhoneLabel').textContent = isLogin ? 'Утасны дугаар' : 'Утасны дугаар';
-    $('authPhone').placeholder = isLogin ? '' : '';
-    $('authPassword').autocomplete = isLogin ? 'current-password' : 'new-password';
-    setTab('modeLoginBtn', isLogin);
-    setTab('modeRegisterBtn', !isLogin);
-    updatePhonePrefix();
-    clearAuthErrors();
-  }
+  
+function setAuthMode(mode) {
+  authMode = mode;
+
+  var isLogin = mode === 'login';
+
+  $('authPhoneTitle').textContent = isLogin ? 'Нэвтрэх' : 'Бүртгүүлэх';
+
+  $('authPhoneSubtitle').textContent = isLogin
+    ? 'Утасны дугаар болон нууц үгээр нэвтэрнэ.'
+    : 'Мэдээллээ оруулж шинэ бүртгэл үүсгэнэ.';
+
+  $('sendOtpBtn').textContent = isLogin ? 'Нэвтрэх' : 'Бүртгүүлэх';
+
+  $('authPhoneLabel').textContent = 'Утасны дугаар';
+
+  $('authPhone').placeholder = '99001122';
+
+  $('authPassword').autocomplete = isLogin
+    ? 'current-password'
+    : 'new-password';
+
+  $('registerNameRow').hidden = isLogin;
+  $('confirmPasswordRow').hidden = isLogin;
+
+  $('authName').required = !isLogin;
+  $('authConfirmPassword').required = !isLogin;
+
+  setTab('modeLoginBtn', isLogin);
+  setTab('modeRegisterBtn', !isLogin);
+
+  clearAuthErrors();
+  updatePhonePrefix();
+}
+
 
   // Имэйл (эсвэл үсэг) бичиж эхэлбэл "+976" угтварыг нууна
   function updatePhonePrefix() {
@@ -439,7 +460,7 @@
     confirmBtn.textContent = 'Тийм';
     confirmBtn.addEventListener('click', function () {
       currentUser = null;
-      removeKey(CUSTOMER_SESSION_KEY);
+      removeSessionKey(CUSTOMER_SESSION_KEY);
       updateAuthUI(null);
       showProfile();
       closeLogoutConfirm();
@@ -572,34 +593,58 @@
   }
 
   // ---------- Профайл ----------
-  function showProfile() {
-    var section = $('profileSection');
-    if (!currentUser) {
-      section.hidden = true;
-      return;
-    }
+  
 
-    var digits = phoneDigits(currentUser.phone);
-    var all = readJSON(CUSTOMER_SHIPMENTS_KEY, []);
-    var shipments = (Array.isArray(all) ? all : []).filter(function (item) {
-      return phoneDigits(item.phone) === digits;
-    });
+function showProfile() {
+  var section = $('profileSection');
 
-    $('profilePhoneText').textContent = currentUser.phone;
-    $('profileTableBody').innerHTML = shipments.length
-      ? shipments.map(function (item) {
-          var status = item.status || 'Ирсэн';
-          var done = DONE_STATUSES.indexOf(status) !== -1 ? ' done' : '';
-          return '<tr>' +
-            '<td>' + esc(item.code) + '</td>' +
-            '<td>' + esc(item.price || '—') + '</td>' +
-            '<td>' + esc(item.date || '—') + '</td>' +
-            '<td><span class="status-pill' + done + '">' + esc(status) + '</span></td>' +
-          '</tr>';
-        }).join('')
-      : '<tr><td colspan="4" class="empty-cell">Ирсэн ачаа алга байна.</td></tr>';
-    section.hidden = false;
+  if (!currentUser) {
+    section.hidden = true;
+    return;
   }
+
+  $('profilePhoneText').textContent = currentUser.phone;
+
+  var tbody = $('profileTableBody');
+  tbody.replaceChildren();
+
+  var userPhone = normalizePhoneInput(currentUser.phone);
+
+  var myRecords = readCargoRecords().filter(function (record) {
+    return normalizePhoneInput(record.phone) === userPhone;
+  });
+
+  if (myRecords.length === 0) {
+    var row = document.createElement('tr');
+    var cell = document.createElement('td');
+
+    cell.colSpan = 4;
+    cell.className = 'empty-cell';
+    cell.textContent = 'Танд бүртгэлтэй ачаа алга байна.';
+
+    row.appendChild(cell);
+    tbody.appendChild(row);
+  } else {
+    myRecords.forEach(function (record) {
+      var row = document.createElement('tr');
+
+      [
+        record.code,
+        record.price + ' ₮',
+        record.date,
+        record.status
+      ].forEach(function (value) {
+        var cell = document.createElement('td');
+        cell.textContent = value || '—';
+        row.appendChild(cell);
+      });
+
+      tbody.appendChild(row);
+    });
+  }
+
+  section.hidden = false;
+}
 
   // ---------- Хаяг хуулах ----------
   function copyAddr() {
@@ -633,98 +678,58 @@
   }
 
   // ---------- Ачаа шалгах ----------
-  function setTrackMessage(kind, text) {
-    var el = $('trackResult');
-    el.className = 'show' + (kind ? ' ' + kind : '');
-    el.textContent = text;
+  
+
+function checkTrack() {
+  var query = $('trackInput').value.trim();
+  var normalizedQuery = normalizePhoneInput(query);
+
+  if (!query) {
+    setTrackMessage('notfound', 'Ачааны код эсвэл утасны дугаараа оруулна уу.');
+    return;
   }
 
-  function setTrackHtml(kind, html) {
-    var el = $('trackResult');
-    el.className = 'show' + (kind ? ' ' + kind : '');
-    el.innerHTML = html;
+  var records = readCargoRecords();
+
+  var matches = records.filter(function (record) {
+    var codeMatches =
+      String(record.code || '').toLowerCase() === query.toLowerCase();
+
+    var phoneMatches =
+      normalizedQuery.length === 8 &&
+      normalizePhoneInput(record.phone) === normalizedQuery;
+
+    return codeMatches || phoneMatches;
+  });
+
+  if (!matches.length) {
+    setTrackMessage('notfound', 'Ачаа олдсонгүй.');
+    return;
   }
 
-  function renderTrackRecord(record, showPhone) {
-    var item = record || {};
-    var status = item.status || 'Эрээнээс ачигдсан';
-    var doneClass = (status === 'Хүргэгдсэн' || status === 'Хэрэглэгчид очсон') ? ' done' : '';
-    var phoneText = item.phone ? esc(maskPhone(item.phone)) : '—';
+  var message = matches.map(function (record) {
+    return 'Нэр: ' + record.fname +
+      '\nБарааны код: ' + record.code +
+      '\nҮнэ: ' + record.price + ' ₮' +
+      '\nОгноо: ' + record.date +
+      '\nТөлөв: ' + record.status;
+  }).join('\n\n────────────\n\n');
 
-    var body = [
-      '<div class="track-record">',
-      '<div class="track-record-head">',
-      '<strong>' + esc(item.code || '—') + '</strong>',
-      '<span class="status-pill' + doneClass + '">' + esc(status) + '</span>',
-      '</div>',
-      '<div class="track-item-meta"><span>Огноо:</span> ' + esc(item.date || '—') + '</div>',
-      '<div class="track-item-meta"><span>Үнэ:</span> ' + esc(item.price || '—') + '</div>'
-    ];
+  setTrackMessage('found', message);
+}
 
-    if (showPhone) {
-      body.push('<div class="track-item-meta"><span>Утас:</span> ' + phoneText + '</div>');
-    }
+function readCargoRecords() {
+  try {
+    var records = JSON.parse(
+      localStorage.getItem('uudam_cargos_v1') || '[]'
+    );
 
-    body.push('</div>');
-    return body.join('');
+    return Array.isArray(records) ? records : [];
+  } catch (error) {
+    return [];
   }
+}
 
-  function checkTrack() {
-    var rawVal = $('trackInput').value.trim();
-    if (!rawVal) { setTrackMessage('notfound', 'Код оруулна уу.'); return; }
-
-    try {
-      var records = readJSON(CUSTOMER_SHIPMENTS_KEY, []);
-      var normalized = String(rawVal || '');
-      var digitsOnly = normalized.replace(/\D/g, '');
-      var maybePhone = digitsOnly.length >= 8 && !/[A-Za-z]/.test(normalized);
-
-      if (!maybePhone) {
-        var codeMatch = Array.isArray(records) ? records.find(function (item) {
-          return String(item.code || '').toUpperCase() === normalized.toUpperCase();
-        }) : null;
-
-        if (codeMatch) {
-          setTrackHtml('found', renderTrackRecord(codeMatch, false));
-          return;
-        }
-
-        setTrackMessage('notfound', '✕ ' + normalized + ' — таны ачаа Эрээнд хүргэгдээгүй байна.');
-        return;
-      }
-
-      var targetPhoneDigits = normalizePhoneInput(normalized);
-      var phoneMatches = Array.isArray(records) ? records.filter(function (item) {
-        return phoneDigits(String(item.phone || '')) === targetPhoneDigits;
-      }) : [];
-
-      phoneMatches.sort(function (a, b) {
-        var aTime = new Date(a.date || 0).getTime();
-        var bTime = new Date(b.date || 0).getTime();
-        return bTime - aTime;
-      });
-
-      phoneMatches = phoneMatches.slice(0, 50);
-
-      if (!phoneMatches.length) {
-        setTrackMessage('notfound', '✕ ' + normalized + ' — таны ачаа Эрээнд хүргэгдээгүй байна.');
-        return;
-      }
-
-      var phoneDisplay = maskPhone(targetPhoneDigits);
-      var summary = '<div class="track-summary">' +
-        '<div>Нийт ' + phoneMatches.length + ' ачаа олдлоо</div>' +
-        '<div class="track-phone">Утас: ' + esc(phoneDisplay) + '</div>' +
-        '</div>';
-      var listHtml = phoneMatches.map(function (record) {
-        return renderTrackRecord(record, false);
-      }).join('');
-
-      setTrackHtml('found', summary + listHtml);
-    } catch (e) {
-      setTrackMessage('notfound', 'Шалгах үед алдаа гарлаа...');
-    }
-  }
 
   // ---------- Тооцоолуур ----------
   function toggleCalc() {
@@ -757,15 +762,23 @@
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAuthModal(); });
 
   (function init() {
-    seedCustomerData();
-    removeKey('uudam_pending_register'); // хуучин хувилбарын үлдэгдэл (нууц үг агуулдаг байсан)
-    var saved = readJSON(CUSTOMER_SESSION_KEY, null);
+    seedCustomerUsers();
+    var saved = null;
+    try { saved = JSON.parse(sessionStorage.getItem(CUSTOMER_SESSION_KEY) || 'null'); } catch (e) { saved = null; }
     if (saved && saved.phone) {
       currentUser = saved;
       updateAuthUI(saved);
       showProfile();
     }
-  })();
+  });
+  function closeVideo() {
+    var video = $('instructionVideo');
+    video.pause();
+    video.currentTime = 0;
+    $('videoModal').classList.remove('open');
+    $('videoLink').focus();
+  };
+
 </script>
 
 </body>
