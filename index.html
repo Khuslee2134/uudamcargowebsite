@@ -9,22 +9,24 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="page-home">
 
 <header>
-  <div class="brand">
+  <a class="brand" href="index.html">
     <div class="logo-word">УУДАМ <span>CARGO</span></div>
-  </div>
-  <nav>
+  </a>
+  <nav aria-label="Үндсэн цэс">
+    <a href="index.html" class="active" aria-current="page">Нүүр</a>
+    <a href="about.html">Бидний тухай</a>
     <a href="calculator.html">Тооцоолуур</a>
   </nav>
   <div class="header-actions">
-    <button  class="hdr-cta" onclick="document.getElementById('contact').scrollIntoView()">Хаяг холбох</button>
-    <button class="auth-btn" id="authBtn" onclick="onAuthBtnClick()">
+    <a class="hdr-cta" href="#contact">Хаяг холбох</a>
+    <button class="auth-btn" id="authBtn" type="button" onclick="onAuthBtnClick()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
       <span id="authBtnLabel">Нэвтрэх</span>
     </button>
-    <button class="menu-btn" onclick="toggleMenu()" aria-label="Цэс">
+    <button class="menu-btn" type="button" onclick="toggleMenu()" aria-label="Цэс">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
         <line x1="3" y1="6" x2="21" y2="6"></line>
         <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -37,64 +39,67 @@
 <div class="side-drawer" id="sideDrawer">
   <div class="drawer-overlay" onclick="toggleMenu()"></div>
   <div class="drawer-panel">
-    <button class="drawer-close" onclick="toggleMenu()" aria-label="Хаах">
+    <button class="drawer-close" type="button" onclick="toggleMenu()" aria-label="Хаах">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
         <line x1="4" y1="4" x2="20" y2="20"></line>
         <line x1="20" y1="4" x2="4" y2="20"></line>
       </svg>
     </button>
+    <a href="#track" class="active" onclick="toggleMenu()">Нүүр</a>
     <a href="about.html">Бидний тухай</a>
     <a href="calculator.html">Тооцоолуур</a>
     <a href="#contact" onclick="toggleMenu()">Холбоо барих</a>
   </div>
 </div>
 
-<div class="modal-overlay" id="authModal">
+<div class="modal-overlay" id="authModal" role="dialog" aria-modal="true" aria-label="Нэвтрэх, бүртгүүлэх">
   <div class="modal-box">
-    <button class="modal-close" onclick="closeAuthModal()" aria-label="Хаах">
+    <button class="modal-close" type="button" onclick="closeAuthModal()" aria-label="Хаах">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
         <line x1="4" y1="4" x2="20" y2="20"></line>
         <line x1="20" y1="4" x2="4" y2="20"></line>
       </svg>
     </button>
 
-    <div id="authModeSwitch" style="display:flex; gap:8px; margin-bottom:18px; background:var(--bg2); border:1px solid var(--line); border-radius:10px; padding:4px;">
-      <button type="button" id="modeLoginBtn" class="auth-mode-btn active" style="flex:1; border:none; background:var(--amber); color:#fff; border-radius:8px; padding:10px 12px; font-weight:600; cursor:pointer;">Нэвтрэх</button>
-      <button type="button" id="modeRegisterBtn" class="auth-mode-btn" style="flex:1; border:none; background:transparent; color:var(--text); border-radius:8px; padding:10px 12px; font-weight:600; cursor:pointer;">Бүртгүүлэх</button>
+    <div class="auth-tabs" role="tablist">
+      <button type="button" class="auth-tab active" id="modeLoginBtn" role="tab" aria-selected="true">Нэвтрэх</button>
+      <button type="button" class="auth-tab" id="modeRegisterBtn" role="tab" aria-selected="false">Бүртгүүлэх</button>
     </div>
 
     <div id="authStepPhone">
       <h3 id="authPhoneTitle">Нэвтрэх</h3>
       <p class="modal-sub" id="authPhoneSubtitle">Утасны дугаар болон нууц үгээр нэвтэрнэ.</p>
       <div class="field">
-        <label>Утасны дугаар</label>
+        <label for="authPhone">Утасны дугаар</label>
         <div class="phone-input-row">
-          <span class="phone-prefix">+976</span>
           <input type="tel" id="authPhone" inputmode="numeric" placeholder="99001122" maxlength="8">
         </div>
       </div>
-      <div class="field" id="authPasswordField" style="margin-top:12px;">
-        <label>Нууц үг</label>
-        <input type="password" id="authPassword">
+      <div class="field">
+        <label for="authPassword">Нууц үг</label>
+        <input type="password" id="authPassword" autocomplete="current-password">
       </div>
-      <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--muted); margin:10px 0 14px; cursor:pointer;">
-        <input type="checkbox" id="showCustomerPassword" style="accent-color:var(--amber); width:15px; height:15px;">
-        Нууц үгийг харуулах
-      </label>
-      <button class="save-btn" id="sendOtpBtn" onclick="submitAuthForm()" style="width:100%;">Нэвтрэх</button>
-      <p class="auth-error" id="authPhoneError"></p>
+      <div class="auth-meta-row" id="authMetaRow">
+        <label class="check-row" id="showCustomerPasswordWrap">
+          <input type="checkbox" id="showCustomerPassword">
+          Нууц үг харах
+        </label>
+        <a href="#" class="forgot-password-link" id="forgotPasswordLink">Нууц үгээ мартчихсан уу?</a>
+      </div>
+      <button class="save-btn btn-block" id="sendOtpBtn" type="button" onclick="submitAuthForm()">Нэвтрэх</button>
+      <p class="auth-error" id="authPhoneError" role="alert"></p>
     </div>
 
-    <div id="authStepCode" style="display:none;">
+    <div id="authStepCode" hidden>
       <h3>Баталгаажуулах код</h3>
       <p class="modal-sub" id="authCodeSentTo"></p>
       <div class="field">
-        <label>6 оронтой код</label>
-        <input type="text" id="authCode" inputmode="numeric" maxlength="6" placeholder="123456">
+        <label for="authCode">6 оронтой код</label>
+        <input type="text" id="authCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="123456">
       </div>
-      <button class="save-btn" id="verifyOtpBtn" onclick="verifyOtp()" style="width:100%;">Баталгаажуулах</button>
-      <button class="cancel-btn" onclick="backToPhoneStep()" style="width:100%; margin-top:8px;">Буцах</button>
-      <p class="auth-error" id="authCodeError"></p>
+      <button class="save-btn btn-block" id="verifyOtpBtn" type="button" onclick="verifyOtp()">Баталгаажуулах</button>
+      <button class="cancel-btn btn-block" type="button" onclick="backToPhoneStep()" style="margin-top:8px;">Буцах</button>
+      <p class="auth-error" id="authCodeError" role="alert"></p>
     </div>
   </div>
 </div>
@@ -106,39 +111,34 @@
     <p class="hero-sub">Барааны дугаараа оруулаад ирсэн эсэхийг шууд шалгаарай. Тээврийн зардлаа доод буланд байрлах тооцоолуураар урьдчилан тооцоолох боломжтой.</p>
   </div>
 
-  <section id="profileSection" style="display:none; width:100%; max-width:820px; margin:0 auto; padding:0 0 30px;">
-  <div class="panel" style="padding:22px;">
-    <div style="display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:18px;">
-      <div>
-        <div class="eyebrow">Профайл</div>
-        <h2 style="margin:0;">Таны ачаанууд</h2>
+  <section class="profile-section" id="profileSection" hidden>
+    <div class="panel">
+      <div class="profile-head">
+        <div>
+          <div class="eyebrow">Профайл</div>
+          <h2>Таны ачаанууд</h2>
+        </div>
+        <div class="profile-phone">Хэрэглэгч: <strong id="profilePhoneText">—</strong></div>
       </div>
-      <div style="color:var(--muted); font-size:14px;">Хэрэглэгч: <strong id="profilePhoneText">—</strong></div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr><th>Код</th><th>Үнэ</th><th>Огноо</th><th>Төлөв</th></tr>
+          </thead>
+          <tbody id="profileTableBody"></tbody>
+        </table>
+      </div>
     </div>
-    <div class="table-wrap" style="overflow-x:auto;">
-      <table style="width:100%; border-collapse:collapse; min-width:560px;">
-        <thead>
-          <tr>
-            <th style="text-align:left; padding:10px 12px; border-bottom:1px solid var(--line);">Код</th>
-            <th style="text-align:left; padding:10px 12px; border-bottom:1px solid var(--line);">Үнэ</th>
-            <th style="text-align:left; padding:10px 12px; border-bottom:1px solid var(--line);">Огноо</th>
-            <th style="text-align:left; padding:10px 12px; border-bottom:1px solid var(--line);">Төлөв</th>
-          </tr>
-        </thead>
-        <tbody id="profileTableBody"></tbody>
-      </table>
-    </div>
-  </div>
-</section>
+  </section>
 
   <div class="track-box">
     <h3>Ачаа шалгах</h3>
     <p class="hint">Барааны код эсвэл утасны дугаараа оруулна уу</p>
     <div class="track-row">
-      <input id="trackInput" type="text" placeholder="Aчааны код">
-      <button onclick="checkTrack()">Шалгах</button>
+      <input id="trackInput" type="text" placeholder="Ачааны код эсвэл утасны дугаар" aria-label="Ачааны код эсвэл утасны дугаар" autocomplete="off">
+      <button type="button" onclick="checkTrack()">Шалгах</button>
     </div>
-    <div id="trackResult"></div>
+    <div id="trackResult" role="status"></div>
   </div>
 </section>
 
@@ -167,7 +167,7 @@
   <div class="addr-box">
     <div class="addr-label">Эрээн агуулахын хаяг — хуулж авах</div>
     <div class="addr-text" id="warehouseAddr">乌有卡 17747905992 内蒙古自治区锡林郭勒盟二连浩特市 利众物流园 诺敏货运部 Uudam cargo /Таны нэр, утасны дугаар/</div>
-    <button class="copy-btn" onclick="copyAddr()" id="copyBtn">Хуулах</button>
+    <button class="copy-btn" id="copyBtn" type="button" onclick="copyAddr()">Хуулах</button>
   </div>
 
   <div class="contact-grid">
@@ -211,16 +211,16 @@
   <div>© 2026 Uudam Cargo</div>
 </footer>
 
-<!-- floating calculator widget -->
+<!-- хөвөгч тооцоолуур -->
 <div class="calc-widget" id="calc">
   <div class="calc-panel" id="calcPanel">
     <h4>Тээврийн зардал тооцоолуур</h4>
     <div class="calc-field">
-      <label>Жин (кг)</label>
-      <input type="number" id="calcWeight" placeholder="жишээ: 5" min="0">
+      <label for="calcWeight">Жин (кг)</label>
+      <input type="number" id="calcWeight" inputmode="decimal" placeholder="жишээ: 5" min="0">
     </div>
     <div class="calc-field">
-      <label>Хэмжээ Урт×Өргөн×Өндөр (см)</label>
+      <label for="calcDims">Хэмжээ Урт×Өргөн×Өндөр (см)</label>
       <input type="text" id="calcDims" placeholder="жишээ: 40x30x25">
     </div>
     <div class="calc-result" id="calcResult">
@@ -228,7 +228,7 @@
       <div class="big" id="calcTotal">0 ₮</div>
     </div>
   </div>
-  <button class="calc-fab" id="calcFab" onclick="toggleCalc()" aria-label="Тооцоолуур нээх">
+  <button class="calc-fab" id="calcFab" type="button" onclick="toggleCalc()" aria-label="Тооцоолуур нээх" aria-expanded="false">
     <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <rect x="4" y="2" width="16" height="20" rx="2"></rect>
       <line x1="8" y1="6" x2="16" y2="6"></line>
@@ -246,181 +246,187 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="shared.js"></script>
 <script>
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = Uudam.escapeHtml;
+
   var SUPABASE_URL = "https://ipnfmpcdajuwuiggfqsp.supabase.co";
   var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlwbmZtcGNkYWp1d3VpZ2dmcXNwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3MjYzMDAsImV4cCI6MjEwNjMwMjMwMH0.jGx9XPs9Bux31IhTAtuEVI43NPALrt0-iTtZ-kLwnvA";
   var sb = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
-  // Demo fallback data — used only if Supabase isn't reachable
-  var sample = {
-    "NC10234": {price:"25,000₮", date:"2026.09.22", status:"Эрээнээс ачигдсан"},
-    "NC10877": {price:"41,500₮", date:"2026.09.24", status:"Дарханд буусан"}
-  };
-
-  function toggleMenu(){
-    document.getElementById('sideDrawer').classList.toggle('open');
-  }
-
-  // ---- Хэрэглэгчийн нэвтрэлт, бүртгэл, профайл ----
-  var pendingPhone = null;
-  var pendingRegisterPassword = null;
-  var pendingCode = null;
-  var currentUser = null;
+  // ---------- Хэрэглэгчийн нэвтрэлт, бүртгэл, профайл ----------
+  // АНХААР: энэ нь зөвхөн demo. Хэрэглэгч, нууц үг энэ browser-ийн localStorage-д
+  // хадгалагдаж байгаа тул жинхэнэ хамгаалалт биш (README-г үз).
   var CUSTOMER_USERS_KEY = 'uudam_customer_users_v1';
   var CUSTOMER_SHIPMENTS_KEY = 'uudam_customer_shipments_v1';
   var CUSTOMER_SESSION_KEY = 'uudam_customer_session_v1';
+  var DONE_STATUSES = ['Авсан', 'Хүргэгдсэн'];
+  var DEMO_USER = { phone: '+97699001122', password: '123456', name: 'Demo User' };
+  var DEFAULT_SHIPMENTS = [
+    { code: 'FA484654879', phone: '99000715', price: '6,000 ₮', date: '2026.10.12', status: 'Ирсэн' },
+    { code: 'AU451578669', phone: '97001234', price: '5,000 ₮', date: '2026.10.15', status: 'Авсан' },
+    { code: 'EF48996653', phone: '98001122', price: '1,000 ₮', date: '2026.10.18', status: 'Ирсэн' }
+  ];
 
-  function normalizePhoneInput(value){
+  var authMode = 'login';
+  var pendingRegistration = null;
+  var currentUser = null;
+
+  function readJSON(key, fallback) {
+    try {
+      var value = JSON.parse(localStorage.getItem(key));
+      return value == null ? fallback : value;
+    } catch (e) {
+      return fallback;
+    }
+  }
+
+  function writeJSON(key, value) {
+    try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) { /* хадгалах боломжгүй */ }
+  }
+
+  function removeKey(key) {
+    try { localStorage.removeItem(key); } catch (e) { /* алгасна */ }
+  }
+
+  function normalizePhoneInput(value) {
     return String(value || '').replace(/\D/g, '').slice(0, 8);
   }
 
-  function phoneWithPrefix(value){
-    var digits = normalizePhoneInput(value);
-    return '+976' + digits;
+  // "+97699001122" эсвэл "99001122" -> "99001122"
+  function phoneDigits(value) {
+    return String(value || '').replace(/\D/g, '').slice(-8);
   }
 
-  function seedCustomerData(){
-    var users = JSON.parse(localStorage.getItem(CUSTOMER_USERS_KEY) || 'null');
-    if(!users || !Array.isArray(users) || !users.length){
-      var demoUser = { phone: '+97699001122', password: '123456', name: 'Demo User' };
-      localStorage.setItem(CUSTOMER_USERS_KEY, JSON.stringify([demoUser]));
-    }
+  function maskPhone(value) {
+    var d = String(value || '').replace(/\D/g, '');
+    if (!d) return '—';
+    if (d.length < 6) return '***';
+    return d.slice(0, 2) + '****' + d.slice(-2);
+  }
 
-    var shipments = JSON.parse(localStorage.getItem(CUSTOMER_SHIPMENTS_KEY) || 'null');
-    var defaultShipments = [
-      { code: 'FA484654879', phone: '99000715', price: '6,000 ₮', date: '2026.10.12', status: 'Ирсэн' },
-      { code: 'AU451578669', phone: '97001234', price: '5,000 ₮', date: '2026.10.15', status: 'Авсан' },
-      { code: 'EF48996653', phone: '98001122', price: '1,000 ₮', date: '2026.10.18', status: 'Ирсэн' }
-    ];
+  function seedCustomerData() {
+    var users = readJSON(CUSTOMER_USERS_KEY, []);
+    if (!Array.isArray(users) || !users.length) writeJSON(CUSTOMER_USERS_KEY, [DEMO_USER]);
+    var shipments = readJSON(CUSTOMER_SHIPMENTS_KEY, []);
+    if (!Array.isArray(shipments) || !shipments.length) writeJSON(CUSTOMER_SHIPMENTS_KEY, DEFAULT_SHIPMENTS);
+  }
 
-    if(!shipments || !Array.isArray(shipments) || !shipments.length){
-      shipments = defaultShipments;
-      localStorage.setItem(CUSTOMER_SHIPMENTS_KEY, JSON.stringify(shipments));
-      return;
-    }
+  function getUsers() {
+    var users = readJSON(CUSTOMER_USERS_KEY, []);
+    return Array.isArray(users) ? users : [];
+  }
 
-    var normalized = shipments.map(function(item){
-      var normalizedItem = Object.assign({}, item);
-      if(!normalizedItem.price){
-        normalizedItem.price = defaultShipments.find(function(defaultEntry){ return defaultEntry.code === normalizedItem.code; })?.price || '—';
-      }
-      return normalizedItem;
+  function setSession(user) {
+    currentUser = { phone: user.phone, name: user.name || 'Хэрэглэгч' };
+    writeJSON(CUSTOMER_SESSION_KEY, currentUser);
+    return currentUser;
+  }
+
+  function loginUser(phone, password) {
+    var found = getUsers().find(function (user) {
+      return user.phone === phone && user.password === password;
     });
-
-    if(JSON.stringify(normalized) !== JSON.stringify(shipments)){
-      localStorage.setItem(CUSTOMER_SHIPMENTS_KEY, JSON.stringify(normalized));
-    }
+    return found ? setSession(found) : null;
   }
 
-  function setAuthMode(mode){
-    var isLogin = mode === 'login';
+  // ---------- Нэвтрэх цонх ----------
+  function setTab(id, active) {
+    var tab = $(id);
+    tab.classList.toggle('active', active);
+    tab.setAttribute('aria-selected', active ? 'true' : 'false');
+  }
+
+  function setAuthMode(mode) {
     authMode = mode;
-
-    var title = document.getElementById('authPhoneTitle');
-    var subtitle = document.getElementById('authPhoneSubtitle');
-    var sendBtn = document.getElementById('sendOtpBtn');
-    var passwordField = document.getElementById('authPasswordField');
-    var loginBtn = document.getElementById('modeLoginBtn');
-    var registerBtn = document.getElementById('modeRegisterBtn');
-
-    title.textContent = isLogin ? 'Нэвтрэх' : 'Бүртгүүлэх';
-    subtitle.textContent = isLogin ? 'Утасны дугаар болон нууц үгээр нэвтэрнэ.' : 'Шинээр хэрэглэгч бүртгэж, утасны дугаарт баталгаажуулах код илгээнэ.';
-    sendBtn.textContent = isLogin ? 'Нэвтрэх' : 'Код илгээх';
-    passwordField.style.display = 'block';
-    loginBtn.style.background = isLogin ? 'var(--amber)' : 'transparent';
-    loginBtn.style.color = isLogin ? '#fff' : 'var(--text)';
-    registerBtn.style.background = isLogin ? 'transparent' : 'var(--amber)';
-    registerBtn.style.color = isLogin ? 'var(--text)' : '#fff';
+    var isLogin = mode === 'login';
+    $('authPhoneTitle').textContent = isLogin ? 'Нэвтрэх' : 'Бүртгүүлэх';
+    $('authPhoneSubtitle').textContent = isLogin
+      ? 'Утасны дугаар болон нууц үгээр нэвтэрнэ.'
+      : 'Шинээр хэрэглэгч бүртгэж, утасны дугаарт баталгаажуулах код илгээнэ.';
+    $('sendOtpBtn').textContent = isLogin ? 'Нэвтрэх' : 'Код илгээх';
+    $('authPassword').autocomplete = isLogin ? 'current-password' : 'new-password';
+    $('authMetaRow').style.display = 'flex';
+    $('showCustomerPasswordWrap').style.display = 'flex';
+    $('forgotPasswordLink').style.display = isLogin ? 'inline' : 'none';
+    setTab('modeLoginBtn', isLogin);
+    setTab('modeRegisterBtn', !isLogin);
     clearAuthErrors();
   }
 
-  function clearAuthErrors(){
-    document.getElementById('authPhoneError').textContent = '';
-    document.getElementById('authPhoneError').classList.remove('show');
-    document.getElementById('authCodeError').textContent = '';
-    document.getElementById('authCodeError').classList.remove('show');
+  function showAuthError(id, message) {
+    var el = $(id);
+    el.textContent = message;
+    el.classList.add('show');
   }
 
-  function openAuthModal(){
-    document.getElementById('authModal').classList.add('open');
-    document.getElementById('authStepPhone').style.display = 'block';
-    document.getElementById('authStepCode').style.display = 'none';
+  function clearAuthErrors() {
+    ['authPhoneError', 'authCodeError'].forEach(function (id) {
+      var el = $(id);
+      el.textContent = '';
+      el.classList.remove('show');
+    });
+  }
+
+  function showAuthStep(step) {
+    $('authStepPhone').hidden = step !== 'phone';
+    $('authStepCode').hidden = step !== 'code';
+  }
+
+  function openAuthModal() {
+    $('authModal').classList.add('open');
+    showAuthStep('phone');
     setAuthMode('login');
+    $('authPhone').focus();
+  }
+
+  function closeAuthModal() {
+    $('authModal').classList.remove('open');
+    pendingRegistration = null;
+    $('authPassword').value = '';
+    $('authCode').value = '';
+  }
+
+  function backToPhoneStep() {
+    pendingRegistration = null;
+    showAuthStep('phone');
     clearAuthErrors();
   }
 
-  function closeAuthModal(){
-    document.getElementById('authModal').classList.remove('open');
-  }
-
-  function backToPhoneStep(){
-    document.getElementById('authStepPhone').style.display = 'block';
-    document.getElementById('authStepCode').style.display = 'none';
-    clearAuthErrors();
-  }
-
-  function onAuthBtnClick(){
-    if(currentUser){
-      if(confirm('Гарах уу?')){
+  function onAuthBtnClick() {
+    if (currentUser) {
+      if (confirm('Гарах уу?')) {
         currentUser = null;
-        localStorage.removeItem(CUSTOMER_SESSION_KEY);
+        removeKey(CUSTOMER_SESSION_KEY);
         updateAuthUI(null);
-        hideProfile();
+        showProfile();
       }
       return;
     }
     openAuthModal();
   }
 
-  function fullPhone(){
-    var digits = normalizePhoneInput(document.getElementById('authPhone').value);
-    return '+976' + digits;
-  }
+  function submitAuthForm() {
+    var digits = normalizePhoneInput($('authPhone').value);
+    var password = $('authPassword').value.trim();
+    clearAuthErrors();
 
-  function getUsers(){
-    seedCustomerData();
-    return JSON.parse(localStorage.getItem(CUSTOMER_USERS_KEY) || '[]');
-  }
-
-  function saveUsers(users){
-    localStorage.setItem(CUSTOMER_USERS_KEY, JSON.stringify(users));
-  }
-
-  function loginUser(phone, password){
-    var users = getUsers();
-    var found = users.find(function(user){ return user.phone === phone && user.password === password; });
-    if(!found){ return null; }
-    currentUser = { phone: found.phone, name: found.name || 'Хэрэглэгч' };
-    localStorage.setItem(CUSTOMER_SESSION_KEY, JSON.stringify(currentUser));
-    return currentUser;
-  }
-
-  function submitAuthForm(){
-    var digits = normalizePhoneInput(document.getElementById('authPhone').value);
-    var password = document.getElementById('authPassword').value.trim();
-    var errEl = document.getElementById('authPhoneError');
-    errEl.classList.remove('show');
-
-    if(digits.length !== 8){
-      errEl.textContent = '8 оронтой утасны дугаараа зөв оруулна уу.';
-      errEl.classList.add('show');
+    if (digits.length !== 8) {
+      showAuthError('authPhoneError', '8 оронтой утасны дугаараа зөв оруулна уу.');
+      return;
+    }
+    if (password.length < 6) {
+      showAuthError('authPhoneError', 'Нууц үг хамгийн багадаа 6 тэмдэгт байна.');
       return;
     }
 
-    if(!password || password.length < 6){
-      errEl.textContent = 'Нууц үг хамгийн багадаа 6 тэмдэгт байна.';
-      errEl.classList.add('show');
-      return;
-    }
+    var phone = '+976' + digits;
 
-    var phone = phoneWithPrefix(digits);
-    var mode = authMode || 'login';
-
-    if(mode === 'login'){
+    if (authMode === 'login') {
       var user = loginUser(phone, password);
-      if(!user){
-        errEl.textContent = 'Утас эсвэл нууц үг буруу байна.';
-        errEl.classList.add('show');
+      if (!user) {
+        showAuthError('authPhoneError', 'Утас эсвэл нууц үг буруу байна.');
         return;
       }
       updateAuthUI(user);
@@ -429,245 +435,203 @@
       return;
     }
 
-    pendingPhone = phone;
-    pendingRegisterPassword = password;
-    pendingCode = String(Math.floor(100000 + Math.random() * 900000));
-    localStorage.setItem('uudam_pending_register', JSON.stringify({ phone: phone, password: password, code: pendingCode }));
-    document.getElementById('authCodeSentTo').textContent = phone + ' дугаарт баталгаажуулах код илгээгдлээ: ' + pendingCode + ' (demo)';
-    document.getElementById('authStepPhone').style.display = 'none';
-    document.getElementById('authStepCode').style.display = 'block';
-    document.getElementById('authCode').value = '';
-  }
-
-  function verifyOtp(){
-    var code = document.getElementById('authCode').value.trim();
-    var errEl = document.getElementById('authCodeError');
-    errEl.classList.remove('show');
-
-    if(code.length !== 6){
-      errEl.textContent = '6 оронтой кодыг оруулна уу.';
-      errEl.classList.add('show');
+    // Бүртгүүлэх: өөр хүний дугаар дээр нууц үггүйгээр нэвтэрч болохгүй
+    if (getUsers().some(function (u) { return u.phone === phone; })) {
+      showAuthError('authPhoneError', 'Энэ дугаар бүртгэлтэй байна. "Нэвтрэх" хэсгээр орно уу.');
       return;
     }
 
-    var stored = JSON.parse(localStorage.getItem('uudam_pending_register') || 'null');
-    if(!stored || String(stored.code) !== String(code)){
-      errEl.textContent = 'Код буруу байна. Дахин оролдоно уу.';
-      errEl.classList.add('show');
+    pendingRegistration = {
+      phone: phone,
+      password: password,
+      code: String(Math.floor(100000 + Math.random() * 900000))
+    };
+    $('authCodeSentTo').textContent = phone + ' дугаарт баталгаажуулах код илгээгдлээ: ' + pendingRegistration.code + ' (demo)';
+    $('authCode').value = '';
+    showAuthStep('code');
+    $('authCode').focus();
+  }
+
+  function verifyOtp() {
+    var code = $('authCode').value.trim();
+    clearAuthErrors();
+
+    if (code.length !== 6) {
+      showAuthError('authCodeError', '6 оронтой кодыг оруулна уу.');
+      return;
+    }
+    if (!pendingRegistration || pendingRegistration.code !== code) {
+      showAuthError('authCodeError', 'Код буруу байна. Дахин оролдоно уу.');
       return;
     }
 
     var users = getUsers();
-    var exists = users.some(function(user){ return user.phone === stored.phone; });
-    if(!exists){
-      users.push({ phone: stored.phone, password: stored.password, name: 'Хэрэглэгч' });
-      saveUsers(users);
-    }
+    users.push({ phone: pendingRegistration.phone, password: pendingRegistration.password, name: 'Хэрэглэгч' });
+    writeJSON(CUSTOMER_USERS_KEY, users);
 
-    currentUser = { phone: stored.phone, name: 'Хэрэглэгч' };
-    localStorage.setItem(CUSTOMER_SESSION_KEY, JSON.stringify(currentUser));
-    localStorage.removeItem('uudam_pending_register');
-    updateAuthUI(currentUser);
+    var user = setSession({ phone: pendingRegistration.phone });
+    updateAuthUI(user);
     closeAuthModal();
     showProfile();
   }
 
-  function updateAuthUI(user){
-    currentUser = user || currentUser;
-    var btn = document.getElementById('authBtn');
-    var label = document.getElementById('authBtnLabel');
-    if(currentUser){
+  function updateAuthUI(user) {
+    var btn = $('authBtn');
+    var label = $('authBtnLabel');
+    if (user) {
       btn.classList.add('logged-in');
-      label.textContent = currentUser.phone ? currentUser.phone.replace('+976', '') : 'Нэвтэрсэн';
+      label.textContent = user.phone ? user.phone.replace('+976', '') : 'Нэвтэрсэн';
     } else {
       btn.classList.remove('logged-in');
       label.textContent = 'Нэвтрэх';
     }
   }
 
-  function getCustomerShipments(phone){
-    seedCustomerData();
-    var shipments = JSON.parse(localStorage.getItem(CUSTOMER_SHIPMENTS_KEY) || '[]');
-    return shipments.filter(function(item){ return item.phone === phone; });
-  }
-
-  function showProfile(){
-    if(!currentUser){
-      document.getElementById('profileSection').style.display = 'none';
+  // ---------- Профайл ----------
+  function showProfile() {
+    var section = $('profileSection');
+    if (!currentUser) {
+      section.hidden = true;
       return;
     }
 
-    var phone = currentUser.phone;
-    var shipments = getCustomerShipments(phone);
-    var profileTable = document.getElementById('profileTableBody');
-    var phoneText = document.getElementById('profilePhoneText');
-    phoneText.textContent = phone;
-    profileTable.innerHTML = '';
+    var digits = phoneDigits(currentUser.phone);
+    var all = readJSON(CUSTOMER_SHIPMENTS_KEY, []);
+    var shipments = (Array.isArray(all) ? all : []).filter(function (item) {
+      return phoneDigits(item.phone) === digits;
+    });
 
-    if(!shipments.length){
-      profileTable.innerHTML = '<tr><td colspan="4" style="padding:16px; color:var(--muted);">Ирсэн ачаа алга байна.</td></tr>';
-    } else {
-      shipments.forEach(function(item){
-        var row = document.createElement('tr');
-        var priceText = item.price || '—';
-        row.innerHTML = '<td style="padding:10px 12px; border-bottom:1px solid var(--line);">' + item.code + '</td>' +
-          '<td style="padding:10px 12px; border-bottom:1px solid var(--line);">' + priceText + '</td>' +
-          '<td style="padding:10px 12px; border-bottom:1px solid var(--line);">' + (item.date || '—') + '</td>' +
-          '<td style="padding:10px 12px; border-bottom:1px solid var(--line);"><span style="display:inline-block; padding:5px 10px; border-radius:999px; background:' + (item.status === 'Авсан' ? 'rgba(1,91,63,0.12)' : 'rgba(50,130,246,0.12)') + '; color:var(--text); font-weight:600;">' + (item.status || 'Ирсэн') + '</span></td>';
-        profileTable.appendChild(row);
-      });
+    $('profilePhoneText').textContent = currentUser.phone;
+    $('profileTableBody').innerHTML = shipments.length
+      ? shipments.map(function (item) {
+          var status = item.status || 'Ирсэн';
+          var done = DONE_STATUSES.indexOf(status) !== -1 ? ' done' : '';
+          return '<tr>' +
+            '<td>' + esc(item.code) + '</td>' +
+            '<td>' + esc(item.price || '—') + '</td>' +
+            '<td>' + esc(item.date || '—') + '</td>' +
+            '<td><span class="status-pill' + done + '">' + esc(status) + '</span></td>' +
+          '</tr>';
+        }).join('')
+      : '<tr><td colspan="4" class="empty-cell">Ирсэн ачаа алга байна.</td></tr>';
+    section.hidden = false;
+  }
+
+  // ---------- Хаяг хуулах ----------
+  function copyAddr() {
+    var text = $('warehouseAddr').textContent.trim();
+    var btn = $('copyBtn');
+
+    function done() {
+      btn.textContent = 'Хуулагдлаа ✓';
+      btn.classList.add('copied');
+      setTimeout(function () { btn.textContent = 'Хуулах'; btn.classList.remove('copied'); }, 1800);
     }
-    document.getElementById('profileSection').style.display = 'block';
-  }
 
-  function hideProfile(){
-    document.getElementById('profileSection').style.display = 'none';
-  }
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.cssText = 'position:fixed; top:0; left:0; opacity:0;';
+      document.body.appendChild(ta);
+      ta.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) { /* алгасна */ }
+      document.body.removeChild(ta);
+      if (ok) done();
+    }
 
-  function applyMobileLayout(){
-    var phoneView = window.matchMedia('(max-width: 680px)').matches;
-    var profile = document.getElementById('profileSection');
-    var track = document.querySelector('.track-box');
-    if(!profile || !track){ return; }
-
-    if(phoneView){
-      profile.style.width = '100vw';
-      profile.style.maxWidth = '100vw';
-      profile.style.marginLeft = 'calc(50% - 50vw)';
-      profile.style.marginRight = 'calc(50% - 50vw)';
-      profile.style.padding = '0';
-
-      track.style.width = '100%';
-      track.style.maxWidth = 'none';
-      track.style.marginLeft = '0';
-      track.style.marginRight = '0';
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(fallback);
     } else {
-      profile.style.width = '100%';
-      profile.style.maxWidth = '820px';
-      profile.style.marginLeft = 'auto';
-      profile.style.marginRight = 'auto';
-      profile.style.padding = '0 0 30px';
-
-      track.style.width = '';
-      track.style.maxWidth = '640px';
-      track.style.marginLeft = '';
-      track.style.marginRight = '';
+      fallback();
     }
   }
 
-  document.getElementById('modeLoginBtn').addEventListener('click', function(){ setAuthMode('login'); });
-  document.getElementById('modeRegisterBtn').addEventListener('click', function(){ setAuthMode('register'); });
+  // ---------- Ачаа шалгах ----------
+  function setTrackMessage(kind, text) {
+    var el = $('trackResult');
+    el.className = 'show' + (kind ? ' ' + kind : '');
+    el.textContent = text;
+  }
 
-  document.getElementById('showCustomerPassword').addEventListener('change', function(){
-    document.getElementById('authPassword').type = this.checked ? 'text' : 'password';
-    document.getElementById('authPassword').focus();
+  function renderTrackRecord(d) {
+    var el = $('trackResult');
+    el.className = 'show found';
+    el.innerHTML =
+      '<div><strong>' + esc(d.code) + '</strong> — ' + esc(maskPhone(d.phone)) + '</div>' +
+      '<div>Төлөв: ' + esc(d.status || 'Эрээнээс ачигдсан') + '</div>' +
+      '<div>Огноо: ' + esc(d.date || '—') + '</div>' +
+      '<div>Үнэ: ' + esc(d.price || '—') + '</div>';
+  }
+
+  async function checkTrack() {
+    var val = $('trackInput').value.trim().toUpperCase();
+    if (!val) { setTrackMessage('notfound', 'Код оруулна уу.'); return; }
+    if (!sb) { setTrackMessage('notfound', 'Сервертэй холбогдож чадсангүй. Хуудсыг дахин ачаална уу.'); return; }
+    setTrackMessage('', 'Шалгаж байна…');
+
+    try {
+      var byCode = await sb.from('tracking').select('*').eq('code', val).maybeSingle();
+      if (byCode.error) throw byCode.error;
+      var record = byCode.data;
+
+      if (!record) {
+        // Утасны дугаараар: +976, зай, зураасыг тооцохгүй
+        var phone = val.replace(/[\s\-+]/g, '');
+        if (/^(976)?\d{8}$/.test(phone)) phone = phone.slice(-8);
+        var byPhone = await sb.from('tracking').select('*').eq('phone', phone)
+          .order('date', { ascending: false }).limit(1).maybeSingle();
+        if (byPhone.error) throw byPhone.error;
+        record = byPhone.data;
+      }
+
+      if (record) renderTrackRecord(record);
+      else setTrackMessage('notfound', '✕ ' + val + ' — таны ачаа Эрээнд хүргэгдээгүй байна.');
+    } catch (e) {
+      setTrackMessage('notfound', 'Шалгах үед алдаа гарлаа. Түр хүлээгээд дахин оролдоно уу.');
+    }
+  }
+
+  // ---------- Тооцоолуур ----------
+  function toggleCalc() {
+    var open = $('calcPanel').classList.toggle('open');
+    $('calcFab').setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+
+  function recalc() {
+    var r = Uudam.calcCost($('calcWeight').value, $('calcDims').value, 1);
+    $('calcTotal').textContent = Uudam.formatMoney(r.total);
+  }
+
+  // ---------- Эхлүүлэх ----------
+  $('modeLoginBtn').addEventListener('click', function () { setAuthMode('login'); });
+  $('modeRegisterBtn').addEventListener('click', function () { setAuthMode('register'); });
+
+  $('showCustomerPassword').addEventListener('change', function () {
+    $('authPassword').type = this.checked ? 'text' : 'password';
+    $('authPassword').focus();
   });
 
-  window.addEventListener('resize', applyMobileLayout);
+  $('authModal').addEventListener('click', function (e) { if (e.target === this) closeAuthModal(); });
+  $('authPhone').addEventListener('keydown', function (e) { if (e.key === 'Enter') submitAuthForm(); });
+  $('authPassword').addEventListener('keydown', function (e) { if (e.key === 'Enter') submitAuthForm(); });
+  $('authCode').addEventListener('keydown', function (e) { if (e.key === 'Enter') verifyOtp(); });
+  $('trackInput').addEventListener('keydown', function (e) { if (e.key === 'Enter') checkTrack(); });
+  $('calcWeight').addEventListener('input', recalc);
+  $('calcDims').addEventListener('input', recalc);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAuthModal(); });
 
-  (function initAuth(){
+  (function init() {
     seedCustomerData();
-    applyMobileLayout();
-    var saved = JSON.parse(localStorage.getItem(CUSTOMER_SESSION_KEY) || 'null');
-    if(saved && saved.phone){
+    removeKey('uudam_pending_register'); // хуучин хувилбарын үлдэгдэл (нууц үг агуулдаг байсан)
+    var saved = readJSON(CUSTOMER_SESSION_KEY, null);
+    if (saved && saved.phone) {
       currentUser = saved;
       updateAuthUI(saved);
       showProfile();
     }
   })();
-
-  function copyAddr(){
-    var text = document.getElementById('warehouseAddr').textContent;
-    var btn = document.getElementById('copyBtn');
-    function done(){
-      btn.textContent = 'Хууллаа ✓';
-      btn.classList.add('copied');
-      setTimeout(function(){ btn.textContent = 'Хуулах'; btn.classList.remove('copied'); }, 1800);
-    }
-    try{
-      navigator.clipboard.writeText(text).then(done).catch(function(){
-        var ta = document.createElement('textarea');
-        ta.value = text; document.body.appendChild(ta); ta.select();
-        try{ document.execCommand('copy'); done(); }catch(e){}
-        document.body.removeChild(ta);
-      });
-    }catch(e){
-      var ta = document.createElement('textarea');
-      ta.value = text; document.body.appendChild(ta); ta.select();
-      try{ document.execCommand('copy'); done(); }catch(err){}
-      document.body.removeChild(ta);
-    }
-  }
-
-  async function checkTrack(){
-    var val = document.getElementById('trackInput').value.trim().toUpperCase();
-    var el = document.getElementById('trackResult');
-    el.className = 'show';
-    if(!val){ el.textContent = 'Код оруулна уу.'; el.classList.add('notfound'); return; }
-    el.textContent = 'Шалгаж байна…';
-
-    if(sb){
-      try{
-        var byCode = await sb.from('tracking').select('*').eq('code', val).maybeSingle();
-        el.className = 'show';
-        if(byCode.data){
-          var d = byCode.data;
-          var statusText = d.status || 'Эрээнээс ачигдсан';
-          el.classList.add('found');
-          el.innerHTML = '<div><strong>' + d.code + '</strong> — ' + (d.phone || '—') + '</div>' +
-            '<div>Төлөв: ' + statusText + '</div>' +
-            '<div>Огноо: ' + (d.date || '—') + '</div>' +
-            '<div>Үнэ: ' + (d.price || '—') + '</div>';
-          return;
-        }
-        var byPhone = await sb.from('tracking').select('*').eq('phone', val).limit(1).maybeSingle();
-        if(byPhone.data){
-          var qd = byPhone.data;
-          var qdStatus = qd.status || 'Эрээнээс ачигдсан';
-          el.classList.add('found');
-          el.innerHTML = '<div><strong>' + qd.code + '</strong> — ' + (qd.phone || '—') + '</div>' +
-            '<div>Төлөв: ' + qdStatus + '</div>' +
-            '<div>Огноо: ' + (qd.date || '—') + '</div>' +
-            '<div>Үнэ: ' + (qd.price || '—') + '</div>';
-          return;
-        }
-      }catch(e){ /* fall through to demo data below */ }
-    }
-
-    el.className = 'show';
-    if(sample[val]){
-      el.classList.add('found');
-      el.innerHTML = '<div><strong>' + val + '</strong> — ' + (sample[val].status || 'Эрээнээс ачигдсан') + '</div>' +
-        '<div>Огноо: ' + sample[val].date + '</div>' +
-        '<div>Үнэ: ' + sample[val].price + '</div>';
-    } else {
-      el.classList.add('notfound');
-      el.textContent = '✕ ' + val + ' — таны ачаа Эрээнд хүргэгдээгүй байна.';
-    }
-  }
-  document.getElementById('trackInput').addEventListener('keydown', function(e){
-    if(e.key === 'Enter') checkTrack();
-  });
-
-  function toggleCalc(){
-    document.getElementById('calcPanel').classList.toggle('open');
-  }
-  function volumeM3(dimsStr){
-    var m = dimsStr.match(/(\d+(\.\d+)?)\s*x\s*(\d+(\.\d+)?)\s*x\s*(\d+(\.\d+)?)/i);
-    if(!m) return 0;
-    var l = parseFloat(m[1]), w = parseFloat(m[3]), h = parseFloat(m[5]);
-    return (l * w * h) / 1000000;
-  }
-  function recalc(){
-    var w = parseFloat(document.getElementById('calcWeight').value) || 0;
-    var dims = document.getElementById('calcDims').value.trim();
-    var weightCost = w * 2500;
-    var volCost = volumeM3(dims) * 350000;
-    var total = Math.round(Math.max(weightCost, volCost));
-    document.getElementById('calcTotal').textContent = total.toLocaleString('mn-MN') + ' ₮';
-  }
-  document.getElementById('calcWeight').addEventListener('input', recalc);
-  document.getElementById('calcDims').addEventListener('input', recalc);
 </script>
 
 </body>

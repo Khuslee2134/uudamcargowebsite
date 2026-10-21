@@ -9,18 +9,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="page-about">
 
 <header>
   <a class="brand" href="index.html">
     <div class="logo-word">УУДАМ <span>CARGO</span></div>
   </a>
-  <nav>
+  <nav aria-label="Үндсэн цэс">
     <a href="index.html">Нүүр</a>
+    <a href="about.html" class="active" aria-current="page">Бидний тухай</a>
     <a href="calculator.html">Тооцоолуур</a>
   </nav>
   <div class="header-actions">
-    <button class="menu-btn" onclick="toggleMenu()" aria-label="Цэс">
+    <button class="menu-btn" type="button" onclick="toggleMenu()" aria-label="Цэс">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
         <line x1="3" y1="6" x2="21" y2="6"></line>
         <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -33,13 +34,14 @@
 <div class="side-drawer" id="sideDrawer">
   <div class="drawer-overlay" onclick="toggleMenu()"></div>
   <div class="drawer-panel">
-    <button class="drawer-close" onclick="toggleMenu()" aria-label="Хаах">
+    <button class="drawer-close" type="button" onclick="toggleMenu()" aria-label="Хаах">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
         <line x1="4" y1="4" x2="20" y2="20"></line>
         <line x1="20" y1="4" x2="4" y2="20"></line>
       </svg>
     </button>
-    <a href="#" style="color:var(--amber);">Бидний тухай</a>
+    <a href="index.html">Нүүр</a>
+    <a href="about.html" class="active">Бидний тухай</a>
     <a href="calculator.html">Тооцоолуур</a>
     <a href="index.html#contact">Холбоо барих</a>
   </div>
@@ -50,17 +52,6 @@
   <h1>Эрээнээс Дархан руу — итгэлтэй, тогтмол хүргэлт</h1>
   <p class="sub">Uudam Cargo нь Эрээн—Дархан чиглэлээр ачаа тээвэрлэдэг, харилцагчдаа ил тод, найдвартай үйлчилгээгээр дэмждэг тээврийн компани.</p>
 
-  <div class="story">
-    <div>
-      <h2>Бидний зорилго</h2>
-      <p>Худалдаа эрхлэгч, жижиг бизнес эрхлэгчдэд ачаагаа хямд, хурдан бөгөөд алдагдалгүй хүргэх нь бидний гол зорилго. Бид ачааг хил дээрээс эхлэн Дархан дахь агуулахад хүрэх хүртэл бүх шатанд хянадаг.</p>
-    </div>
-    <div>
-      <h2>Хэрхэн ажилладаг вэ</h2>
-      <p>Захиалга — Хилийн боловсруулалт — Тээвэрлэлт — Агуулахад бүртгэх — Хүргэлт. Харилцагч бүр ачааныхаа явцыг манай сайтаас код ашиглан шалгах боломжтой.</p>
-    </div>
-  </div>
-
   <div class="stats">
     <div class="stat"><div class="n">2024</div><div class="l">Байгуулагдсан он</div></div>
     <div class="stat"><div class="n">40,000+</div><div class="l">Хүргэсэн ачаа</div></div>
@@ -69,7 +60,6 @@
   </div>
 
   <div class="values">
-    <h2>Бидний баримталдаг зарчим</h2>
     <div class="value-grid">
       <div class="value-card">
         <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
@@ -81,11 +71,6 @@
         <h3>Хурд</h3>
         <p>Стандарт 4–6 хоногийн хугацаанд хил дамжуулан хүргэдэг тогтмол хуваарь.</p>
       </div>
-      <div class="value-card">
-        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"></path></svg></div>
-        <h3>Аюулгүй байдал</h3>
-        <p>Ачаа бүрийг сав баглаа боодол, даатгалын шаардлагад нийцүүлэн зөөвөрлөнө.</p>
-      </div>
     </div>
   </div>
 
@@ -94,17 +79,12 @@
       <h3>Ачаагаа илгээхэд бэлэн үү?</h3>
       <p>Захиалга өгөх эсвэл асуултаа илгээхийн тулд бидэнтэй холбогдоорой.</p>
     </div>
-    <button class="cta-btn" onclick="window.location.href='index.html#contact'">Холбоо барих</button>
+    <a class="cta-btn" href="index.html#contact">Холбоо барих</a>
   </div>
 </main>
 
 <footer>© 2026 Uudam Cargo — Бидний тухай</footer>
 
-<script>
-  function toggleMenu(){
-    document.getElementById('sideDrawer').classList.toggle('open');
-  }
-</script>
-
+<script src="shared.js"></script>
 </body>
 </html>

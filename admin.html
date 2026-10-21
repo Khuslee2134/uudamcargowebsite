@@ -3,13 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
 <title>Админ — УУДАМ CARGO</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="page-admin">
 
 <header>
   <a class="brand" href="index.html">
@@ -17,357 +18,368 @@
   </a>
   <div class="tag">Админ самбар</div>
 
-  <div class="header-user" id="headerUser" style="display:none;">
+  <div class="header-user" id="headerUser" hidden>
     <span id="userEmailTag">admin</span>
     <button class="cancel-btn" type="button" onclick="doLogout()">Гарах</button>
   </div>
 </header>
 
-<div id="loginWrap" style="max-width:380px; margin:60px auto; padding:0 18px;">
+<div class="login-wrap" id="loginWrap" hidden>
   <div class="panel">
-    <h2 style="margin-bottom:16px;">Нэвтрэх</h2>
-    <div class="field" style="margin-bottom:12px;">
-      <label>Имэйл</label>
-      <input type="email" id="loginEmail">
+    <h2>Нэвтрэх</h2>
+    <div class="field">
+      <label for="loginEmail">Имэйл</label>
+      <input type="email" id="loginEmail" autocomplete="username">
     </div>
-    <div class="field" style="margin-bottom:14px;">
-      <label>Нууц үг</label>
-      <input type="password" id="loginPass">
+    <div class="field">
+      <label for="loginPass">Нууц үг</label>
+      <input type="password" id="loginPass" autocomplete="current-password">
     </div>
-    <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--muted); margin-bottom:12px; cursor:pointer;">
-      <input type="checkbox" id="showPasswordToggle" style="accent-color:var(--amber); width:15px; height:15px;">
+    <label class="check-row">
+      <input type="checkbox" id="showPasswordToggle">
       Нууц үгийг харуулах
     </label>
-    <button class="save-btn" id="loginBtn" onclick="doLogin()" style="width:100%;">Нэвтрэх</button>
-    <p id="loginError" style="color:var(--err); font-size:13px; margin-top:10px; display:none;"></p>
+    <button class="save-btn btn-block" id="loginBtn" type="button" onclick="doLogin()">Нэвтрэх</button>
+    <p class="form-error" id="loginError" role="alert"></p>
   </div>
 </div>
-<main id="mainArea" style="display:none;">
+
+<main id="mainArea" hidden>
   <h1>Ачааны бүртгэл удирдах</h1>
   <p class="sub">Энд нэмсэн код, статус нь нүүр хуудасны "Ачаа шалгах" талбарт шууд харагдана.</p>
 
   <div class="panel">
-    <h2 id="formTitle" style="margin:0 0 12px;">Шинэ бүртгэл нэмэх</h2>
-
-     <div class="form-grid">
-      <div class="field">
-        <label>Огноо</label>
-        <input type="text" id="fDate">
-      </div>
-    <div class="field status-field" style="margin:0 0 16px; max-width:220px;">
-      <label>Төлөв</label>
-      <select id="fStatus">
-        <option value="Эрээнээс ачигдсан">Эрээнээс ачигдсан</option>
-        <option value="Дарханд буусан">Дарханд буусан</option>
-        <option value="Хүргэлтийн захиалга">Хүргэлтийн захиалга</option>
-        <option value="Хэрэглэгчид очсон">Хэрэглэгчид очсон</option>
-        <option value="Хүргэгдсэн">Хүргэгдсэн</option>
-      </select>
-    </div>
-    </div>
+    <h2 id="formTitle">Шинэ бүртгэл нэмэх</h2>
 
     <div class="form-grid">
       <div class="field">
-        <label>Нэр</label>
-        <input type="text" id="fname">
+        <label for="fDate">Огноо</label>
+        <input type="text" id="fDate" autocomplete="off">
       </div>
       <div class="field">
-        <label>Утасны дугаар</label>
-        <input type="text" id="fPhone">
+        <label for="fStatus">Төлөв</label>
+        <select id="fStatus">
+          <option value="Эрээнээс ачигдсан">Эрээнээс ачигдсан</option>
+          <option value="Дарханд буусан">Дарханд буусан</option>
+          <option value="Хүргэлтийн захиалга">Хүргэлтийн захиалга</option>
+          <option value="Хэрэглэгчид очсон">Хэрэглэгчид очсон</option>
+          <option value="Хүргэгдсэн">Хүргэгдсэн</option>
+        </select>
       </div>
       <div class="field">
-        <label>Барааны код</label>
-        <input type="text" id="fCode">
+        <label for="fname">Нэр</label>
+        <input type="text" id="fname" autocomplete="off">
       </div>
-      
-      <div class="field" id="priceField">
-        <label>Үнэ (₮)</label>
-        <input type="text" id="fPrice">
+      <div class="field">
+        <label for="fPhone">Утасны дугаар</label>
+        <input type="tel" id="fPhone" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="fCode">Барааны код</label>
+        <input type="text" id="fCode" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="fPrice">Үнэ (₮)</label>
+        <input type="text" id="fPrice" autocomplete="off">
       </div>
     </div>
 
     <div class="save-row">
-      <button class="save-btn" id="saveBtn" onclick="saveRecord()">Хадгалах</button>
-      <button class="cancel-btn" id="cancelBtn" onclick="resetForm()" style="display:none;">Цуцлах</button>
-      <span class="save-status" id="saveStatus"></span>
+      <button class="save-btn" id="saveBtn" type="button" onclick="saveRecord()">Хадгалах</button>
+      <button class="cancel-btn" id="cancelBtn" type="button" onclick="resetForm()" hidden>Цуцлах</button>
+      <span class="save-status" id="saveStatus" role="status"></span>
     </div>
   </div>
+
   <div class="panel">
     <h2>Бүх бүртгэл</h2>
-    <div class="track-row" style="margin:0 0 16px;">
-      <input id="adminSearch" type="search" placeholder="Tracking код эсвэл утасны дугаар">
+    <div class="track-row search-row">
+      <input id="adminSearch" type="search" placeholder="Tracking код эсвэл утасны дугаар" aria-label="Хайх">
       <button class="save-btn" type="button" onclick="searchRecords()">Хайх</button>
-      <button class="cancel-btn" id="clearSearchBtn" type="button" onclick="clearSearch()" style="display:none;">Цэвэрлэх</button>
+      <button class="cancel-btn" id="clearSearchBtn" type="button" onclick="clearSearch()" hidden>Цэвэрлэх</button>
     </div>
-    <table id="recTable">
+    <table class="data-table" id="recTable">
       <thead>
         <tr><th>Код</th><th>Нэр</th><th>Утас</th><th>Огноо</th><th>Үнэ</th><th>Төлөв</th><th></th></tr>
       </thead>
       <tbody id="recBody"></tbody>
     </table>
-    <div class="empty" id="emptyMsg" style="display:none;">Бүртгэл алга байна.</div>
+    <div class="empty" id="emptyMsg" hidden>Бүртгэл алга байна.</div>
   </div>
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="shared.js"></script>
 <script>
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = Uudam.escapeHtml;
+
   var SUPABASE_URL = "https://ipnfmpcdajuwuiggfqsp.supabase.co";
   var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlwbmZtcGNkYWp1d3VpZ2dmcXNwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3MjYzMDAsImV4cCI6MjEwNjMwMjMwMH0.jGx9XPs9Bux31IhTAtuEVI43NPALrt0-iTtZ-kLwnvA";
   var sb = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+
+  var DEFAULT_STATUS = 'Эрээнээс ачигдсан';
   var editingCode = null;
   var liveChannel = null;
   var activeSearch = '';
+  var adminUserId = null;
 
-  function updatePriceFieldVisibility(){
-    var priceField = document.getElementById('priceField');
-    if(priceField){
-      priceField.style.display = 'block';
-    }
-  }
-
-  async function init(){
-    if(!sb){
-      document.getElementById('loginError').style.display = 'block';
-      document.getElementById('loginError').textContent = 'Сан холбогдсонгүй. Хуудсыг дахин ачаална уу.';
+  // ---------- Нэвтрэлт ----------
+  async function init() {
+    if (!sb) {
+      showLogin();
+      showLoginError('Сан холбогдсонгүй. Хуудсыг дахин ачаална уу.');
       return;
     }
-    updatePriceFieldVisibility();
-    var { data } = await sb.auth.getSession();
-    if(data && data.session){
-      showAdmin(data.session.user);
-    } else {
-      showLogin();
-    }
-    sb.auth.onAuthStateChange(function(event, session){
-      if(session){ showAdmin(session.user); } else { showLogin(); }
+    var res = await sb.auth.getSession();
+    var session = res.data && res.data.session;
+    if (session) showAdmin(session.user); else showLogin();
+
+    sb.auth.onAuthStateChange(function (event, session) {
+      // callback дотроос Supabase руу шууд хандахаас зайлсхийж setTimeout ашиглана
+      setTimeout(function () {
+        if (session) showAdmin(session.user); else showLogin();
+      }, 0);
     });
   }
 
-  async function doLogin(){
-    var email = document.getElementById('loginEmail').value.trim();
-    var pass = document.getElementById('loginPass').value;
-    var errEl = document.getElementById('loginError');
-    errEl.style.display = 'none';
-    if(!email || !pass){
-      errEl.textContent = 'Имэйл, нууц үгээ бөглөнө үү.';
-      errEl.style.display = 'block';
+  function showLoginError(message) {
+    var el = $('loginError');
+    el.textContent = message;
+    el.classList.toggle('show', !!message);
+  }
+
+  async function doLogin() {
+    var email = $('loginEmail').value.trim();
+    var pass = $('loginPass').value;
+    showLoginError('');
+    if (!email || !pass) {
+      showLoginError('Имэйл, нууц үгээ бөглөнө үү.');
       return;
     }
-    document.getElementById('loginBtn').disabled = true;
-    var { error } = await sb.auth.signInWithPassword({ email: email, password: pass });
-    document.getElementById('loginBtn').disabled = false;
-    if(error){
-      errEl.textContent = 'Нэвтрэхэд алдаа гарлаа: имэйл эсвэл нууц үг буруу.';
-      errEl.style.display = 'block';
+    $('loginBtn').disabled = true;
+    var res = await sb.auth.signInWithPassword({ email: email, password: pass });
+    $('loginBtn').disabled = false;
+    if (res.error) {
+      var invalid = res.error.status === 400 || /invalid/i.test(res.error.message || '');
+      showLoginError(invalid
+        ? 'Нэвтрэхэд алдаа гарлаа: имэйл эсвэл нууц үг буруу.'
+        : 'Нэвтрэхэд алдаа гарлаа: ' + res.error.message);
     }
   }
 
-  async function doLogout(){
-    if(liveChannel){ sb.removeChannel(liveChannel); liveChannel = null; }
+  async function doLogout() {
     await sb.auth.signOut();
   }
 
-  function showLogin(){
-    var headerLoginForm = document.getElementById('headerLoginForm');
-    var headerUser = document.getElementById('headerUser');
-    var loginWrap = document.getElementById('loginWrap');
-    var mainArea = document.getElementById('mainArea');
-    if(headerLoginForm){ headerLoginForm.style.display = 'flex'; }
-    if(headerUser){ headerUser.style.display = 'none'; }
-    if(loginWrap){ loginWrap.style.display = 'block'; }
-    if(mainArea){ mainArea.style.display = 'none'; }
+  function showLogin() {
+    adminUserId = null;
+    if (liveChannel && sb) { sb.removeChannel(liveChannel); liveChannel = null; }
+    $('headerUser').hidden = true;
+    $('mainArea').hidden = true;
+    $('loginWrap').hidden = false;
+    $('loginPass').value = '';
   }
 
-  function showAdmin(user){
-    var headerLoginForm = document.getElementById('headerLoginForm');
-    var headerUser = document.getElementById('headerUser');
-    var userEmailTag = document.getElementById('userEmailTag');
-    var loginWrap = document.getElementById('loginWrap');
-    var mainArea = document.getElementById('mainArea');
-    if(headerLoginForm){ headerLoginForm.style.display = 'none'; }
-    if(headerUser){ headerUser.style.display = 'flex'; }
-    if(userEmailTag){ userEmailTag.textContent = (user && user.email) || ''; }
-    if(loginWrap){ loginWrap.style.display = 'none'; }
-    if(mainArea){ mainArea.style.display = 'block'; }
-    if(!editingCode && document.getElementById('fDate') && !document.getElementById('fDate').value){
-      document.getElementById('fDate').value = todayStr();
-    }
+  function showAdmin(user) {
+    if (adminUserId === user.id && !$('mainArea').hidden) return; // аль хэдийн харагдаж байна
+    adminUserId = user.id;
+    $('userEmailTag').textContent = (user && user.email) || '';
+    $('headerUser').hidden = false;
+    $('loginWrap').hidden = true;
+    $('mainArea').hidden = false;
+    if (!editingCode && !$('fDate').value) $('fDate').value = todayStr();
     loadList();
-    if(!liveChannel && sb && sb.channel){
+    if (!liveChannel && sb.channel) {
       liveChannel = sb.channel('tracking-changes')
-        .on('postgres_changes', {event:'*', schema:'public', table:'tracking'}, function(){ loadList(); })
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'tracking' }, function () { loadList(); })
         .subscribe();
     }
   }
 
-  async function loadList(){
-    var query = sb.from('tracking').select('*').order('date', {ascending:false});
+  // ---------- Жагсаалт, хайлт ----------
+  function showEmpty(message) {
+    $('recBody').innerHTML = '';
+    $('emptyMsg').textContent = message;
+    $('emptyMsg').hidden = false;
+  }
+
+  async function loadList() {
     var rows;
-    if(activeSearch){
-      var codeSearch = query.eq('code', activeSearch.toUpperCase()).limit(1);
-      var phoneSearch = sb.from('tracking').select('*').eq('phone', activeSearch).order('date', {ascending:false}).limit(200);
-      var results = await Promise.all([codeSearch, phoneSearch]);
-      var failed = results.find(function(result){ return result.error; });
-      if(failed){
-        document.getElementById('emptyMsg').style.display = 'block';
-        document.getElementById('emptyMsg').textContent = 'Хайлт хийхэд алдаа гарлаа.';
+    if (activeSearch) {
+      var results = await Promise.all([
+        sb.from('tracking').select('*').eq('code', activeSearch.toUpperCase()).limit(1),
+        sb.from('tracking').select('*').eq('phone', activeSearch).order('date', { ascending: false }).limit(200)
+      ]);
+      if (results.some(function (r) { return r.error; })) {
+        showEmpty('Хайлт хийхэд алдаа гарлаа.');
         return;
       }
       var byCode = results[0].data || [];
-      var byPhone = results[1].data || [];
-      rows = byCode.concat(byPhone.filter(function(record){
-        return !byCode.some(function(codeRecord){ return codeRecord.code === record.code; });
-      }));
+      var byPhone = (results[1].data || []).filter(function (record) {
+        return !byCode.some(function (c) { return c.code === record.code; });
+      });
+      rows = byCode.concat(byPhone);
     } else {
-      var { data, error } = await query.limit(200);
-      if(error){
-        document.getElementById('emptyMsg').style.display = 'block';
-        document.getElementById('emptyMsg').textContent = 'Жагсаалт ачаалахад алдаа гарлаа.';
+      var res = await sb.from('tracking').select('*').order('date', { ascending: false }).limit(200);
+      if (res.error) {
+        showEmpty('Жагсаалт ачаалахад алдаа гарлаа.');
         return;
       }
-      rows = data || [];
+      rows = res.data || [];
     }
     renderTable(rows);
   }
 
-  function searchRecords(){
-    activeSearch = document.getElementById('adminSearch').value.trim();
-    document.getElementById('clearSearchBtn').style.display = activeSearch ? 'inline-block' : 'none';
+  function searchRecords() {
+    activeSearch = $('adminSearch').value.trim();
+    $('clearSearchBtn').hidden = !activeSearch;
     loadList();
   }
 
-  function clearSearch(){
-    document.getElementById('adminSearch').value = '';
+  function clearSearch() {
+    $('adminSearch').value = '';
     activeSearch = '';
-    document.getElementById('clearSearchBtn').style.display = 'none';
+    $('clearSearchBtn').hidden = true;
     loadList();
   }
 
-  function renderTable(rows){
-    var body = document.getElementById('recBody');
-    var empty = document.getElementById('emptyMsg');
-    body.innerHTML = '';
-    if(!rows.length){
-      empty.style.display = 'block';
-      empty.textContent = activeSearch ? 'Хайлтад тохирох бүртгэл олдсонгүй.' : 'Бүртгэл алга байна.';
+  function renderTable(rows) {
+    if (!rows.length) {
+      showEmpty(activeSearch ? 'Хайлтад тохирох бүртгэл олдсонгүй.' : 'Бүртгэл алга байна.');
       return;
     }
-    empty.style.display = 'none';
-    rows.forEach(function(d){
-      var tr = document.createElement('tr');
-      var code = d.code;
-      var status = d.status || 'Эрээнээс ачигдсан';
-      tr.innerHTML =
-        '<td data-label="Код" class="code-cell">' + escapeHtml(code) + '</td>' +
-        '<td data-label="Нэр">' + escapeHtml(d.fname || '') + '</td>' +
-        '<td data-label="Утас">' + escapeHtml(d.phone || '') + '</td>' +
-        '<td data-label="Огноо">' + escapeHtml(d.date || '') + '</td>' +
-        '<td data-label="Үнэ">' + escapeHtml(d.price || '') + '</td>' +
-        '<td data-label="Төлөв">' + escapeHtml(status) + '</td>' +
-        '<td data-label=""><div class="row-actions">' +
-          '<button onclick="editRecord(\'' + code.replace(/'/g,"\\'") + '\')">Засах</button>' +
-          '<button class="del" onclick="deleteRecord(\'' + code.replace(/'/g,"\\'") + '\')">Устгах</button>' +
-        '</div></td>';
-      body.appendChild(tr);
-    });
+    $('emptyMsg').hidden = true;
+    $('recBody').innerHTML = rows.map(function (d) {
+      var code = esc(d.code);
+      return '<tr>' +
+        '<td data-label="Код" class="code-cell">' + code + '</td>' +
+        '<td data-label="Нэр">' + esc(d.fname) + '</td>' +
+        '<td data-label="Утас">' + esc(d.phone) + '</td>' +
+        '<td data-label="Огноо">' + esc(d.date) + '</td>' +
+        '<td data-label="Үнэ">' + esc(d.price) + '</td>' +
+        '<td data-label="Төлөв">' + esc(d.status || DEFAULT_STATUS) + '</td>' +
+        '<td><div class="row-actions">' +
+          '<button type="button" data-action="edit" data-code="' + code + '">Засах</button>' +
+          '<button type="button" class="del" data-action="delete" data-code="' + code + '">Устгах</button>' +
+        '</div></td>' +
+      '</tr>';
+    }).join('');
   }
 
-  function escapeHtml(s){
-    return String(s).replace(/[&<>"']/g, function(c){
-      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
-    });
-  }
-
-  async function editRecord(code){
-    var { data } = await sb.from('tracking').select('*').eq('code', code).maybeSingle();
-    if(!data) return;
-    editingCode = code;
-    document.getElementById('formTitle').textContent = 'Бүртгэл засах — ' + code;
-    document.getElementById('fCode').value = code;
-    document.getElementById('fCode').disabled = true;
-    document.getElementById('fname').value = data.fname || '';
-    document.getElementById('fPhone').value = data.phone || '';
-    document.getElementById('fPrice').value = data.price || '';
-    document.getElementById('fDate').value = data.date || '';
-    document.getElementById('fStatus').value = data.status || 'Эрээнээс ачигдсан';
-    updatePriceFieldVisibility();
-    document.getElementById('cancelBtn').style.display = 'inline-block';
-    window.scrollTo({top:0, behavior:'smooth'});
-  }
-
-  function todayStr(){
+  // ---------- Бүртгэл нэмэх, засах, устгах ----------
+  function todayStr() {
     var d = new Date();
     var mm = String(d.getMonth() + 1).padStart(2, '0');
     var dd = String(d.getDate()).padStart(2, '0');
     return d.getFullYear() + '.' + mm + '.' + dd;
   }
 
-  function resetForm(){
-    editingCode = null;
-    document.getElementById('formTitle').textContent = 'Шинэ бүртгэл нэмэх';
-    document.getElementById('fCode').value = '';
-    document.getElementById('fCode').disabled = false;
-    document.getElementById('fname').value = '';
-    document.getElementById('fPhone').value = '';
-    document.getElementById('fPrice').value = '';
-    document.getElementById('fDate').value = todayStr();
-    document.getElementById('fStatus').value = 'Эрээнээс ачигдсан';
-    updatePriceFieldVisibility();
-    document.getElementById('cancelBtn').style.display = 'none';
-    document.getElementById('saveStatus').textContent = '';
+  // "+976 9900 1122" -> "99001122" (8 оронтой Монгол дугаар бол)
+  function normalizePhone(value) {
+    var digits = String(value || '').replace(/\D/g, '');
+    if (digits.length === 11 && digits.indexOf('976') === 0) digits = digits.slice(3);
+    return digits.length === 8 ? digits : String(value || '').trim();
   }
 
-  async function saveRecord(){
-    var code = (editingCode || document.getElementById('fCode').value.trim().toUpperCase());
-    var fname = document.getElementById('fname').value.trim();
-    var phone = document.getElementById('fPhone').value.trim();
-    var price = (document.getElementById('fPrice').value || '').trim();
-    var status = document.getElementById('fStatus').value;
-    var date = document.getElementById('fDate').value.trim();
-    var statusEl = document.getElementById('saveStatus');
+  async function editRecord(code) {
+    var res = await sb.from('tracking').select('*').eq('code', code).maybeSingle();
+    if (!res.data) return;
+    var data = res.data;
+    editingCode = code;
+    $('formTitle').textContent = 'Бүртгэл засах — ' + code;
+    $('fCode').value = code;
+    $('fCode').disabled = true;
+    $('fname').value = data.fname || '';
+    $('fPhone').value = data.phone || '';
+    $('fPrice').value = data.price || '';
+    $('fDate').value = data.date || '';
+    $('fStatus').value = data.status || DEFAULT_STATUS;
+    $('cancelBtn').hidden = false;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
-    if(!code){
+  function resetForm() {
+    editingCode = null;
+    $('formTitle').textContent = 'Шинэ бүртгэл нэмэх';
+    $('fCode').value = '';
+    $('fCode').disabled = false;
+    $('fname').value = '';
+    $('fPhone').value = '';
+    $('fPrice').value = '';
+    $('fDate').value = todayStr();
+    $('fStatus').value = DEFAULT_STATUS;
+    $('cancelBtn').hidden = true;
+    $('saveStatus').textContent = '';
+  }
+
+  async function saveRecord() {
+    var code = editingCode || $('fCode').value.trim().toUpperCase();
+    var statusEl = $('saveStatus');
+
+    if (!code) {
       statusEl.style.color = 'var(--err)';
       statusEl.textContent = 'Код заавал бөглөнө үү.';
       return;
     }
 
-    document.getElementById('saveBtn').disabled = true;
+    $('saveBtn').disabled = true;
     statusEl.style.color = 'var(--muted)';
     statusEl.textContent = 'Хадгалж байна…';
-    var record = { code: code, fname: fname, phone: phone, price: price, date: date, status: status };
-    var { error } = await sb.from('tracking').upsert(record, { onConflict: 'code' });
-    if(!error){
+
+    // Шинэ бүртгэл нэмэхдээ байгаа кодыг санамсаргүй дарж бичихээс сэргийлнэ
+    if (!editingCode) {
+      var existing = await sb.from('tracking').select('code').eq('code', code).maybeSingle();
+      if (existing.data && !confirm(code + ' код бүртгэлтэй байна. Дарж бичих үү?')) {
+        statusEl.textContent = '';
+        $('saveBtn').disabled = false;
+        return;
+      }
+    }
+
+    var record = {
+      code: code,
+      fname: $('fname').value.trim(),
+      phone: normalizePhone($('fPhone').value),
+      price: $('fPrice').value.trim(),
+      date: $('fDate').value.trim(),
+      status: $('fStatus').value
+    };
+    var res = await sb.from('tracking').upsert(record, { onConflict: 'code' });
+    if (!res.error) {
+      resetForm();
       statusEl.style.color = 'var(--ok)';
       statusEl.textContent = 'Хадгаллаа ✓';
-      resetForm();
       loadList();
     } else {
       statusEl.style.color = 'var(--err)';
-      statusEl.textContent = 'Алдаа гарлаа: ' + error.message;
+      statusEl.textContent = 'Алдаа гарлаа: ' + res.error.message;
     }
-    document.getElementById('saveBtn').disabled = false;
+    $('saveBtn').disabled = false;
   }
 
-  async function deleteRecord(code){
-    if(!confirm(code + ' кодыг устгах уу?')) return;
-    var { error } = await sb.from('tracking').delete().eq('code', code);
-    if(error){ alert('Устгахад алдаа гарлаа.'); } else { loadList(); }
+  async function deleteRecord(code) {
+    if (!confirm(code + ' кодыг устгах уу?')) return;
+    var res = await sb.from('tracking').delete().eq('code', code);
+    if (res.error) alert('Устгахад алдаа гарлаа.'); else loadList();
   }
 
-  var showPasswordToggle = document.getElementById('showPasswordToggle');
-  var loginPassField = document.getElementById('loginPass');
-
-  if(showPasswordToggle && loginPassField){
-    showPasswordToggle.addEventListener('change', function(){
-      loginPassField.type = this.checked ? 'text' : 'password';
-      loginPassField.focus();
-    });
-  }
-
-  document.getElementById('adminSearch').addEventListener('keydown', function(event){
-    if(event.key === 'Enter') searchRecords();
+  // ---------- Үйл явдал ----------
+  $('recBody').addEventListener('click', function (e) {
+    var btn = e.target.closest('button[data-action]');
+    if (!btn) return;
+    var code = btn.getAttribute('data-code');
+    if (btn.getAttribute('data-action') === 'edit') editRecord(code);
+    else deleteRecord(code);
   });
+
+  $('showPasswordToggle').addEventListener('change', function () {
+    $('loginPass').type = this.checked ? 'text' : 'password';
+    $('loginPass').focus();
+  });
+  $('loginEmail').addEventListener('keydown', function (e) { if (e.key === 'Enter') doLogin(); });
+  $('loginPass').addEventListener('keydown', function (e) { if (e.key === 'Enter') doLogin(); });
+  $('adminSearch').addEventListener('keydown', function (e) { if (e.key === 'Enter') searchRecords(); });
 
   init();
 </script>
