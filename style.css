@@ -315,7 +315,7 @@ footer{
 }
 .hero-top{max-width:640px;}
 .hero .eyebrow{margin-bottom:12px;}
-.page-home h1{margin-bottom: 12px;clamp(32px,5vw,52px); line-height:1.08; font-weight:700; letter-spacing:-0.5px;}
+.page-home h1{margin-bottom: 12px;clamp:(32px,5vw,52px); line-height:1.08; font-weight:700; letter-spacing:-0.5px;}
 .hero-sub{color:var(--muted); font-size:16.5px; margin-top:16px; line-height:1.55; max-width:520px;}
 
 /* профайл */
@@ -693,4 +693,5 @@ footer{
 .register-only input::placeholder {
   color: #999;
   font-size: 13px;
+}
 }
