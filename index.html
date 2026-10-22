@@ -82,7 +82,7 @@
 </div>
         <label for="authPhone" id="authPhoneLabel">Утасны дугаар</label>
         <div class="phone-input-row">
-          <input type="text" id="authPhone" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="99001122" maxlength="64">
+          <input type="text" id="authPhone" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="Утасны дугаар" maxlength="64">
         </div>
       </div>
       <div class="field">
@@ -104,6 +104,7 @@
         Нууц үгийг харуулах
       </label>
       <button class="save-btn btn-block" id="sendOtpBtn" type="button" onclick="submitAuthForm()">Нэвтрэх</button>
+      <button class="cancel-btn btn-block" id="forgotPasswordBtn" type="button" onclick="openPasswordReset()" style="margin-top:8px;">Нууц үгээ мартсан уу?</button>
       <p class="auth-error" id="authPhoneError" role="alert"></p>
     </div>
 
@@ -117,6 +118,38 @@
       <button class="save-btn btn-block" id="verifyOtpBtn" type="button" onclick="verifyOtp()">Баталгаажуулах</button>
       <button class="cancel-btn btn-block" type="button" onclick="backToPhoneStep()" style="margin-top:8px;">Буцах</button>
       <p class="auth-error" id="authCodeError" role="alert"></p>
+    </div>
+
+    <!-- Нууц үг сэргээх (demo): бүртгэл хайх -->
+    <div id="authStepReset" hidden>
+      <h3>Нууц үг сэргээх</h3>
+      <p class="modal-sub">Бүртгэлтэй утасны дугаараа оруулна уу. (Demo — SMS/имэйл баталгаажуулалт холбогдоогүй.)</p>
+      <div class="field">
+        <label for="resetPhone">Утасны дугаар</label>
+        <div class="phone-input-row">
+          <input type="text" id="resetPhone" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="99001122">
+        </div>
+      </div>
+      <button class="save-btn btn-block" id="resetFindBtn" type="button" onclick="findAccount()">Үргэлжлүүлэх</button>
+      <button class="cancel-btn btn-block" type="button" onclick="backToPhoneStep()" style="margin-top:8px;">Буцах</button>
+      <p class="auth-error" id="resetFindError" role="alert"></p>
+    </div>
+
+    <!-- Нууц үг сэргээх (demo): шинэ нууц үг -->
+    <div id="authStepResetNew" hidden>
+      <h3>Шинэ нууц үг тохируулах</h3>
+      <p class="modal-sub" id="resetTarget"></p>
+      <div class="field">
+        <label for="resetPassword">Шинэ нууц үг</label>
+        <input type="password" id="resetPassword" autocomplete="new-password" placeholder="Хамгийн багадаа 6 тэмдэгт">
+      </div>
+      <div class="field">
+        <label for="resetConfirmPassword">Шинэ нууц үг давтах</label>
+        <input type="password" id="resetConfirmPassword" autocomplete="new-password" placeholder="Дахин оруулна уу">
+      </div>
+      <button class="save-btn btn-block" id="resetSaveBtn" type="button" onclick="saveNewPassword()">Нууц үг шинэчлэх</button>
+      <button class="cancel-btn btn-block" type="button" onclick="backToPhoneStep()" style="margin-top:8px;">Буцах</button>
+      <p class="auth-error" id="resetError" role="alert"></p>
     </div>
   </div>
 </div>
@@ -266,7 +299,6 @@
 
 <script src="shared.js"></script>
 <script>
-  const CARGO_STORAGE_KEY = "uudam_cargos_v1";
   var $ = function (id) { return document.getElementById(id); };
 
   // ---------- Хэрэглэгчийн нэвтрэлт, бүртгэл, профайл ----------
@@ -274,6 +306,7 @@
   // хадгалагдаж байгаа тул жинхэнэ хамгаалалт биш (README-г үз).
   var CUSTOMER_USERS_KEY = 'uudam_customer_users_v1';
   var CUSTOMER_SESSION_KEY = 'uudam_customer_session_v1';
+  var SESSION_DURATION_MS = 7 * 24 * 60 * 60 * 1000; // нэвтэрсэн хэвээр байх: 7 хоног
   var ADMIN_SESSION_KEY = 'uudam_admin_session';
   var ADMIN_DEMO_EMAIL = 'admin@uudamcargo.mn';
   var ADMIN_DEMO_PASSWORD = 'Azraga1227';
@@ -281,6 +314,7 @@
 
   var authMode = 'login';
   var pendingRegistration = null;
+  var pendingResetPhone = null;
   var currentUser = null;
 
   function readJSON(key, fallback) {
@@ -300,6 +334,93 @@
     try { sessionStorage.removeItem(key); } catch (e) { /* алгасна */ }
   }
 
+  // ---------- Нууц үг hash — ил текстээр хадгалахгүй ----------
+  // ЗААВАР: localStorage клиент талын хадгалалт бөгөөд бүрмөсөн хамгаалалт биш,
+  // гэхдээ шууд ил текст биш salt+SHA-256 hash хадгална.
+  function randomSalt() {
+    try {
+      if (window.crypto && crypto.getRandomValues) {
+        var bytes = new Uint8Array(8);
+        crypto.getRandomValues(bytes);
+        return Array.prototype.map.call(bytes, function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
+      }
+    } catch (e) { /* доорх fallback руу онол */ }
+    return Math.random().toString(16).slice(2) + Math.random().toString(16).slice(2);
+  }
+
+  // crypto.subtle байхгүй тохиолдолд (demo) хямд fallback hash
+  function fallbackHash(text) {
+    var h = 5381; var i;
+    for (i = 0; i < text.length; i++) { h = ((h << 5) + h + text.charCodeAt(i)) | 0; }
+    return 'd$' + (h >>> 0).toString(16) + text.length.toString(16);
+  }
+
+  async function hashPassword(password, salt) {
+    var value = salt + '::' + password;
+    try {
+      if (crypto && crypto.subtle && typeof TextEncoder !== 'undefined') {
+        var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value));
+        return Array.prototype.map.call(new Uint8Array(buf), function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
+      }
+    } catch (e) { /* доорх fallback руу онол */ }
+    return fallbackHash(value);
+  }
+
+  // salt+hash буй бол hash тай ялгааг шалгах; хуучин demo бичлэгт ил текст нь шалгана
+  async function verifyStoredPassword(user, plain) {
+    if (!user) return false;
+    if (user.salt && user.hash) return (await hashPassword(plain, user.salt)) === user.hash;
+    return user.password === plain;
+  }
+
+  // Хуучин demo бичлэгүүдийн ил текст нууц үгийг salt+hash руу шилжүүлнэ
+  async function migratePlaintextPasswords() {
+    var users = getUsers();
+    var changed = false;
+    for (var i = 0; i < users.length; i++) {
+      var user = users[i];
+      if (!user.salt && typeof user.password === 'string' && user.password.length) {
+        user.salt = randomSalt();
+        user.hash = await hashPassword(user.password, user.salt);
+        delete user.password;
+        changed = true;
+      }
+    }
+    if (changed) writeJSON(CUSTOMER_USERS_KEY, users);
+  }
+
+  // ---------- Сесс — 7 хоногийн дотор дахин ачаалахад нэвтэрсэн хэвээр ----------
+  function setSession(user) {
+    currentUser = { phone: user.phone, name: user.name || 'Хэрэглэгч' };
+    try {
+      localStorage.setItem(CUSTOMER_SESSION_KEY, JSON.stringify({
+        phone: currentUser.phone,
+        name: currentUser.name,
+        expiresAt: Date.now() + SESSION_DURATION_MS
+      }));
+    } catch (e) { /* хадгалах боломжгүй */ }
+    return currentUser;
+  }
+
+  function clearSession() {
+    currentUser = null;
+    try { localStorage.removeItem(CUSTOMER_SESSION_KEY); } catch (e) { /* алгасна */ }
+  }
+
+  function getSession() {
+    try {
+      var session = JSON.parse(localStorage.getItem(CUSTOMER_SESSION_KEY) || 'null');
+      if (!session || !session.phone) return null;
+      if (typeof session.expiresAt !== 'number' || session.expiresAt < Date.now()) {
+        localStorage.removeItem(CUSTOMER_SESSION_KEY);
+        return null;
+      }
+      return session;
+    } catch (e) {
+      return null;
+    }
+  }
+
   function normalizePhoneInput(value) {
     var digits = String(value || '').replace(/[\s-]/g, '').replace(/\D/g, '');
     return digits.indexOf('976') === 0 && digits.length > 8 ? digits.slice(3) : digits;
@@ -315,17 +436,28 @@
     return Array.isArray(users) ? users : [];
   }
 
-  function setSession(user) {
-    currentUser = { phone: user.phone, name: user.name || 'Хэрэглэгч' };
-    try { sessionStorage.setItem(CUSTOMER_SESSION_KEY, JSON.stringify(currentUser)); } catch (e) { /* хадгалах боломжгүй */ }
-    return currentUser;
-  }
-
-  function loginUser(phone, password) {
+  // Бүртгэлийг утасны дугаар (эсвэл хэрэглэгчийн имэйл байвал) хайж, нууц үгийг нь шалгана
+  async function loginUser(identifier, password) {
+    var isEmail = String(identifier || '').indexOf('@') !== -1;
     var found = getUsers().find(function (user) {
-      return normalizePhoneInput(user.phone) === normalizePhoneInput(phone) && user.password === password;
+      if (isEmail) {
+        return String(user.email || '').toLowerCase() === String(identifier).toLowerCase();
+      }
+      return normalizePhoneInput(user.phone) === normalizePhoneInput(identifier);
     });
-    return found ? setSession(found) : null;
+    if (!found) return null;
+    if (!(await verifyStoredPassword(found, password))) return null;
+
+    // Хуучин demo бичлэг бол hash-руу шилжүүлж хадгална
+    if (!found.hash) {
+      found.salt = randomSalt();
+      found.hash = await hashPassword(password, found.salt);
+      delete found.password;
+      writeJSON(CUSTOMER_USERS_KEY, getUsers().map(function (u) {
+        return normalizePhoneInput(u.phone) === normalizePhoneInput(found.phone) ? found : u;
+      }));
+    }
+    return setSession(found);
   }
 
   // ---------- Нэвтрэх цонх ----------
@@ -350,8 +482,6 @@ function setAuthMode(mode) {
   $('sendOtpBtn').textContent = isLogin ? 'Нэвтрэх' : 'Бүртгүүлэх';
 
   $('authPhoneLabel').textContent = 'Утасны дугаар';
-
-  $('authPhone').placeholder = '99001122';
 
   $('authPassword').autocomplete = isLogin
     ? 'current-password'
@@ -385,8 +515,9 @@ function setAuthMode(mode) {
   }
 
   function clearAuthErrors() {
-    ['authPhoneError', 'authCodeError'].forEach(function (id) {
+    ['authPhoneError', 'authCodeError', 'resetFindError', 'resetError'].forEach(function (id) {
       var el = $(id);
+      if (!el) return;
       el.textContent = '';
       el.classList.remove('show');
     });
@@ -395,6 +526,8 @@ function setAuthMode(mode) {
   function showAuthStep(step) {
     $('authStepPhone').hidden = step !== 'phone';
     $('authStepCode').hidden = step !== 'code';
+    $('authStepReset').hidden = step !== 'reset';
+    $('authStepResetNew').hidden = step !== 'reset-new';
   }
 
   function openAuthModal() {
@@ -407,14 +540,101 @@ function setAuthMode(mode) {
   function closeAuthModal() {
     $('authModal').classList.remove('open');
     pendingRegistration = null;
+    pendingResetPhone = null;
     $('authPassword').value = '';
     $('authCode').value = '';
+    $('authName').value = '';
+    $('authConfirmPassword').value = '';
+    $('resetPhone').value = '';
+    $('resetPassword').value = '';
+    $('resetConfirmPassword').value = '';
   }
 
   function backToPhoneStep() {
     pendingRegistration = null;
+    pendingResetPhone = null;
     showAuthStep('phone');
     clearAuthErrors();
+  }
+
+  // ---------- Нууц үг сэргээх (demo) ----------
+  // ЗААВАР: сервер, SMS/имэйл баталгаажуулалт байхгүй тул түлхүүр (дугаар) мэддэг
+  // хэн ч байж болохыг нь жинхэнээр батлах боломжгүй — зөвхөн туршилтын хувилбар.
+  function openPasswordReset() {
+    clearAuthErrors();
+    pendingResetPhone = null;
+    showAuthStep('reset');
+    $('resetPhone').value = '';
+    $('resetPhone').focus();
+  }
+
+  async function findAccount() {
+    clearAuthErrors();
+    var digits = normalizePhoneInput($('resetPhone').value.trim());
+    if (digits.length !== 8) {
+      showAuthError('resetFindError', '8 оронтой утасны дугаараа оруулна уу.');
+      return;
+    }
+
+    // Тухайн дугаартай ХЭРЭГЛЭГЧИЙН бүртгэл байгаа эсэхийг шалгана.
+    // Админ бүртгэл энэ жагсаалтад байдаггүй тул сэргээх замаар админ эрх олж авах боломжгүй.
+    var user = getUsers().find(function (u) {
+      return normalizePhoneInput(u.phone) === digits;
+    });
+    if (!user) {
+      showAuthError('resetFindError', 'Энэ дугаартай бүртгэл олдсонгүй.');
+      return;
+    }
+
+    pendingResetPhone = user.phone;
+    $('resetTarget').textContent = user.phone.replace('+976', '') + ' дугаартай бүртгэл олдлоо. Шинэ нууц үгээ оруулна уу.';
+    $('resetPassword').value = '';
+    $('resetConfirmPassword').value = '';
+    showAuthStep('reset-new');
+    $('resetPassword').focus();
+  }
+
+  async function saveNewPassword() {
+    clearAuthErrors();
+    if (!pendingResetPhone) {
+      showAuthError('resetError', 'Эхлээд дугаараа бичиж бүртгэлээ олоорой.');
+      showAuthStep('reset');
+      return;
+    }
+
+    var password = $('resetPassword').value.trim();
+    var confirm = $('resetConfirmPassword').value.trim();
+    if (password.length < 6) {
+      showAuthError('resetError', 'Нууц үг хамгийн багадаа 6 тэмдэгт байна.');
+      return;
+    }
+    if (password !== confirm) {
+      showAuthError('resetError', 'Давтан оруулсан нууц үг таарахгүй байна.');
+      return;
+    }
+
+    var users = getUsers();
+    var target = users.find(function (u) {
+      return normalizePhoneInput(u.phone) === normalizePhoneInput(pendingResetPhone);
+    });
+    if (!target) {
+      showAuthError('resetError', 'Бүртгэл олдсонгүй.');
+      return;
+    }
+
+    var salt = randomSalt();
+    target.salt = salt;
+    target.hash = await hashPassword(password, salt);
+    delete target.password;
+    writeJSON(CUSTOMER_USERS_KEY, users);
+
+    pendingResetPhone = null;
+    showAuthStep('phone');
+    setAuthMode('login');
+    $('authPhoneSubtitle').textContent = '✓ Нууц үг шинэчлэгдлээ. Шинэ нууц үгээрээ нэвтэрнэ үү.';
+    $('authPassword').value = '';
+    $('resetPassword').value = '';
+    $('resetConfirmPassword').value = '';
   }
 
   function closeLogoutConfirm() {
@@ -459,8 +679,7 @@ function setAuthMode(mode) {
     confirmBtn.setAttribute('data-action', 'confirm');
     confirmBtn.textContent = 'Тийм';
     confirmBtn.addEventListener('click', function () {
-      currentUser = null;
-      removeSessionKey(CUSTOMER_SESSION_KEY);
+      clearSession();
       updateAuthUI(null);
       showProfile();
       closeLogoutConfirm();
@@ -498,12 +717,14 @@ function setAuthMode(mode) {
     showAuthError('authPhoneError', 'Имэйл эсвэл нууц үг буруу байна.');
   }
 
-  function submitAuthForm() {
+  async function submitAuthForm() {
     var rawLogin = $('authPhone').value.trim();
     var digits = normalizePhoneInput(rawLogin);
     var password = $('authPassword').value.trim();
+    var userName = $('authName').value.trim();
     clearAuthErrors();
 
+    // Имэйл хаягаар нэвтрэх: хэрэглэгчийн бүртгэлээс шалгаад, төгсгөлд нь админ (demo) шалгана
     if (rawLogin.indexOf('@') !== -1) {
       if (authMode !== 'login') {
         showAuthError('authPhoneError', 'Бүртгүүлэхдээ утасны дугаараа оруулна уу.');
@@ -511,6 +732,13 @@ function setAuthMode(mode) {
       }
       if (!password) {
         showAuthError('authPhoneError', 'Нууц үгээ оруулна уу.');
+        return;
+      }
+      var emailUser = await loginUser(rawLogin, password);
+      if (emailUser) {
+        updateAuthUI(emailUser);
+        closeAuthModal();
+        showProfile();
         return;
       }
       adminLogin(rawLogin, password);
@@ -529,7 +757,7 @@ function setAuthMode(mode) {
     var phone = '+976' + digits;
 
     if (authMode === 'login') {
-      var user = loginUser(phone, password);
+      var user = await loginUser(phone, password);
       if (!user) {
         showAuthError('authPhoneError', 'Утас эсвэл нууц үг буруу байна.');
         return;
@@ -540,24 +768,33 @@ function setAuthMode(mode) {
       return;
     }
 
-    // Бүртгүүлэх: өөр хүний дугаар дээр нууц үггүйгээр нэвтэрч болохгүй
-    if (getUsers().some(function (u) { return u.phone === phone; })) {
+    // ---------- Бүртгүүлэх: заавал бөглөх талбарууд ----------
+    if (!userName) {
+      showAuthError('authPhoneError', 'Нэрээ оруулна уу.');
+      return;
+    }
+    if (password !== $('authConfirmPassword').value) {
+      showAuthError('authPhoneError', 'Давтан оруулсан нууц үг таарахгүй байна.');
+      return;
+    }
+    if (getUsers().some(function (u) { return normalizePhoneInput(u.phone) === digits; })) {
       showAuthError('authPhoneError', 'Энэ дугаар бүртгэлтэй байна. "Нэвтрэх" хэсгээр орно уу.');
       return;
     }
 
     pendingRegistration = {
       phone: phone,
+      name: userName,
       password: password,
       code: String(Math.floor(100000 + Math.random() * 900000))
     };
-    $('authCodeSentTo').textContent = phone + ' дугаарт баталгаажуулах код илгээгдлээ: ' + pendingRegistration.code + ' (demo)';
+    $('authCodeSentTo').textContent = 'SMS үйлчилгээ холбогдоогүй тул demo код харуулж байна: ' + pendingRegistration.code;
     $('authCode').value = '';
     showAuthStep('code');
     $('authCode').focus();
   }
 
-  function verifyOtp() {
+  async function verifyOtp() {
     var code = $('authCode').value.trim();
     clearAuthErrors();
 
@@ -570,14 +807,30 @@ function setAuthMode(mode) {
       return;
     }
 
+    // Бүртгэл амжилттай: нэр + salt/hash хадгална (ил текст нууц үг биш)
+    var salt = randomSalt();
+    var hash = await hashPassword(pendingRegistration.password, salt);
+
     var users = getUsers();
-    users.push({ phone: pendingRegistration.phone, password: pendingRegistration.password, name: 'Хэрэглэгч' });
+    users.push({
+      phone: pendingRegistration.phone,
+      name: pendingRegistration.name,
+      salt: salt,
+      hash: hash
+    });
     writeJSON(CUSTOMER_USERS_KEY, users);
 
-    var user = setSession({ phone: pendingRegistration.phone });
-    updateAuthUI(user);
-    closeAuthModal();
-    showProfile();
+    pendingRegistration = null;
+
+    // Амжилттай бүртгүүлсний мэдэгдэл харуулж, нэвтрэх хэсэг рүү буцаана
+    showAuthStep('phone');
+    setAuthMode('login');
+    $('authPhoneSubtitle').textContent = '✓ Бүртгүүлэгдлээ! Шинэ нууц үгээрээ нэвтэрнэ үү.';
+    $('authPassword').value = '';
+    $('authCode').value = '';
+    $('authName').value = '';
+    $('authConfirmPassword').value = '';
+    $('authPhone').focus();
   }
 
   function updateAuthUI(user) {
@@ -610,7 +863,8 @@ function showProfile() {
 
   var userPhone = normalizePhoneInput(currentUser.phone);
 
-  var myRecords = readCargoRecords().filter(function (record) {
+  // Админий localStorage-д (uudamCargoShipments) хадгалахсан бүртгэлийг уншиж шүүнэ
+  var myRecords = Uudam.listShipments().filter(function (record) {
     return normalizePhoneInput(record.phone) === userPhone;
   });
 
@@ -630,7 +884,7 @@ function showProfile() {
 
       [
         record.code,
-        record.price + ' ₮',
+        record.price ? record.price + ' ₮' : '—',
         record.date,
         record.status
       ].forEach(function (value) {
@@ -680,6 +934,15 @@ function showProfile() {
   // ---------- Ачаа шалгах ----------
   
 
+// ---------- Хариуг мессежийн кутункайд харуулна ('show found' / 'show notfound') ----------
+function setTrackMessage(kind, text) {
+  var box = $('trackResult');
+  box.textContent = text;
+  box.className = 'show ' + kind;
+  box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// Ачааны кодоор localStorage-оос (uudamCargoShipments) хайж харуулна
 function checkTrack() {
   var query = $('trackInput').value.trim();
   var normalizedQuery = normalizePhoneInput(query);
@@ -689,7 +952,8 @@ function checkTrack() {
     return;
   }
 
-  var records = readCargoRecords();
+  // Админий хадгалсан бүх бүртгэлийг localStorage-оос уншиж тохирохыг нь хайна
+  var records = Uudam.listShipments();
 
   var matches = records.filter(function (record) {
     var codeMatches =
@@ -703,31 +967,18 @@ function checkTrack() {
   });
 
   if (!matches.length) {
-    setTrackMessage('notfound', 'Ачаа олдсонгүй.');
+    setTrackMessage('notfound', 'Ийм кодтой ачаа олдсонгүй.');
     return;
   }
 
   var message = matches.map(function (record) {
-    return 'Нэр: ' + record.fname +
-      '\nБарааны код: ' + record.code +
-      '\nҮнэ: ' + record.price + ' ₮' +
+    return 'Нэр: ' + (record.name || '—') +
+      '\nАчааны код: ' + record.code +
       '\nОгноо: ' + record.date +
       '\nТөлөв: ' + record.status;
   }).join('\n\n────────────\n\n');
 
   setTrackMessage('found', message);
-}
-
-function readCargoRecords() {
-  try {
-    var records = JSON.parse(
-      localStorage.getItem('uudam_cargos_v1') || '[]'
-    );
-
-    return Array.isArray(records) ? records : [];
-  } catch (error) {
-    return [];
-  }
 }
 
 
@@ -756,21 +1007,42 @@ function readCargoRecords() {
   $('authPhone').addEventListener('keydown', function (e) { if (e.key === 'Enter') submitAuthForm(); });
   $('authPassword').addEventListener('keydown', function (e) { if (e.key === 'Enter') submitAuthForm(); });
   $('authCode').addEventListener('keydown', function (e) { if (e.key === 'Enter') verifyOtp(); });
+  $('resetPhone').addEventListener('keydown', function (e) { if (e.key === 'Enter') findAccount(); });
+  $('resetPassword').addEventListener('keydown', function (e) { if (e.key === 'Enter') saveNewPassword(); });
+  $('resetConfirmPassword').addEventListener('keydown', function (e) { if (e.key === 'Enter') saveNewPassword(); });
   $('trackInput').addEventListener('keydown', function (e) { if (e.key === 'Enter') checkTrack(); });
   $('calcWeight').addEventListener('input', recalc);
   $('calcDims').addEventListener('input', recalc);
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAuthModal(); });
 
+  // Өөр tab дээр админ бүртгэл нэмж/төлөв өөрчилвөл storage event-ээр шууд шинэчилнэ
+  document.addEventListener('uudam:shipments-changed', function () {
+    if ($('trackInput').value.trim() !== '') checkTrack();
+    if (currentUser && !$('profileSection').hidden) showProfile();
+  });
+
   (function init() {
     seedCustomerUsers();
-    var saved = null;
-    try { saved = JSON.parse(sessionStorage.getItem(CUSTOMER_SESSION_KEY) || 'null'); } catch (e) { saved = null; }
-    if (saved && saved.phone) {
-      currentUser = saved;
-      updateAuthUI(saved);
-      showProfile();
+
+    // Хуучин demo бичлэгүүдийн ил текст нууц үгийг salt+hash руу шилжүүлнэ (fire-and-forget)
+    migratePlaintextPasswords();
+
+    // Сесс localStorage-д 7 хоногийн хугацаатай хадгалагддаг тул дахин ачаалахад нэвтэрсэн хэвээр үлдэнэ
+    var session = getSession();
+    if (session) {
+      // Бүртгэл нь хөндэгдсэн бол (жишээ нь users цэвэрлэгдсэн) хуурмаг сесс хэрэгжэхгүй
+      var stillExists = getUsers().some(function (u) {
+        return normalizePhoneInput(u.phone) === normalizePhoneInput(session.phone);
+      });
+      if (!stillExists) {
+        clearSession();
+      } else {
+        currentUser = { phone: session.phone, name: session.name || 'Хэрэглэгч' };
+        updateAuthUI(currentUser);
+        showProfile();
+      }
     }
-  });
+  })();
   function closeVideo() {
     var video = $('instructionVideo');
     video.pause();

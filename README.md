@@ -1,24 +1,35 @@
-# Uudam Cargo - Local Run Instructions
-
-1. Install dependencies:
-
-```bash
-cd uudamcargowebsite
-npm install
-```
-
-2. Start server:
-
-```bash
-npm start
-```
-
-3. Open http://localhost:3000 in browser. The server serves static files and provides API endpoints:
-
-- POST `/api/send-otp` {phone}
-- POST `/api/verify-otp` {phone,code}
-- POST `/api/register-cargo` {tracking,phone,status,meta}
-- GET `/api/my-cargos` (requires `x-session-token` header)
-
-Notes: SMS sending is mocked to console. For production, integrate a real SMS provider and replace in `server.js`.
 # uudamcargowebsite
+
+УУДАМ CARGO вэбсайт. Ачааны бүртгэлийн мэдээллийг браузерийн **localStorage** дээр төвлөрүүлэн хадгална.
+
+Хоёр хуудас ижил түлхүүр (`uudamCargoShipments`) ашиглаж, бүгд бүртгэл `localStorage` дээр байх учир сервер, API, database хэрэггүй.
+
+## Ажиллуулах
+
+Энгийн аргаар:
+
+1. `index.html` файлыг браузер дээр шууд нээнэ (дабл-клик).
+2. Хэрэгтэй бол статик сервер:
+
+```bash
+python -m http.server 3000
+```
+
+Дараа нь http://localhost:3000 нээнэ.
+
+
+
+## Хэрэглэгчийн бүртгэл, нэвтрэх (demo)
+
+`index.html` дээр хэрэглэгч нэр, утасны дугаар, нууц үгээрээ бүртгүүлж, дараа нь дугаар болон нууц үгээрээ нэвтэрч болно. Demo бүртгэл: `99001122` / `123456`.
+
+- Бүртгэлийн талбарууд: Нэр, Утасны дугаар (8 оронтой), Нууц үг (багадаа 6 тэмдэгт), Нууц үг давтах. Давхар дугаараар бүртгэл үүсгэхгүй.
+- SMS/имэйл баталгаажуулалт холбогдоогүй тул бүртгэлийг демо кодоор баталгаажуулна (код дэлгэцэн дээр харагдана).
+- Нууц үг ил текстээр бус, `salt + SHA-256` hash хэлбэрээр localStorage (`uudam_customer_users_v1`) дээр хадгалагдана.
+- Нэвтэрсэн хэрэглэгчийн сесс 7 хоногийн хугацаатай (`uudam_customer_session_v1`) — дахин ачаалахад нэвтэрсэн хэвээр үлдэнэ.
+- «Нууц үгээ мартсан уу?» холбоосоор бүртгэлтэй дугаараа бичиж шинэ нууц үг тогтоож болно. Энэ нь зөвхөн **demo хувилбар**: бодит SMS/имэйл баталгаажуулалт байхгүй тул дугаарыг мэддэг хүн нууц үгийг нь солих боломжтой. Бодит вэбсайт дээр нэвтрэх баталгаажуулалттай сервер шаардлагатай.
+- Энгийн хэрэглэгч админ хэсэгт нэвтрэх боломжгүй — админ эрх зөвхөн demo админ бүртгэлээр ордог.
+
+## Хоёр tab-аар синк хийх
+
+Нэг tab дээр localStorage өөрчлөгдөхөд нөгөө tab дээр `storage` event шидэж, шинэ мэдээллийг автоматаар харуулна.
