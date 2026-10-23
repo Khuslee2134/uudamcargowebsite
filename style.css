@@ -95,7 +95,7 @@ header {
   margin-right: auto;
   box-sizing: border-box;
   padding: 18px clamp(18px, 4vw, 48px);
-  background: var(--header-bg);
+  background: var(--bg2);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
@@ -436,7 +436,7 @@ nav a.active {
 footer {
   margin-top: auto;
   padding: 30px clamp(18px, 4vw, 48px);
-  color: #ffffff;
+  color: var(--text);
   font-size: 13px;
   text-align: center;
 }
@@ -699,7 +699,7 @@ footer {
 .hero {
   max-width: 1180px;
   margin: 0 auto;
-  padding: clamp(40px, 7vw, 4px) clamp(18px, 4vw, 48px) 30px;
+  padding: clamp(40px, 7vw, 24px) clamp(18px, 4vw, 48px) 30px;
   display: grid;
   grid-template-columns: 1fr;
   gap: 10px;
@@ -1156,7 +1156,7 @@ footer {
 .page-calc main {
   max-width: 1180px;
   margin: 0 auto;
-  padding: clamp(32px, 6vw, 64px) clamp(18px, 4vw, 48px) 200px;
+  padding: clamp(32px, 6vw, 24px) clamp(18px, 4vw, 48px) 200px;
 }
 .page-calc h1 {
   font-size: clamp(28px, 4.5vw, 42px);
@@ -1245,7 +1245,7 @@ footer {
 .page-about main {
   max-width: 1180px;
   margin: 0 auto;
-  padding: clamp(32px, 6vw, 64px) clamp(18px, 4vw, 48px) 80px;
+  padding: clamp(32px, 6vw, 24px) clamp(18px, 4vw, 48px) 80px;
 }
 .page-about h1 {
   font-size: clamp(28px, 4.5vw, 44px);
@@ -1557,7 +1557,7 @@ footer {
     padding: 5px 8px;
   }
 }
-@media (max-width: 640px) {
+@media (max-width: 480px) {
   .auth-btn {
     padding: 10px;
     border-radius: 50%;
