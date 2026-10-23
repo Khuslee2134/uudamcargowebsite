@@ -1,305 +1,364 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="mn">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="robots" content="noindex, nofollow">
-<title>Админ — УУДАМ CARGO</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-</head>
-<body class="page-admin">
-
-<header>
-  <a class="brand" href="index.html" aria-label="УУДАМ CARGO нүүр">
-    <div class="logo-word">УУДАМ <span>CARGO</span></div>
-  </a>
-  <div class="header-user" id="headerUser" hidden>
-    <span id="userEmailTag">admin</span>
-    <button class="cancel-btn" type="button" onclick="doLogout()">Гарах</button>
-  </div>
-</header>
-<main id="mainArea" hidden>
-  <div class="panel">
-    <h2 id="formTitle">Шинэ бүртгэл нэмэх</h2>
-
-    <div class="form-grid">
-      <div class="field">
-        <label for="fDate">Огноо</label>
-        <input type="text" id="fDate" autocomplete="off">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Админ — УУДАМ CARGO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="page-admin">
+    <header>
+      <a class="brand" href="index.html" aria-label="УУДАМ CARGO нүүр">
+        <div class="logo-word">УУДАМ <span>CARGO</span></div>
+      </a>
+      <div class="header-user" id="headerUser" hidden>
+        <span id="userEmailTag">admin</span>
+        <button class="cancel-btn" type="button" onclick="doLogout()">Гарах</button>
       </div>
-      <div class="field">
-        <label for="fStatus">Төлөв</label>
-        <select id="fStatus">
-          <option value="Эрээнээс ачигдсан">Эрээнээс ачигдсан</option>
-          <option value="Дарханд буусан">Дарханд буусан</option>
-          <option value="Авсан">Авсан</option>
-        </select>
+    </header>
+    <main id="mainArea" hidden>
+      <div class="panel">
+        <h2 id="formTitle">Шинэ бүртгэл нэмэх</h2>
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="fDate">Огноо</label>
+            <input type="text" id="fDate" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="fStatus">Төлөв</label>
+            <select id="fStatus">
+              <option value="Эрээнээс ачигдсан">Эрээнээс ачигдсан</option>
+              <option value="Дарханд буусан">Дарханд буусан</option>
+              <option value="Авсан">Авсан</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="fname">Нэр</label>
+            <input type="text" id="fname" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="fPhone">Утасны дугаар</label>
+            <input type="tel" id="fPhone" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="fCode">Барааны код</label>
+            <input type="text" id="fCode" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="fPrice">Үнэ (₮)</label>
+            <input type="text" id="fPrice" autocomplete="off" />
+          </div>
+        </div>
+
+        <div class="save-row">
+          <button class="save-btn" id="saveBtn" type="button" onclick="saveRecord()">
+            Хадгалах
+          </button>
+          <button class="cancel-btn" id="cancelBtn" type="button" onclick="resetForm()" hidden>
+            Цуцлах
+          </button>
+          <span class="save-status" id="saveStatus" role="status"></span>
+        </div>
       </div>
-      <div class="field">
-        <label for="fname">Нэр</label>
-        <input type="text" id="fname" autocomplete="off">
+
+      <div class="panel">
+        <h2>Бүх бүртгэл</h2>
+        <div class="track-row search-row">
+          <input
+            id="adminSearch"
+            type="search"
+            placeholder="Tracking код эсвэл утасны дугаар"
+            aria-label="Хайх"
+          />
+          <button class="save-btn" type="button" onclick="searchRecords()">Хайх</button>
+          <button
+            class="cancel-btn"
+            id="clearSearchBtn"
+            type="button"
+            onclick="clearSearch()"
+            hidden
+          >
+            Цэвэрлэх
+          </button>
+        </div>
+        <table class="data-table" id="recTable">
+          <thead>
+            <tr>
+              <th>Код</th>
+              <th>Нэр</th>
+              <th>Утас</th>
+              <th>Огноо</th>
+              <th>Үнэ</th>
+              <th>Төлөв</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="recBody"></tbody>
+        </table>
+        <div class="empty" id="emptyMsg" hidden>Бүртгэл алга байна.</div>
       </div>
-      <div class="field">
-        <label for="fPhone">Утасны дугаар</label>
-        <input type="tel" id="fPhone" autocomplete="off">
-      </div>
-      <div class="field">
-        <label for="fCode">Барааны код</label>
-        <input type="text" id="fCode" autocomplete="off">
-      </div>
-      <div class="field">
-        <label for="fPrice">Үнэ (₮)</label>
-        <input type="text" id="fPrice" autocomplete="off">
-      </div>
-    </div>
+    </main>
 
-    <div class="save-row">
-      <button class="save-btn" id="saveBtn" type="button" onclick="saveRecord()">Хадгалах</button>
-      <button class="cancel-btn" id="cancelBtn" type="button" onclick="resetForm()" hidden>Цуцлах</button>
-      <span class="save-status" id="saveStatus" role="status"></span>
-    </div>
-  </div>
+    <script src="shared.js"></script>
+    <script>
+      var $ = function (id) {
+        return document.getElementById(id);
+      };
+      var esc = Uudam.escapeHtml;
 
-  <div class="panel">
-    <h2>Бүх бүртгэл</h2>
-    <div class="track-row search-row">
-      <input id="adminSearch" type="search" placeholder="Tracking код эсвэл утасны дугаар" aria-label="Хайх">
-      <button class="save-btn" type="button" onclick="searchRecords()">Хайх</button>
-      <button class="cancel-btn" id="clearSearchBtn" type="button" onclick="clearSearch()" hidden>Цэвэрлэх</button>
-    </div>
-    <table class="data-table" id="recTable">
-      <thead>
-        <tr><th>Код</th><th>Нэр</th><th>Утас</th><th>Огноо</th><th>Үнэ</th><th>Төлөв</th><th></th></tr>
-      </thead>
-      <tbody id="recBody"></tbody>
-    </table>
-    <div class="empty" id="emptyMsg" hidden>Бүртгэл алга байна.</div>
-  </div>
-</main>
+      var DEFAULT_STATUS = 'Эрээнээс ачигдсан';
+      var editingCode = null;
+      var activeSearch = '';
+      var adminUserId = null;
+      var DEMO_LOGIN_EMAIL = 'admin@uudamcargo.mn';
+      var DEMO_LOGIN_PASSWORD = 'Azraga1227';
+      var ADMIN_SESSION_KEY = 'uudam_admin_session';
 
-<script src="shared.js"></script>
-<script>
-  var $ = function (id) { return document.getElementById(id); };
-  var esc = Uudam.escapeHtml;
+      // Ачааны бүртгэлийн сан shared.js дотор — localStorage түлхүүр: uudamCargoShipments
+      // Хоосон мэдээлэл хадгалахгүй, код давхардвал мэдэгдэл буцана.
 
-  var DEFAULT_STATUS = 'Эрээнээс ачигдсан';
-  var editingCode = null;
-  var activeSearch = '';
-  var adminUserId = null;
-  var DEMO_LOGIN_EMAIL = 'admin@uudamcargo.mn';
-  var DEMO_LOGIN_PASSWORD = 'Azraga1227';
-  var ADMIN_SESSION_KEY = 'uudam_admin_session';
-
-  // Ачааны бүртгэлийн сан shared.js дотор — localStorage түлхүүр: uudamCargoShipments
-  // Хоосон мэдээлэл хадгалахгүй, код давхардвал мэдэгдэл буцана.
-
-  function showAdmin(user) {
-    if (adminUserId === user.id && !$('mainArea').hidden) return;
-    adminUserId = user.id;
-    $('userEmailTag').textContent = (user && user.email) || '';
-    $('headerUser').hidden = false;
-    $('mainArea').hidden = false;
-    if (!editingCode && !$('fDate').value) $('fDate').value = todayStr();
-    loadList();
-  }
-
-  function doLogout() {
-    adminUserId = null;
-    localStorage.removeItem(ADMIN_SESSION_KEY);
-    window.location.href = 'index.html';
-  }
-
-  function verifyAdminSession() {
-    try {
-      var session = JSON.parse(localStorage.getItem(ADMIN_SESSION_KEY) || 'null');
-      if (!session || !session.isAdmin || session.email !== DEMO_LOGIN_EMAIL) {
-        window.location.href = 'index.html';
-        return false;
+      function showAdmin(user) {
+        if (adminUserId === user.id && !$('mainArea').hidden) return;
+        adminUserId = user.id;
+        $('userEmailTag').textContent = (user && user.email) || '';
+        $('headerUser').hidden = false;
+        $('mainArea').hidden = false;
+        if (!editingCode && !$('fDate').value) $('fDate').value = todayStr();
+        loadList();
       }
-      showAdmin({ id: 'demo-admin', email: session.email });
-      return true;
-    } catch (e) {
-      window.location.href = 'index.html';
-      return false;
-    }
-  }
 
-  function showEmpty(message) {
-    $('recBody').innerHTML = '';
-    $('emptyMsg').textContent = message;
-    $('emptyMsg').hidden = false;
-  }
+      function doLogout() {
+        adminUserId = null;
+        localStorage.removeItem(ADMIN_SESSION_KEY);
+        window.location.href = 'index.html';
+      }
 
-  function getVisibleRecords() {
-    var rows = Uudam.listShipments();
-    if (activeSearch) {
-      var searchText = activeSearch.toLowerCase();
-      rows = rows.filter(function (record) {
-        return String(record.code || '').toLowerCase().includes(searchText) ||
-          String(record.phone || '').toLowerCase().includes(searchText);
+      function verifyAdminSession() {
+        try {
+          var session = JSON.parse(localStorage.getItem(ADMIN_SESSION_KEY) || 'null');
+          if (!session || !session.isAdmin || session.email !== DEMO_LOGIN_EMAIL) {
+            window.location.href = 'index.html';
+            return false;
+          }
+          showAdmin({ id: 'demo-admin', email: session.email });
+          return true;
+        } catch (e) {
+          window.location.href = 'index.html';
+          return false;
+        }
+      }
+
+      function showEmpty(message) {
+        $('recBody').innerHTML = '';
+        $('emptyMsg').textContent = message;
+        $('emptyMsg').hidden = false;
+      }
+
+      function getVisibleRecords() {
+        var rows = Uudam.listShipments();
+        if (activeSearch) {
+          var searchText = activeSearch.toLowerCase();
+          rows = rows.filter(function (record) {
+            return (
+              String(record.code || '')
+                .toLowerCase()
+                .includes(searchText) ||
+              String(record.phone || '')
+                .toLowerCase()
+                .includes(searchText)
+            );
+          });
+        }
+        return rows;
+      }
+
+      // Хадгалсан бүх ачааг уншиж хүснэгтэд харуулна
+      function loadList() {
+        renderTable(getVisibleRecords());
+      }
+
+      function searchRecords() {
+        activeSearch = $('adminSearch').value.trim();
+        $('clearSearchBtn').hidden = !activeSearch;
+        loadList();
+      }
+
+      function clearSearch() {
+        $('adminSearch').value = '';
+        activeSearch = '';
+        $('clearSearchBtn').hidden = true;
+        loadList();
+      }
+
+      function renderTable(rows) {
+        if (!rows.length) {
+          showEmpty(activeSearch ? 'Хайлтад тохирох бүртгэл олдсонгүй.' : 'Бүртгэл алга байна.');
+          return;
+        }
+        $('emptyMsg').hidden = true;
+        $('recBody').innerHTML = rows
+          .map(function (d) {
+            var code = esc(d.code);
+            return (
+              '<tr>' +
+              '<td data-label="Код" class="code-cell">' +
+              code +
+              '</td>' +
+              '<td data-label="Нэр">' +
+              esc(d.name) +
+              '</td>' +
+              '<td data-label="Утас">' +
+              esc(d.phone) +
+              '</td>' +
+              '<td data-label="Огноо">' +
+              esc(d.date) +
+              '</td>' +
+              '<td data-label="Үнэ">' +
+              esc(d.price) +
+              '</td>' +
+              '<td data-label="Төлөв">' +
+              esc(d.status || DEFAULT_STATUS) +
+              '</td>' +
+              '<td><div class="row-actions">' +
+              '<button type="button" data-action="edit" data-code="' +
+              code +
+              '">Засах</button>' +
+              '<button type="button" class="del" data-action="delete" data-code="' +
+              code +
+              '">Устгах</button>' +
+              '</div></td>' +
+              '</tr>'
+            );
+          })
+          .join('');
+      }
+
+      function todayStr() {
+        var d = new Date();
+        var mm = String(d.getMonth() + 1).padStart(2, '0');
+        var dd = String(d.getDate()).padStart(2, '0');
+        return d.getFullYear() + '-' + mm + '-' + dd;
+      }
+
+      function normalizePhone(value) {
+        var digits = String(value || '').replace(/\D/g, '');
+        if (digits.length === 11 && digits.indexOf('976') === 0) digits = digits.slice(3);
+        return digits.length === 8 ? digits : String(value || '').trim();
+      }
+
+      function editRecord(code) {
+        var data = Uudam.findShipment(code);
+        if (!data) return;
+
+        editingCode = code;
+        $('formTitle').textContent = 'Бүртгэл засах — ' + (data.code || code);
+        $('fCode').value = data.code || code;
+        $('fCode').disabled = true;
+        $('fname').value = data.name || '';
+        $('fPhone').value = data.phone || '';
+        $('fPrice').value = data.price || '';
+        $('fDate').value = data.date || '';
+        $('fStatus').value =
+          Uudam.SHIPMENT_STATUSES.indexOf(data.status) >= 0 ? data.status : DEFAULT_STATUS;
+        $('cancelBtn').hidden = false;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      function resetForm() {
+        editingCode = null;
+        $('formTitle').textContent = 'Шинэ бүртгэл нэмэх';
+        $('fCode').value = '';
+        $('fCode').disabled = false;
+        $('fname').value = '';
+        $('fPhone').value = '';
+        $('fPrice').value = '';
+        $('fDate').value = todayStr();
+        $('fStatus').value = DEFAULT_STATUS;
+        $('cancelBtn').hidden = true;
+        $('saveStatus').textContent = '';
+      }
+
+      function saveRecord() {
+        var code = editingCode || $('fCode').value.trim().toUpperCase();
+        var statusEl = $('saveStatus');
+
+        if (!code) {
+          statusEl.style.color = 'var(--err)';
+          statusEl.textContent = 'Код заавал бөглөнө үү.';
+          return;
+        }
+
+        var data = {
+          code: code,
+          name: $('fname').value.trim(),
+          phone: normalizePhone($('fPhone').value),
+          price: $('fPrice').value.trim(),
+          date: $('fDate').value.trim(),
+          status: $('fStatus').value,
+        };
+
+        // Шинэ бүртгэл бол нэмэх, засаж байгаа бол засах
+        var result = editingCode
+          ? Uudam.updateShipment(editingCode, data)
+          : Uudam.addShipment(data);
+
+        if (!result.ok) {
+          // Давхар код болон хоосон талбарын мэдэгдэл энд харуулна
+          statusEl.style.color = 'var(--err)';
+          statusEl.textContent = result.error;
+          return;
+        }
+
+        resetForm();
+        statusEl.style.color = 'var(--ok)';
+        statusEl.textContent = 'Хадгаллаа ✓';
+        loadList();
+      }
+
+      function deleteRecord(code) {
+        if (!confirm(code + ' кодыг устгах уу?')) return;
+        var result = Uudam.deleteShipment(code);
+        if (!result.ok) {
+          $('saveStatus').style.color = 'var(--err)';
+          $('saveStatus').textContent = result.error;
+          return;
+        }
+        $('saveStatus').style.color = 'var(--ok)';
+        $('saveStatus').textContent = 'Бүртгэл устгагдлаа.';
+        loadList();
+      }
+
+      $('recBody').addEventListener('click', function (e) {
+        var btn = e.target.closest('button[data-action]');
+        if (!btn) return;
+        var code = btn.getAttribute('data-code');
+        if (btn.getAttribute('data-action') === 'edit') editRecord(code);
+        else deleteRecord(code);
       });
-    }
-    return rows;
-  }
 
-  // Хадгалсан бүх ачааг уншиж хүснэгтэд харуулна
-  function loadList() {
-    renderTable(getVisibleRecords());
-  }
+      $('adminSearch').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') searchRecords();
+      });
 
-  function searchRecords() {
-    activeSearch = $('adminSearch').value.trim();
-    $('clearSearchBtn').hidden = !activeSearch;
-    loadList();
-  }
+      // Өөр tab дээр бүртгэл өөрчлөгдвөл (storage event → shared.js мэдээлнэ) жагсаалтыг шинэчилнэ
+      document.addEventListener('uudam:shipments-changed', function () {
+        if (!$('mainArea').hidden) loadList();
+      });
 
-  function clearSearch() {
-    $('adminSearch').value = '';
-    activeSearch = '';
-    $('clearSearchBtn').hidden = true;
-    loadList();
-  }
+      function init() {
+        if (!verifyAdminSession()) return;
+        $('fDate').value = todayStr();
+      }
 
-  function renderTable(rows) {
-    if (!rows.length) {
-      showEmpty(activeSearch ? 'Хайлтад тохирох бүртгэл олдсонгүй.' : 'Бүртгэл алга байна.');
-      return;
-    }
-    $('emptyMsg').hidden = true;
-    $('recBody').innerHTML = rows.map(function (d) {
-      var code = esc(d.code);
-      return '<tr>' +
-        '<td data-label="Код" class="code-cell">' + code + '</td>' +
-        '<td data-label="Нэр">' + esc(d.name) + '</td>' +
-        '<td data-label="Утас">' + esc(d.phone) + '</td>' +
-        '<td data-label="Огноо">' + esc(d.date) + '</td>' +
-        '<td data-label="Үнэ">' + esc(d.price) + '</td>' +
-        '<td data-label="Төлөв">' + esc(d.status || DEFAULT_STATUS) + '</td>' +
-        '<td><div class="row-actions">' +
-          '<button type="button" data-action="edit" data-code="' + code + '">Засах</button>' +
-          '<button type="button" class="del" data-action="delete" data-code="' + code + '">Устгах</button>' +
-        '</div></td>' +
-      '</tr>';
-    }).join('');
-  }
-
-  function todayStr() {
-    var d = new Date();
-    var mm = String(d.getMonth() + 1).padStart(2, '0');
-    var dd = String(d.getDate()).padStart(2, '0');
-    return d.getFullYear() + '-' + mm + '-' + dd;
-  }
-
-  function normalizePhone(value) {
-    var digits = String(value || '').replace(/\D/g, '');
-    if (digits.length === 11 && digits.indexOf('976') === 0) digits = digits.slice(3);
-    return digits.length === 8 ? digits : String(value || '').trim();
-  }
-
-  function editRecord(code) {
-    var data = Uudam.findShipment(code);
-    if (!data) return;
-
-    editingCode = code;
-    $('formTitle').textContent = 'Бүртгэл засах — ' + (data.code || code);
-    $('fCode').value = data.code || code;
-    $('fCode').disabled = true;
-    $('fname').value = data.name || '';
-    $('fPhone').value = data.phone || '';
-    $('fPrice').value = data.price || '';
-    $('fDate').value = data.date || '';
-    $('fStatus').value = Uudam.SHIPMENT_STATUSES.indexOf(data.status) >= 0 ? data.status : DEFAULT_STATUS;
-    $('cancelBtn').hidden = false;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function resetForm() {
-    editingCode = null;
-    $('formTitle').textContent = 'Шинэ бүртгэл нэмэх';
-    $('fCode').value = '';
-    $('fCode').disabled = false;
-    $('fname').value = '';
-    $('fPhone').value = '';
-    $('fPrice').value = '';
-    $('fDate').value = todayStr();
-    $('fStatus').value = DEFAULT_STATUS;
-    $('cancelBtn').hidden = true;
-    $('saveStatus').textContent = '';
-  }
-
-  function saveRecord() {
-    var code = editingCode || $('fCode').value.trim().toUpperCase();
-    var statusEl = $('saveStatus');
-
-    if (!code) {
-      statusEl.style.color = 'var(--err)';
-      statusEl.textContent = 'Код заавал бөглөнө үү.';
-      return;
-    }
-
-    var data = {
-      code: code,
-      name: $('fname').value.trim(),
-      phone: normalizePhone($('fPhone').value),
-      price: $('fPrice').value.trim(),
-      date: $('fDate').value.trim(),
-      status: $('fStatus').value
-    };
-
-    // Шинэ бүртгэл бол нэмэх, засаж байгаа бол засах
-    var result = editingCode ? Uudam.updateShipment(editingCode, data) : Uudam.addShipment(data);
-
-    if (!result.ok) {
-      // Давхар код болон хоосон талбарын мэдэгдэл энд харуулна
-      statusEl.style.color = 'var(--err)';
-      statusEl.textContent = result.error;
-      return;
-    }
-
-    resetForm();
-    statusEl.style.color = 'var(--ok)';
-    statusEl.textContent = 'Хадгаллаа ✓';
-    loadList();
-  }
-
-  function deleteRecord(code) {
-    if (!confirm(code + ' кодыг устгах уу?')) return;
-    var result = Uudam.deleteShipment(code);
-    if (!result.ok) {
-      $('saveStatus').style.color = 'var(--err)';
-      $('saveStatus').textContent = result.error;
-      return;
-    }
-    $('saveStatus').style.color = 'var(--ok)';
-    $('saveStatus').textContent = 'Бүртгэл устгагдлаа.';
-    loadList();
-  }
-
-  $('recBody').addEventListener('click', function (e) {
-    var btn = e.target.closest('button[data-action]');
-    if (!btn) return;
-    var code = btn.getAttribute('data-code');
-    if (btn.getAttribute('data-action') === 'edit') editRecord(code);
-    else deleteRecord(code);
-  });
-
-  $('adminSearch').addEventListener('keydown', function (e) { if (e.key === 'Enter') searchRecords(); });
-
-  // Өөр tab дээр бүртгэл өөрчлөгдвөл (storage event → shared.js мэдээлнэ) жагсаалтыг шинэчилнэ
-  document.addEventListener('uudam:shipments-changed', function () {
-    if (!$('mainArea').hidden) loadList();
-  });
-
-  function init() {
-    if (!verifyAdminSession()) return;
-    $('fDate').value = todayStr();
-  }
-
-  init();
-</script>
-
-</body>
+      init();
+    </script>
+  </body>
 </html>

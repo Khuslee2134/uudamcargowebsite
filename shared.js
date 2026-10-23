@@ -3,7 +3,7 @@
   'use strict';
 
   // Тариф — үнэ өөрчлөгдвөл зөвхөн эндээс засна
-  var WEIGHT_RATE = 2500;   // ₮ / кг
+  var WEIGHT_RATE = 2500; // ₮ / кг
   var VOLUME_RATE = 350000; // ₮ / м³
 
   function toggleMenu() {
@@ -40,7 +40,7 @@
       weightCost: weightCost,
       volumeCost: volumeCost,
       total: Math.round(Math.max(weightCost, volumeCost)),
-      basis: volumeCost > weightCost ? 'volume' : 'weight'
+      basis: volumeCost > weightCost ? 'volume' : 'weight',
     };
   }
 
@@ -92,7 +92,9 @@
 
   // Код харьцуулахад жигд хэлбэр (зай хасан, ТОМ үсэг)
   function normalizeShipmentCode(code) {
-    return String(code == null ? '' : code).trim().toUpperCase();
+    return String(code == null ? '' : code)
+      .trim()
+      .toUpperCase();
   }
 
   function normalizeShipmentStatus(status) {
@@ -139,7 +141,7 @@
       phone: String(data.phone == null ? '' : data.phone).trim(),
       code: normalizeShipmentCode(data.code),
       date: String(data.date == null ? '' : data.date).trim(),
-      status: normalizeShipmentStatus(data.status)
+      status: normalizeShipmentStatus(data.status),
     };
     var price = String(data.price == null ? '' : data.price).trim();
     if (price !== '') record.price = price; // форм дэх "Үнэ" талбар — заавал биш
@@ -166,15 +168,24 @@
 
     var record = list[index];
 
-    var nextCode = changes.code != null ? normalizeShipmentCode(changes.code) : normalizeShipmentCode(record.code);
+    var nextCode =
+      changes.code != null
+        ? normalizeShipmentCode(changes.code)
+        : normalizeShipmentCode(record.code);
     if (!nextCode) return { ok: false, error: 'Ачааны код хоосон байна.' };
-    if (nextCode !== normalizeShipmentCode(record.code) && isCodeInList(list, nextCode, record.code)) {
+    if (
+      nextCode !== normalizeShipmentCode(record.code) &&
+      isCodeInList(list, nextCode, record.code)
+    ) {
       return { ok: false, error: nextCode + ' кодтой өөр бүртгэл байгаа тул солих боломжгүй.' };
     }
 
-    if (changes.name != null && String(changes.name).trim() !== '') record.name = String(changes.name).trim();
-    if (changes.phone != null && String(changes.phone).trim() !== '') record.phone = String(changes.phone).trim();
-    if (changes.date != null && String(changes.date).trim() !== '') record.date = String(changes.date).trim();
+    if (changes.name != null && String(changes.name).trim() !== '')
+      record.name = String(changes.name).trim();
+    if (changes.phone != null && String(changes.phone).trim() !== '')
+      record.phone = String(changes.phone).trim();
+    if (changes.date != null && String(changes.date).trim() !== '')
+      record.date = String(changes.date).trim();
     if (changes.status != null) record.status = normalizeShipmentStatus(changes.status);
     if (changes.price != null) {
       var price = String(changes.price).trim();
@@ -208,7 +219,9 @@
     if (!e || e.key !== SHIPMENTS_KEY) return;
     try {
       document.dispatchEvent(new CustomEvent('uudam:shipments-changed'));
-    } catch (err) { /* event дэмжигдэхгүй үед алгасна */ }
+    } catch (err) {
+      /* event дэмжигдэхгүй үед алгасна */
+    }
   });
 
   global.toggleMenu = toggleMenu;
@@ -229,7 +242,6 @@
     addShipment: addShipment,
     updateShipment: updateShipment,
     updateShipmentStatus: updateShipmentStatus,
-    deleteShipment: deleteShipment
+    deleteShipment: deleteShipment,
   };
 })(window);
-

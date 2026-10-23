@@ -1,88 +1,140 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="mn">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Бидний тухай — УУДАМ CARGO</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-</head>
-<body class="page-about">
-
-<header>
-  <a class="brand" href="index.html" aria-label="УУДАМ CARGO нүүр">
-    <div class="logo-word">УУДАМ <span>CARGO</span></div>
-  </a>
-  <nav aria-label="Үндсэн цэс">
-    <a href="about.html" class="active" aria-current="page">Бидний тухай</a>
-    <a href="calculator.html">Тооцоолуур</a>
-  </nav>
-  <div class="header-actions">
-    <button class="menu-btn" type="button" onclick="toggleMenu()" aria-label="Цэс">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <line x1="3" y1="6" x2="21" y2="6"></line>
-        <line x1="3" y1="12" x2="21" y2="12"></line>
-        <line x1="3" y1="18" x2="21" y2="18"></line>
-      </svg>
-    </button>
-  </div>
-</header>
-
-<div class="side-drawer" id="sideDrawer">
-  <div class="drawer-overlay" onclick="toggleMenu()"></div>
-  <div class="drawer-panel">
-    <button class="drawer-close" type="button" onclick="toggleMenu()" aria-label="Хаах">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <line x1="4" y1="4" x2="20" y2="20"></line>
-        <line x1="20" y1="4" x2="4" y2="20"></line>
-      </svg>
-    </button>
-    <a href="about.html" class="active">Бидний тухай</a>
-    <a href="calculator.html">Тооцоолуур</a>
-    <a href="index.html#contact">Холбоо барих</a>
-  </div>
-</div>
-
-<main>
-  <div class="eyebrow">Бидний тухай</div>
-  <h1>Эрээнээс Дархан руу — итгэлтэй, тогтмол хүргэлт</h1>
-  <p class="sub">Uudam Cargo нь Эрээн—Дархан чиглэлээр ачаа тээвэрлэдэг, харилцагчдаа ил тод, найдвартай үйлчилгээгээр дэмждэг тээврийн компани.</p>
-
-  <div class="stats">
-    <div class="stat"><div class="n">2024</div><div class="l">Байгуулагдсан он</div></div>
-    <div class="stat"><div class="n">40,000+</div><div class="l">Хүргэсэн ачаа</div></div>
-    <div class="stat"><div class="n">Дархан</div><div class="l">салбар</div></div>
-    <div class="stat"><div class="n">4-6 хоног</div><div class="l">Дундаж хүргэлтийн хугацаа</div></div>
-  </div>
-
-  <div class="values">
-    <div class="value-grid">
-      <div class="value-card">
-        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
-        <h3>Ил тод байдал</h3>
-        <p>Ачааныхаа явцыг хаанаас ч, хэзээ ч шалгах боломжтой — нуугдмал зардал байхгүй.</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Бидний тухай — УУДАМ CARGO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="page-about">
+    <header>
+      <a class="brand" href="index.html" aria-label="УУДАМ CARGO нүүр">
+        <div class="logo-word">УУДАМ <span>CARGO</span></div>
+      </a>
+      <nav aria-label="Үндсэн цэс">
+        <a href="about.html" class="active" aria-current="page">Бидний тухай</a>
+        <a href="calculator.html">Тооцоолуур</a>
+      </nav>
+      <div class="header-actions">
+        <button class="menu-btn" type="button" onclick="toggleMenu()" aria-label="Цэс">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          >
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
       </div>
-      <div class="value-card">
-        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div>
-        <h3>Хурд</h3>
-        <p>Стандарт 4–6 хоногийн хугацаанд хил дамжуулан хүргэдэг тогтмол хуваарь.</p>
+    </header>
+
+    <div class="side-drawer" id="sideDrawer">
+      <div class="drawer-overlay" onclick="toggleMenu()"></div>
+      <div class="drawer-panel">
+        <button class="drawer-close" type="button" onclick="toggleMenu()" aria-label="Хаах">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          >
+            <line x1="4" y1="4" x2="20" y2="20"></line>
+            <line x1="20" y1="4" x2="4" y2="20"></line>
+          </svg>
+        </button>
+        <a href="about.html" class="active">Бидний тухай</a>
+        <a href="calculator.html">Тооцоолуур</a>
+        <a href="index.html#contact">Холбоо барих</a>
       </div>
     </div>
-  </div>
 
-  <div class="cta-band">
-    <div>
-      <h3>Ачаагаа илгээхэд бэлэн үү?</h3>
-      <p>Захиалга өгөх эсвэл асуултаа илгээхийн тулд бидэнтэй холбогдоорой.</p>
-    </div>
-    <a class="cta-btn" href="index.html#contact">Холбоо барих</a>
-  </div>
-</main>
+    <main>
+      <div class="eyebrow">Бидний тухай</div>
+      <h1>Эрээнээс Дархан руу — итгэлтэй, тогтмол хүргэлт</h1>
+      <p class="sub">
+        Uudam Cargo нь Эрээн—Дархан чиглэлээр ачаа тээвэрлэдэг, харилцагчдаа ил тод, найдвартай
+        үйлчилгээгээр дэмждэг тээврийн компани.
+      </p>
 
-<footer>© 2026 Uudam Cargo — Бидний тухай</footer>
+      <div class="stats">
+        <div class="stat">
+          <div class="n">2024</div>
+          <div class="l">Байгуулагдсан он</div>
+        </div>
+        <div class="stat">
+          <div class="n">40,000+</div>
+          <div class="l">Хүргэсэн ачаа</div>
+        </div>
+        <div class="stat">
+          <div class="n">Дархан</div>
+          <div class="l">салбар</div>
+        </div>
+        <div class="stat">
+          <div class="n">4-6 хоног</div>
+          <div class="l">Дундаж хүргэлтийн хугацаа</div>
+        </div>
+      </div>
 
-<script src="shared.js"></script>
-</body>
+      <div class="values">
+        <div class="value-grid">
+          <div class="value-card">
+            <div class="ic">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="11" cy="11" r="7"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </div>
+            <h3>Ил тод байдал</h3>
+            <p>Ачааныхаа явцыг хаанаас ч, хэзээ ч шалгах боломжтой — нуугдмал зардал байхгүй.</p>
+          </div>
+          <div class="value-card">
+            <div class="ic">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+            </div>
+            <h3>Хурд</h3>
+            <p>Стандарт 4–6 хоногийн хугацаанд хил дамжуулан хүргэдэг тогтмол хуваарь.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cta-band">
+        <div>
+          <h3>Ачаагаа илгээхэд бэлэн үү?</h3>
+          <p>Захиалга өгөх эсвэл асуултаа илгээхийн тулд бидэнтэй холбогдоорой.</p>
+        </div>
+        <a class="cta-btn" href="index.html#contact">Холбоо барих</a>
+      </div>
+    </main>
+
+    <footer>© 2026 Uudam Cargo — Бидний тухай</footer>
+
+    <script src="shared.js"></script>
+  </body>
 </html>

@@ -1,1057 +1,1363 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="mn">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>УУДАМ CARGO</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-</head>
-<body class="page-home">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>УУДАМ CARGO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="page-home">
+    <header>
+      <a class="brand" href="index.html" aria-label="УУДАМ CARGO нүүр">
+        <div class="logo-word">УУДАМ <span>CARGO</span></div>
+      </a>
+      <nav aria-label="Үндсэн цэс">
+        <a href="about.html">Бидний тухай</a>
+        <a href="calculator.html">Тооцоолуур</a>
+      </nav>
+      <div class="header-actions">
+        <a class="hdr-cta" href="#contact">Хаяг холбох</a>
+        <button class="auth-btn" id="authBtn" type="button" onclick="onAuthBtnClick()">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <span id="authBtnLabel">Нэвтрэх</span>
+        </button>
+        <button class="menu-btn" type="button" onclick="toggleMenu()" aria-label="Цэс">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          >
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </header>
 
-<header>
-  <a class="brand" href="index.html" aria-label="УУДАМ CARGO нүүр">
-    <div class="logo-word">УУДАМ <span>CARGO</span></div>
-  </a>
-  <nav aria-label="Үндсэн цэс">
-    <a href="about.html">Бидний тухай</a>
-    <a href="calculator.html">Тооцоолуур</a>
-  </nav>
-  <div class="header-actions">
-    <a class="hdr-cta" href="#contact">Хаяг холбох</a>
-    <button class="auth-btn" id="authBtn" type="button" onclick="onAuthBtnClick()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-      <span id="authBtnLabel">Нэвтрэх</span>
-    </button>
-    <button class="menu-btn" type="button" onclick="toggleMenu()" aria-label="Цэс">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <line x1="3" y1="6" x2="21" y2="6"></line>
-        <line x1="3" y1="12" x2="21" y2="12"></line>
-        <line x1="3" y1="18" x2="21" y2="18"></line>
-      </svg>
-    </button>
-  </div>
-</header>
-
-<div class="side-drawer" id="sideDrawer">
-  <div class="drawer-overlay" onclick="toggleMenu()"></div>
-  <div class="drawer-panel">
-    <button class="drawer-close" type="button" onclick="toggleMenu()" aria-label="Хаах">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <line x1="4" y1="4" x2="20" y2="20"></line>
-        <line x1="20" y1="4" x2="4" y2="20"></line>
-      </svg>
-    </button>
-    <a href="about.html">Бидний тухай</a>
-    <a href="calculator.html">Тооцоолуур</a>
-    <a href="#contact" onclick="toggleMenu()">Холбоо барих</a>
-    <a href="#contact" onclick="toggleMenu()">Хаяг холбох</a>
-  </div>
-</div>
-
-<div class="modal-overlay" id="authModal" role="dialog" aria-modal="true" aria-label="Нэвтрэх, бүртгүүлэх">
-  <div class="modal-box">
-    <button class="modal-close" type="button" onclick="closeAuthModal()" aria-label="Хаах">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <line x1="4" y1="4" x2="20" y2="20"></line>
-        <line x1="20" y1="4" x2="4" y2="20"></line>
-      </svg>
-    </button>
-
-    <div class="auth-tabs" role="tablist">
-      <button type="button" class="auth-tab active" id="modeLoginBtn" role="tab" aria-selected="true">Нэвтрэх</button>
-      <button type="button" class="auth-tab" id="modeRegisterBtn" role="tab" aria-selected="false">Бүртгүүлэх</button>
+    <div class="side-drawer" id="sideDrawer">
+      <div class="drawer-overlay" onclick="toggleMenu()"></div>
+      <div class="drawer-panel">
+        <button class="drawer-close" type="button" onclick="toggleMenu()" aria-label="Хаах">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          >
+            <line x1="4" y1="4" x2="20" y2="20"></line>
+            <line x1="20" y1="4" x2="4" y2="20"></line>
+          </svg>
+        </button>
+        <a href="about.html">Бидний тухай</a>
+        <a href="calculator.html">Тооцоолуур</a>
+        <a href="#contact" onclick="toggleMenu()">Холбоо барих</a>
+        <a href="#contact" onclick="toggleMenu()">Хаяг холбох</a>
+      </div>
     </div>
 
-    <div id="authStepPhone">
-      <h3 id="authPhoneTitle">Нэвтрэх</h3>
-      <p class="modal-sub" id="authPhoneSubtitle">Утасны дугаар болон нууц үгээр нэвтэрнэ.</p>
-      <div class="field">
-        <!-- Нэр -->
-<div class="field register-only" id="registerNameRow" hidden>
-  <label for="authName">Нэр</label>
-  <input
-    type="text"
-    id="authName"
-    autocomplete="name"
-    placeholder="Өөрийн нэрийг оруулна уу"
-    maxlength="100"
-  >
-</div>
-        <label for="authPhone" id="authPhoneLabel">Утасны дугаар</label>
-        <div class="phone-input-row">
-          <input type="text" id="authPhone" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="Утасны дугаар" maxlength="64">
+    <div
+      class="modal-overlay"
+      id="authModal"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Нэвтрэх, бүртгүүлэх"
+    >
+      <div class="modal-box">
+        <button class="modal-close" type="button" onclick="closeAuthModal()" aria-label="Хаах">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          >
+            <line x1="4" y1="4" x2="20" y2="20"></line>
+            <line x1="20" y1="4" x2="4" y2="20"></line>
+          </svg>
+        </button>
+
+        <div class="auth-tabs" role="tablist">
+          <button
+            type="button"
+            class="auth-tab active"
+            id="modeLoginBtn"
+            role="tab"
+            aria-selected="true"
+          >
+            Нэвтрэх
+          </button>
+          <button
+            type="button"
+            class="auth-tab"
+            id="modeRegisterBtn"
+            role="tab"
+            aria-selected="false"
+          >
+            Бүртгүүлэх
+          </button>
+        </div>
+
+        <div id="authStepPhone">
+          <h3 id="authPhoneTitle">Нэвтрэх</h3>
+          <p class="modal-sub" id="authPhoneSubtitle">Утасны дугаар болон нууц үгээр нэвтэрнэ.</p>
+          <div class="field">
+            <!-- Нэр -->
+            <div class="field register-only" id="registerNameRow" hidden>
+              <label for="authName">Нэр</label>
+              <input
+                type="text"
+                id="authName"
+                autocomplete="name"
+                placeholder="Өөрийн нэрийг оруулна уу"
+                maxlength="100"
+              />
+            </div>
+            <label for="authPhone" id="authPhoneLabel">Утасны дугаар</label>
+            <div class="phone-input-row">
+              <input
+                type="text"
+                id="authPhone"
+                autocomplete="username"
+                autocapitalize="none"
+                spellcheck="false"
+                placeholder="Утасны дугаар"
+                maxlength="64"
+              />
+            </div>
+          </div>
+          <div class="field">
+            <label for="authPassword">Нууц үг</label>
+            <input
+              type="password"
+              id="authPassword"
+              autocomplete="current-password"
+              placeholder="Нууц үгээ оруулна уу"
+            />
+          </div>
+          <!-- Нууц үг давтах -->
+          <div class="field register-only" id="confirmPasswordRow" hidden>
+            <label for="authConfirmPassword">Нууц үг давтах</label>
+            <input
+              type="password"
+              id="authConfirmPassword"
+              autocomplete="new-password"
+              placeholder="Нууц үгээ дахин оруулна уу"
+            />
+          </div>
+          <label class="check-row">
+            <input type="checkbox" id="showCustomerPassword" />
+            Нууц үгийг харуулах
+          </label>
+          <button
+            class="save-btn btn-block"
+            id="sendOtpBtn"
+            type="button"
+            onclick="submitAuthForm()"
+          >
+            Нэвтрэх
+          </button>
+          <button
+            class="cancel-btn btn-block"
+            id="forgotPasswordBtn"
+            type="button"
+            onclick="openPasswordReset()"
+            style="margin-top: 8px"
+          >
+            Нууц үгээ мартсан уу?
+          </button>
+          <p class="auth-error" id="authPhoneError" role="alert"></p>
+        </div>
+
+        <div id="authStepCode" hidden>
+          <h3>Баталгаажуулах код</h3>
+          <p class="modal-sub" id="authCodeSentTo"></p>
+          <div class="field">
+            <label for="authCode">6 оронтой код</label>
+            <input
+              type="text"
+              id="authCode"
+              inputmode="numeric"
+              autocomplete="one-time-code"
+              maxlength="6"
+              placeholder="123456"
+            />
+          </div>
+          <button class="save-btn btn-block" id="verifyOtpBtn" type="button" onclick="verifyOtp()">
+            Баталгаажуулах
+          </button>
+          <button
+            class="cancel-btn btn-block"
+            type="button"
+            onclick="backToPhoneStep()"
+            style="margin-top: 8px"
+          >
+            Буцах
+          </button>
+          <p class="auth-error" id="authCodeError" role="alert"></p>
+        </div>
+
+        <!-- Нууц үг сэргээх (demo): бүртгэл хайх -->
+        <div id="authStepReset" hidden>
+          <h3>Нууц үг сэргээх</h3>
+          <p class="modal-sub">
+            Бүртгэлтэй утасны дугаараа оруулна уу. (Demo — SMS/имэйл баталгаажуулалт холбогдоогүй.)
+          </p>
+          <div class="field">
+            <label for="resetPhone">Утасны дугаар</label>
+            <div class="phone-input-row">
+              <input
+                type="text"
+                id="resetPhone"
+                autocomplete="off"
+                autocapitalize="none"
+                spellcheck="false"
+                placeholder="99001122"
+              />
+            </div>
+          </div>
+          <button
+            class="save-btn btn-block"
+            id="resetFindBtn"
+            type="button"
+            onclick="findAccount()"
+          >
+            Үргэлжлүүлэх
+          </button>
+          <button
+            class="cancel-btn btn-block"
+            type="button"
+            onclick="backToPhoneStep()"
+            style="margin-top: 8px"
+          >
+            Буцах
+          </button>
+          <p class="auth-error" id="resetFindError" role="alert"></p>
+        </div>
+
+        <!-- Нууц үг сэргээх (demo): шинэ нууц үг -->
+        <div id="authStepResetNew" hidden>
+          <h3>Шинэ нууц үг тохируулах</h3>
+          <p class="modal-sub" id="resetTarget"></p>
+          <div class="field">
+            <label for="resetPassword">Шинэ нууц үг</label>
+            <input
+              type="password"
+              id="resetPassword"
+              autocomplete="new-password"
+              placeholder="Хамгийн багадаа 6 тэмдэгт"
+            />
+          </div>
+          <div class="field">
+            <label for="resetConfirmPassword">Шинэ нууц үг давтах</label>
+            <input
+              type="password"
+              id="resetConfirmPassword"
+              autocomplete="new-password"
+              placeholder="Дахин оруулна уу"
+            />
+          </div>
+          <button
+            class="save-btn btn-block"
+            id="resetSaveBtn"
+            type="button"
+            onclick="saveNewPassword()"
+          >
+            Нууц үг шинэчлэх
+          </button>
+          <button
+            class="cancel-btn btn-block"
+            type="button"
+            onclick="backToPhoneStep()"
+            style="margin-top: 8px"
+          >
+            Буцах
+          </button>
+          <p class="auth-error" id="resetError" role="alert"></p>
         </div>
       </div>
-      <div class="field">
-        <label for="authPassword">Нууц үг</label>
-        <input type="password" id="authPassword" autocomplete="current-password" placeholder="Нууц үгээ оруулна уу">
-      </div>
-      <!-- Нууц үг давтах -->
-<div class="field register-only" id="confirmPasswordRow" hidden>
-  <label for="authConfirmPassword">Нууц үг давтах</label>
-  <input
-    type="password"
-    id="authConfirmPassword"
-    autocomplete="new-password"
-    placeholder="Нууц үгээ дахин оруулна уу"
-  >
-</div>
-      <label class="check-row">
-        <input type="checkbox" id="showCustomerPassword">
-        Нууц үгийг харуулах
-      </label>
-      <button class="save-btn btn-block" id="sendOtpBtn" type="button" onclick="submitAuthForm()">Нэвтрэх</button>
-      <button class="cancel-btn btn-block" id="forgotPasswordBtn" type="button" onclick="openPasswordReset()" style="margin-top:8px;">Нууц үгээ мартсан уу?</button>
-      <p class="auth-error" id="authPhoneError" role="alert"></p>
     </div>
 
-    <div id="authStepCode" hidden>
-      <h3>Баталгаажуулах код</h3>
-      <p class="modal-sub" id="authCodeSentTo"></p>
-      <div class="field">
-        <label for="authCode">6 оронтой код</label>
-        <input type="text" id="authCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="123456">
+    <section class="hero" id="track">
+      <div class="hero-top">
+        <div class="eyebrow">Эрээн — Дархан карго</div>
+        <h1>Таны ачаа хаана байгааг мэдээрэй.</h1>
       </div>
-      <button class="save-btn btn-block" id="verifyOtpBtn" type="button" onclick="verifyOtp()">Баталгаажуулах</button>
-      <button class="cancel-btn btn-block" type="button" onclick="backToPhoneStep()" style="margin-top:8px;">Буцах</button>
-      <p class="auth-error" id="authCodeError" role="alert"></p>
-    </div>
 
-    <!-- Нууц үг сэргээх (demo): бүртгэл хайх -->
-    <div id="authStepReset" hidden>
-      <h3>Нууц үг сэргээх</h3>
-      <p class="modal-sub">Бүртгэлтэй утасны дугаараа оруулна уу. (Demo — SMS/имэйл баталгаажуулалт холбогдоогүй.)</p>
-      <div class="field">
-        <label for="resetPhone">Утасны дугаар</label>
-        <div class="phone-input-row">
-          <input type="text" id="resetPhone" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="99001122">
+      <section class="profile-section" id="profileSection" hidden>
+        <div class="panel">
+          <div class="profile-head">
+            <div>
+              <div class="eyebrow">Профайл</div>
+              <h2>Таны ачаанууд</h2>
+            </div>
+            <div class="profile-phone">Хэрэглэгч: <strong id="profilePhoneText">—</strong></div>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Код</th>
+                  <th>Үнэ</th>
+                  <th>Огноо</th>
+                  <th>Төлөв</th>
+                </tr>
+              </thead>
+              <tbody id="profileTableBody"></tbody>
+            </table>
+          </div>
         </div>
-      </div>
-      <button class="save-btn btn-block" id="resetFindBtn" type="button" onclick="findAccount()">Үргэлжлүүлэх</button>
-      <button class="cancel-btn btn-block" type="button" onclick="backToPhoneStep()" style="margin-top:8px;">Буцах</button>
-      <p class="auth-error" id="resetFindError" role="alert"></p>
-    </div>
+      </section>
 
-    <!-- Нууц үг сэргээх (demo): шинэ нууц үг -->
-    <div id="authStepResetNew" hidden>
-      <h3>Шинэ нууц үг тохируулах</h3>
-      <p class="modal-sub" id="resetTarget"></p>
-      <div class="field">
-        <label for="resetPassword">Шинэ нууц үг</label>
-        <input type="password" id="resetPassword" autocomplete="new-password" placeholder="Хамгийн багадаа 6 тэмдэгт">
-      </div>
-      <div class="field">
-        <label for="resetConfirmPassword">Шинэ нууц үг давтах</label>
-        <input type="password" id="resetConfirmPassword" autocomplete="new-password" placeholder="Дахин оруулна уу">
-      </div>
-      <button class="save-btn btn-block" id="resetSaveBtn" type="button" onclick="saveNewPassword()">Нууц үг шинэчлэх</button>
-      <button class="cancel-btn btn-block" type="button" onclick="backToPhoneStep()" style="margin-top:8px;">Буцах</button>
-      <p class="auth-error" id="resetError" role="alert"></p>
-    </div>
-  </div>
-</div>
-
-<section class="hero" id="track">
-  <div class="hero-top">
-    <div class="eyebrow">Эрээн — Дархан карго</div>
-    <h1>Таны ачаа хаана байгааг мэдээрэй.</h1>
-  </div>
-
-  <section class="profile-section" id="profileSection" hidden>
-    <div class="panel">
-      <div class="profile-head">
-        <div>
-          <div class="eyebrow">Профайл</div>
-          <h2>Таны ачаанууд</h2>
+      <div class="track-box">
+        <h3>Ачаа шалгах</h3>
+        <div class="track-row">
+          <input
+            id="trackInput"
+            type="text"
+            placeholder="Ачааны код эсвэл утасны дугаар"
+            aria-label="Ачааны код эсвэл утасны дугаар"
+            autocomplete="off"
+          />
+          <button type="button" onclick="checkTrack()">Шалгах</button>
         </div>
-        <div class="profile-phone">Хэрэглэгч: <strong id="profilePhoneText">—</strong></div>
+        <div id="trackResult" role="status"></div>
       </div>
-      <div class="table-wrap">
-        <table class="data-table">
-          <thead>
-            <tr><th>Код</th><th>Үнэ</th><th>Огноо</th><th>Төлөв</th></tr>
-          </thead>
-          <tbody id="profileTableBody"></tbody>
-        </table>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <div class="track-box">
-    <h3>Ачаа шалгах</h3>
-    <div class="track-row">
-      <input id="trackInput" type="text" placeholder="Ачааны код эсвэл утасны дугаар" aria-label="Ачааны код эсвэл утасны дугаар" autocomplete="off">
-      <button type="button" onclick="checkTrack()">Шалгах</button>
-    </div>
-    <div id="trackResult" role="status"></div>
-  </div>
-</section>
-
-<div class="content-wrap">
-  <div class="grid3">
-    <div class="card">
-      <div class="num">4–7 хоног</div>
-      <p>Эрээн — Дархан чиглэлийн стандарт хүргэлтийн хугацаа.</p>
-    </div>
-    <div class="card">
-      <div class="num">кг / м³</div>
-      <p>Жин болон эзэлхүүнээр тооцох хосолсон үнийн систем.</p>
-    </div>
-    <div class="card">
-      <div class="num">24/7</div>
-      <p>Онлайнаар ачаагаа хянах, тооцоолуур ашиглах боломж.</p>
-    </div>
-  </div>
-</div>
-
-<section class="contact-section" id="contact">
-  <div class="eyebrow">Хаяг холбох</div>
-  <h2>Taobao, Pinduoduo дээр захиалгаа манай Эрээн хаягаар холбоорой</h2>
-  <p class="lead">Захиалга хийхдээ хүргэлтийн хаяг дээр доорх Эрээн агуулахын хаягийг бүтнээр нь хуулж тавиад, ард нь <b>өөрийн нэр, утасны дугаараа</b> заавал нэмж бичнэ үү — ингэснээр бид таны ачааг таньж, Дархан хүртэл авчирна.</p>
-
-  <div class="addr-box">
-    <div class="addr-label">Эрээн агуулахын хаяг — хуулж авах</div>
-    <div class="addr-text" id="warehouseAddr">乌有卡 17747905992 内蒙古自治区锡林郭勒盟二连浩特市 利众物流园 诺敏货运部 Uudam cargo /Таны нэр, утасны дугаар/</div>
-    <button class="copy-btn" id="copyBtn" type="button" onclick="copyAddr()">Хуулах</button>
-  </div>
-
-  <div class="contact-grid">
-    <div class="info-card">
-      <div class="info-row">
-        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
-        <div>
-          <div class="t">Хаяг</div>
-          <div class="v">Дархан хот</div>
+    <div class="content-wrap">
+      <div class="grid3">
+        <div class="card">
+          <div class="num">4–7 хоног</div>
+          <p>Эрээн — Дархан чиглэлийн стандарт хүргэлтийн хугацаа.</p>
         </div>
-      </div>
-      <div class="info-row">
-        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></div>
-        <div>
-          <div class="t">Утас</div>
-          <div class="v"><a href="tel:99001122">9900-1122</a></div>
+        <div class="card">
+          <div class="num">кг / м³</div>
+          <p>Жин болон эзэлхүүнээр тооцох хосолсон үнийн систем.</p>
         </div>
-      </div>
-      <div class="info-row">
-        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
-        <div>
-          <div class="t">Ажиллах цаг</div>
-          <div class="v">Даваа–Бямба (10:00–19:00)</div>
+        <div class="card">
+          <div class="num">24/7</div>
+          <p>Онлайнаар ачаагаа хянах, тооцоолуур ашиглах боломж.</p>
         </div>
       </div>
     </div>
 
-     <a class="video-card" id="videoLink" href="zaavar.mp4" target="_blank" rel="noopener noreferrer">
-      <div class="video-thumb">
-        <div class="play-badge">
-          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
+    <section class="contact-section" id="contact">
+      <div class="eyebrow">Хаяг холбох</div>
+      <h2>Taobao, Pinduoduo дээр захиалгаа манай Эрээн хаягаар холбоорой</h2>
+      <p class="lead">
+        Захиалга хийхдээ хүргэлтийн хаяг дээр доорх Эрээн агуулахын хаягийг бүтнээр нь хуулж тавиад,
+        ард нь <b>өөрийн нэр, утасны дугаараа</b> заавал нэмж бичнэ үү — ингэснээр бид таны ачааг
+        таньж, Дархан хүртэл авчирна.
+      </p>
+
+      <div class="addr-box">
+        <div class="addr-label">Эрээн агуулахын хаяг — хуулж авах</div>
+        <div class="addr-text" id="warehouseAddr">
+          乌有卡 17747905992 内蒙古自治区锡林郭勒盟二连浩特市 利众物流园 诺敏货运部 Uudam cargo
+          /Таны нэр, утасны дугаар/
+        </div>
+        <button class="copy-btn" id="copyBtn" type="button" onclick="copyAddr()">Хуулах</button>
+      </div>
+
+      <div class="contact-grid">
+        <div class="info-card">
+          <div class="info-row">
+            <div class="ic">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+            </div>
+            <div>
+              <div class="t">Хаяг</div>
+              <div class="v">Дархан хот</div>
+            </div>
+          </div>
+          <div class="info-row">
+            <div class="ic">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"
+                ></path>
+              </svg>
+            </div>
+            <div>
+              <div class="t">Утас</div>
+              <div class="v"><a href="tel:99001122">9900-1122</a></div>
+            </div>
+          </div>
+          <div class="info-row">
+            <div class="ic">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <div>
+              <div class="t">Ажиллах цаг</div>
+              <div class="v">Даваа–Бямба (10:00–19:00)</div>
+            </div>
+          </div>
+        </div>
+
+        <a
+          class="video-card"
+          id="videoLink"
+          href="zaavar.mp4"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="video-thumb">
+            <div class="play-badge">
+              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
+            </div>
+          </div>
+          <h3>Pinduoduo Хаяг холбох — зааврыг үзэх</h3>
+        </a>
+      </div>
+    </section>
+
+    <div
+      class="modal-overlay"
+      id="videoModal"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Видео заавар"
+    >
+      <div class="video-modal">
+        <button
+          class="video-modal-close"
+          id="closeVideoBtn"
+          type="button"
+          onclick="closeVideo()"
+          aria-label="Close video"
+        >
+          ✕
+        </button>
+        <video id="instructionVideo" controls playsinline>
+          <source src="zaavar.mp4" type="video/mp4" />
+        </video>
+      </div>
+    </div>
+
+    <!-- хөвөгч тооцоолуур -->
+    <div class="calc-widget" id="calc">
+      <div class="calc-panel" id="calcPanel">
+        <h4>Тээврийн зардал тооцоолуур</h4>
+        <div class="calc-field">
+          <label for="calcWeight">Жин (кг)</label>
+          <input type="number" id="calcWeight" inputmode="decimal" placeholder="жишээ: 5" min="0" />
+        </div>
+        <div class="calc-field">
+          <label for="calcDims">Хэмжээ Урт×Өргөн×Өндөр (см)</label>
+          <input type="text" id="calcDims" placeholder="жишээ: 40x30x25" />
+        </div>
+        <div class="calc-result" id="calcResult">
+          <div>Тооцоолсон дүн</div>
+          <div class="big" id="calcTotal">0 ₮</div>
         </div>
       </div>
-      <h3>Pinduoduo Хаяг холбох — зааврыг үзэх</h3>
-    </a>
-  </div>
-</section>
-
-<div class="modal-overlay" id="videoModal" role="dialog" aria-modal="true" aria-label="Видео заавар">
-  <div class="video-modal">
-    <button class="video-modal-close" id="closeVideoBtn" type="button" onclick="closeVideo()" aria-label="Close video">✕</button>
-    <video id="instructionVideo" controls playsinline>
-      <source src="zaavar.mp4" type="video/mp4">
-    </video>
-  </div>
-</div>
-
-<!-- хөвөгч тооцоолуур -->
-<div class="calc-widget" id="calc">
-  <div class="calc-panel" id="calcPanel">
-    <h4>Тээврийн зардал тооцоолуур</h4>
-    <div class="calc-field">
-      <label for="calcWeight">Жин (кг)</label>
-      <input type="number" id="calcWeight" inputmode="decimal" placeholder="жишээ: 5" min="0">
+      <button
+        class="calc-fab"
+        id="calcFab"
+        type="button"
+        onclick="toggleCalc()"
+        aria-label="Тооцоолуур нээх"
+        aria-expanded="false"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect x="4" y="2" width="16" height="20" rx="2"></rect>
+          <line x1="8" y1="6" x2="16" y2="6"></line>
+          <line x1="8" y1="11" x2="8" y2="11.01"></line>
+          <line x1="12" y1="11" x2="12" y2="11.01"></line>
+          <line x1="16" y1="11" x2="16" y2="11.01"></line>
+          <line x1="8" y1="15" x2="8" y2="15.01"></line>
+          <line x1="12" y1="15" x2="12" y2="15.01"></line>
+          <line x1="16" y1="15" x2="16" y2="15.01"></line>
+          <line x1="8" y1="19" x2="8" y2="19.01"></line>
+          <line x1="12" y1="19" x2="12" y2="19.01"></line>
+          <line x1="16" y1="19" x2="16" y2="19.01"></line>
+        </svg>
+      </button>
     </div>
-    <div class="calc-field">
-      <label for="calcDims">Хэмжээ Урт×Өргөн×Өндөр (см)</label>
-      <input type="text" id="calcDims" placeholder="жишээ: 40x30x25">
-    </div>
-    <div class="calc-result" id="calcResult">
-      <div>Тооцоолсон дүн</div>
-      <div class="big" id="calcTotal">0 ₮</div>
-    </div>
-  </div>
-  <button class="calc-fab" id="calcFab" type="button" onclick="toggleCalc()" aria-label="Тооцоолуур нээх" aria-expanded="false">
-    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="4" y="2" width="16" height="20" rx="2"></rect>
-      <line x1="8" y1="6" x2="16" y2="6"></line>
-      <line x1="8" y1="11" x2="8" y2="11.01"></line>
-      <line x1="12" y1="11" x2="12" y2="11.01"></line>
-      <line x1="16" y1="11" x2="16" y2="11.01"></line>
-      <line x1="8" y1="15" x2="8" y2="15.01"></line>
-      <line x1="12" y1="15" x2="12" y2="15.01"></line>
-      <line x1="16" y1="15" x2="16" y2="15.01"></line>
-      <line x1="8" y1="19" x2="8" y2="19.01"></line>
-      <line x1="12" y1="19" x2="12" y2="19.01"></line>
-      <line x1="16" y1="19" x2="16" y2="19.01"></line>
-    </svg>
-  </button>
-</div>
 
-<script src="shared.js"></script>
-<script>
-  var $ = function (id) { return document.getElementById(id); };
+    <script src="shared.js"></script>
+    <script>
+      var $ = function (id) {
+        return document.getElementById(id);
+      };
 
-  // ---------- Хэрэглэгчийн нэвтрэлт, бүртгэл, профайл ----------
-  // АНХААР: энэ нь зөвхөн demo. Хэрэглэгч, нууц үг энэ browser-ийн localStorage-д
-  // хадгалагдаж байгаа тул жинхэнэ хамгаалалт биш (README-г үз).
-  var CUSTOMER_USERS_KEY = 'uudam_customer_users_v1';
-  var CUSTOMER_SESSION_KEY = 'uudam_customer_session_v1';
-  var SESSION_DURATION_MS = 7 * 24 * 60 * 60 * 1000; // нэвтэрсэн хэвээр байх: 7 хоног
-  var ADMIN_SESSION_KEY = 'uudam_admin_session';
-  var ADMIN_DEMO_EMAIL = 'admin@uudamcargo.mn';
-  var ADMIN_DEMO_PASSWORD = 'Azraga1227';
-  var DEMO_USER = { phone: '99001122', password: '123456', name: 'Demo User' };
+      // ---------- Хэрэглэгчийн нэвтрэлт, бүртгэл, профайл ----------
+      // АНХААР: энэ нь зөвхөн demo. Хэрэглэгч, нууц үг энэ browser-ийн localStorage-д
+      // хадгалагдаж байгаа тул жинхэнэ хамгаалалт биш (README-г үз).
+      var CUSTOMER_USERS_KEY = 'uudam_customer_users_v1';
+      var CUSTOMER_SESSION_KEY = 'uudam_customer_session_v1';
+      var SESSION_DURATION_MS = 7 * 24 * 60 * 60 * 1000; // нэвтэрсэн хэвээр байх: 7 хоног
+      var ADMIN_SESSION_KEY = 'uudam_admin_session';
+      var ADMIN_DEMO_EMAIL = 'admin@uudamcargo.mn';
+      var ADMIN_DEMO_PASSWORD = 'Azraga1227';
+      var DEMO_USER = { phone: '99001122', password: '123456', name: 'Demo User' };
 
-  var authMode = 'login';
-  var pendingRegistration = null;
-  var pendingResetPhone = null;
-  var currentUser = null;
+      var authMode = 'login';
+      var pendingRegistration = null;
+      var pendingResetPhone = null;
+      var currentUser = null;
 
-  function readJSON(key, fallback) {
-    try {
-      var value = JSON.parse(localStorage.getItem(key));
-      return value == null ? fallback : value;
-    } catch (e) {
-      return fallback;
-    }
-  }
-
-  function writeJSON(key, value) {
-    try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) { /* хадгалах боломжгүй */ }
-  }
-
-  function removeSessionKey(key) {
-    try { sessionStorage.removeItem(key); } catch (e) { /* алгасна */ }
-  }
-
-  // ---------- Нууц үг hash — ил текстээр хадгалахгүй ----------
-  // ЗААВАР: localStorage клиент талын хадгалалт бөгөөд бүрмөсөн хамгаалалт биш,
-  // гэхдээ шууд ил текст биш salt+SHA-256 hash хадгална.
-  function randomSalt() {
-    try {
-      if (window.crypto && crypto.getRandomValues) {
-        var bytes = new Uint8Array(8);
-        crypto.getRandomValues(bytes);
-        return Array.prototype.map.call(bytes, function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
+      function readJSON(key, fallback) {
+        try {
+          var value = JSON.parse(localStorage.getItem(key));
+          return value == null ? fallback : value;
+        } catch (e) {
+          return fallback;
+        }
       }
-    } catch (e) { /* доорх fallback руу онол */ }
-    return Math.random().toString(16).slice(2) + Math.random().toString(16).slice(2);
-  }
 
-  // crypto.subtle байхгүй тохиолдолд (demo) хямд fallback hash
-  function fallbackHash(text) {
-    var h = 5381; var i;
-    for (i = 0; i < text.length; i++) { h = ((h << 5) + h + text.charCodeAt(i)) | 0; }
-    return 'd$' + (h >>> 0).toString(16) + text.length.toString(16);
-  }
-
-  async function hashPassword(password, salt) {
-    var value = salt + '::' + password;
-    try {
-      if (crypto && crypto.subtle && typeof TextEncoder !== 'undefined') {
-        var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value));
-        return Array.prototype.map.call(new Uint8Array(buf), function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
+      function writeJSON(key, value) {
+        try {
+          localStorage.setItem(key, JSON.stringify(value));
+        } catch (e) {
+          /* хадгалах боломжгүй */
+        }
       }
-    } catch (e) { /* доорх fallback руу онол */ }
-    return fallbackHash(value);
-  }
 
-  // salt+hash буй бол hash тай ялгааг шалгах; хуучин demo бичлэгт ил текст нь шалгана
-  async function verifyStoredPassword(user, plain) {
-    if (!user) return false;
-    if (user.salt && user.hash) return (await hashPassword(plain, user.salt)) === user.hash;
-    return user.password === plain;
-  }
-
-  // Хуучин demo бичлэгүүдийн ил текст нууц үгийг salt+hash руу шилжүүлнэ
-  async function migratePlaintextPasswords() {
-    var users = getUsers();
-    var changed = false;
-    for (var i = 0; i < users.length; i++) {
-      var user = users[i];
-      if (!user.salt && typeof user.password === 'string' && user.password.length) {
-        user.salt = randomSalt();
-        user.hash = await hashPassword(user.password, user.salt);
-        delete user.password;
-        changed = true;
+      function removeSessionKey(key) {
+        try {
+          sessionStorage.removeItem(key);
+        } catch (e) {
+          /* алгасна */
+        }
       }
-    }
-    if (changed) writeJSON(CUSTOMER_USERS_KEY, users);
-  }
 
-  // ---------- Сесс — 7 хоногийн дотор дахин ачаалахад нэвтэрсэн хэвээр ----------
-  function setSession(user) {
-    currentUser = { phone: user.phone, name: user.name || 'Хэрэглэгч' };
-    try {
-      localStorage.setItem(CUSTOMER_SESSION_KEY, JSON.stringify({
-        phone: currentUser.phone,
-        name: currentUser.name,
-        expiresAt: Date.now() + SESSION_DURATION_MS
-      }));
-    } catch (e) { /* хадгалах боломжгүй */ }
-    return currentUser;
-  }
-
-  function clearSession() {
-    currentUser = null;
-    try { localStorage.removeItem(CUSTOMER_SESSION_KEY); } catch (e) { /* алгасна */ }
-  }
-
-  function getSession() {
-    try {
-      var session = JSON.parse(localStorage.getItem(CUSTOMER_SESSION_KEY) || 'null');
-      if (!session || !session.phone) return null;
-      if (typeof session.expiresAt !== 'number' || session.expiresAt < Date.now()) {
-        localStorage.removeItem(CUSTOMER_SESSION_KEY);
-        return null;
+      // ---------- Нууц үг hash — ил текстээр хадгалахгүй ----------
+      // ЗААВАР: localStorage клиент талын хадгалалт бөгөөд бүрмөсөн хамгаалалт биш,
+      // гэхдээ шууд ил текст биш salt+SHA-256 hash хадгална.
+      function randomSalt() {
+        try {
+          if (window.crypto && crypto.getRandomValues) {
+            var bytes = new Uint8Array(8);
+            crypto.getRandomValues(bytes);
+            return Array.prototype.map
+              .call(bytes, function (b) {
+                return ('0' + b.toString(16)).slice(-2);
+              })
+              .join('');
+          }
+        } catch (e) {
+          /* доорх fallback руу онол */
+        }
+        return Math.random().toString(16).slice(2) + Math.random().toString(16).slice(2);
       }
-      return session;
-    } catch (e) {
-      return null;
-    }
-  }
 
-  function normalizePhoneInput(value) {
-    var digits = String(value || '').replace(/[\s-]/g, '').replace(/\D/g, '');
-    return digits.indexOf('976') === 0 && digits.length > 8 ? digits.slice(3) : digits;
-  }
-
-  function seedCustomerUsers() {
-    var users = readJSON(CUSTOMER_USERS_KEY, []);
-    if (!Array.isArray(users) || !users.length) writeJSON(CUSTOMER_USERS_KEY, [DEMO_USER]);
-  }
-
-  function getUsers() {
-    var users = readJSON(CUSTOMER_USERS_KEY, []);
-    return Array.isArray(users) ? users : [];
-  }
-
-  // Бүртгэлийг утасны дугаар (эсвэл хэрэглэгчийн имэйл байвал) хайж, нууц үгийг нь шалгана
-  async function loginUser(identifier, password) {
-    var isEmail = String(identifier || '').indexOf('@') !== -1;
-    var found = getUsers().find(function (user) {
-      if (isEmail) {
-        return String(user.email || '').toLowerCase() === String(identifier).toLowerCase();
+      // crypto.subtle байхгүй тохиолдолд (demo) хямд fallback hash
+      function fallbackHash(text) {
+        var h = 5381;
+        var i;
+        for (i = 0; i < text.length; i++) {
+          h = ((h << 5) + h + text.charCodeAt(i)) | 0;
+        }
+        return 'd$' + (h >>> 0).toString(16) + text.length.toString(16);
       }
-      return normalizePhoneInput(user.phone) === normalizePhoneInput(identifier);
-    });
-    if (!found) return null;
-    if (!(await verifyStoredPassword(found, password))) return null;
 
-    // Хуучин demo бичлэг бол hash-руу шилжүүлж хадгална
-    if (!found.hash) {
-      found.salt = randomSalt();
-      found.hash = await hashPassword(password, found.salt);
-      delete found.password;
-      writeJSON(CUSTOMER_USERS_KEY, getUsers().map(function (u) {
-        return normalizePhoneInput(u.phone) === normalizePhoneInput(found.phone) ? found : u;
-      }));
-    }
-    return setSession(found);
-  }
-
-  // ---------- Нэвтрэх цонх ----------
-  function setTab(id, active) {
-    var tab = $(id);
-    tab.classList.toggle('active', active);
-    tab.setAttribute('aria-selected', active ? 'true' : 'false');
-  }
-
-  
-function setAuthMode(mode) {
-  authMode = mode;
-
-  var isLogin = mode === 'login';
-
-  $('authPhoneTitle').textContent = isLogin ? 'Нэвтрэх' : 'Бүртгүүлэх';
-
-  $('authPhoneSubtitle').textContent = isLogin
-    ? 'Утасны дугаар болон нууц үгээр нэвтэрнэ.'
-    : 'Мэдээллээ оруулж шинэ бүртгэл үүсгэнэ.';
-
-  $('sendOtpBtn').textContent = isLogin ? 'Нэвтрэх' : 'Бүртгүүлэх';
-
-  $('authPhoneLabel').textContent = 'Утасны дугаар';
-
-  $('authPassword').autocomplete = isLogin
-    ? 'current-password'
-    : 'new-password';
-
-  $('registerNameRow').hidden = isLogin;
-  $('confirmPasswordRow').hidden = isLogin;
-
-  $('authName').required = !isLogin;
-  $('authConfirmPassword').required = !isLogin;
-
-  setTab('modeLoginBtn', isLogin);
-  setTab('modeRegisterBtn', !isLogin);
-
-  clearAuthErrors();
-  updatePhonePrefix();
-}
-
-
-  // Имэйл (эсвэл үсэг) бичиж эхэлбэл "+976" угтварыг нууна
-  function updatePhonePrefix() {
-    var prefix = $('authPhonePrefix');
-    var looksLikeEmail = authMode === 'login' && /[@a-zA-Z]/.test($('authPhone').value);
-    if (prefix) prefix.hidden = looksLikeEmail;
-  }
-
-  function showAuthError(id, message) {
-    var el = $(id);
-    el.textContent = message;
-    el.classList.add('show');
-  }
-
-  function clearAuthErrors() {
-    ['authPhoneError', 'authCodeError', 'resetFindError', 'resetError'].forEach(function (id) {
-      var el = $(id);
-      if (!el) return;
-      el.textContent = '';
-      el.classList.remove('show');
-    });
-  }
-
-  function showAuthStep(step) {
-    $('authStepPhone').hidden = step !== 'phone';
-    $('authStepCode').hidden = step !== 'code';
-    $('authStepReset').hidden = step !== 'reset';
-    $('authStepResetNew').hidden = step !== 'reset-new';
-  }
-
-  function openAuthModal() {
-    $('authModal').classList.add('open');
-    showAuthStep('phone');
-    setAuthMode('login');
-    $('authPhone').focus();
-  }
-
-  function closeAuthModal() {
-    $('authModal').classList.remove('open');
-    pendingRegistration = null;
-    pendingResetPhone = null;
-    $('authPassword').value = '';
-    $('authCode').value = '';
-    $('authName').value = '';
-    $('authConfirmPassword').value = '';
-    $('resetPhone').value = '';
-    $('resetPassword').value = '';
-    $('resetConfirmPassword').value = '';
-  }
-
-  function backToPhoneStep() {
-    pendingRegistration = null;
-    pendingResetPhone = null;
-    showAuthStep('phone');
-    clearAuthErrors();
-  }
-
-  // ---------- Нууц үг сэргээх (demo) ----------
-  // ЗААВАР: сервер, SMS/имэйл баталгаажуулалт байхгүй тул түлхүүр (дугаар) мэддэг
-  // хэн ч байж болохыг нь жинхэнээр батлах боломжгүй — зөвхөн туршилтын хувилбар.
-  function openPasswordReset() {
-    clearAuthErrors();
-    pendingResetPhone = null;
-    showAuthStep('reset');
-    $('resetPhone').value = '';
-    $('resetPhone').focus();
-  }
-
-  async function findAccount() {
-    clearAuthErrors();
-    var digits = normalizePhoneInput($('resetPhone').value.trim());
-    if (digits.length !== 8) {
-      showAuthError('resetFindError', '8 оронтой утасны дугаараа оруулна уу.');
-      return;
-    }
-
-    // Тухайн дугаартай ХЭРЭГЛЭГЧИЙН бүртгэл байгаа эсэхийг шалгана.
-    // Админ бүртгэл энэ жагсаалтад байдаггүй тул сэргээх замаар админ эрх олж авах боломжгүй.
-    var user = getUsers().find(function (u) {
-      return normalizePhoneInput(u.phone) === digits;
-    });
-    if (!user) {
-      showAuthError('resetFindError', 'Энэ дугаартай бүртгэл олдсонгүй.');
-      return;
-    }
-
-    pendingResetPhone = user.phone;
-    $('resetTarget').textContent = user.phone.replace('+976', '') + ' дугаартай бүртгэл олдлоо. Шинэ нууц үгээ оруулна уу.';
-    $('resetPassword').value = '';
-    $('resetConfirmPassword').value = '';
-    showAuthStep('reset-new');
-    $('resetPassword').focus();
-  }
-
-  async function saveNewPassword() {
-    clearAuthErrors();
-    if (!pendingResetPhone) {
-      showAuthError('resetError', 'Эхлээд дугаараа бичиж бүртгэлээ олоорой.');
-      showAuthStep('reset');
-      return;
-    }
-
-    var password = $('resetPassword').value.trim();
-    var confirm = $('resetConfirmPassword').value.trim();
-    if (password.length < 6) {
-      showAuthError('resetError', 'Нууц үг хамгийн багадаа 6 тэмдэгт байна.');
-      return;
-    }
-    if (password !== confirm) {
-      showAuthError('resetError', 'Давтан оруулсан нууц үг таарахгүй байна.');
-      return;
-    }
-
-    var users = getUsers();
-    var target = users.find(function (u) {
-      return normalizePhoneInput(u.phone) === normalizePhoneInput(pendingResetPhone);
-    });
-    if (!target) {
-      showAuthError('resetError', 'Бүртгэл олдсонгүй.');
-      return;
-    }
-
-    var salt = randomSalt();
-    target.salt = salt;
-    target.hash = await hashPassword(password, salt);
-    delete target.password;
-    writeJSON(CUSTOMER_USERS_KEY, users);
-
-    pendingResetPhone = null;
-    showAuthStep('phone');
-    setAuthMode('login');
-    $('authPhoneSubtitle').textContent = '✓ Нууц үг шинэчлэгдлээ. Шинэ нууц үгээрээ нэвтэрнэ үү.';
-    $('authPassword').value = '';
-    $('resetPassword').value = '';
-    $('resetConfirmPassword').value = '';
-  }
-
-  function closeLogoutConfirm() {
-    var modal = document.getElementById('logoutConfirmOverlay');
-    if (modal) modal.remove();
-  }
-
-  function showLogoutConfirm() {
-    closeLogoutConfirm();
-
-    var overlay = document.createElement('div');
-    overlay.id = 'logoutConfirmOverlay';
-    overlay.className = 'confirm-overlay';
-    overlay.setAttribute('role', 'dialog');
-    overlay.setAttribute('aria-modal', 'true');
-    overlay.setAttribute('aria-label', 'Гарах уу?');
-
-    var modal = document.createElement('div');
-    modal.className = 'confirm-modal';
-
-    var title = document.createElement('h3');
-    title.className = 'confirm-title';
-    title.textContent = 'Гарах уу?';
-
-    var message = document.createElement('p');
-    message.className = 'confirm-message';
-    message.textContent = 'Энэ үйлдэл таны сессийг дуусгана.';
-
-    var actions = document.createElement('div');
-    actions.className = 'confirm-actions';
-
-    var cancelBtn = document.createElement('button');
-    cancelBtn.type = 'button';
-    cancelBtn.className = 'confirm-btn secondary';
-    cancelBtn.setAttribute('data-action', 'cancel');
-    cancelBtn.textContent = 'Болих';
-    cancelBtn.addEventListener('click', closeLogoutConfirm);
-
-    var confirmBtn = document.createElement('button');
-    confirmBtn.type = 'button';
-    confirmBtn.className = 'confirm-btn primary';
-    confirmBtn.setAttribute('data-action', 'confirm');
-    confirmBtn.textContent = 'Тийм';
-    confirmBtn.addEventListener('click', function () {
-      clearSession();
-      updateAuthUI(null);
-      showProfile();
-      closeLogoutConfirm();
-    });
-
-    actions.appendChild(cancelBtn);
-    actions.appendChild(confirmBtn);
-    modal.appendChild(title);
-    modal.appendChild(message);
-    modal.appendChild(actions);
-    overlay.appendChild(modal);
-
-    overlay.addEventListener('click', function (event) {
-      if (event.target === overlay) closeLogoutConfirm();
-    });
-
-    document.body.appendChild(overlay);
-  }
-
-  function onAuthBtnClick() {
-    if (currentUser) {
-      showLogoutConfirm();
-      return;
-    }
-    openAuthModal();
-  }
-
-  // Админ: JavaScript demo эрх шалгах, амжилттай бол admin.html руу шилжүүлнэ
-  function adminLogin(email, password) {
-    if (email === ADMIN_DEMO_EMAIL && password === ADMIN_DEMO_PASSWORD) {
-      localStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify({ email: email, isAdmin: true }));
-      window.location.href = 'admin.html';
-      return;
-    }
-    showAuthError('authPhoneError', 'Имэйл эсвэл нууц үг буруу байна.');
-  }
-
-  async function submitAuthForm() {
-    var rawLogin = $('authPhone').value.trim();
-    var digits = normalizePhoneInput(rawLogin);
-    var password = $('authPassword').value.trim();
-    var userName = $('authName').value.trim();
-    clearAuthErrors();
-
-    // Имэйл хаягаар нэвтрэх: хэрэглэгчийн бүртгэлээс шалгаад, төгсгөлд нь админ (demo) шалгана
-    if (rawLogin.indexOf('@') !== -1) {
-      if (authMode !== 'login') {
-        showAuthError('authPhoneError', 'Бүртгүүлэхдээ утасны дугаараа оруулна уу.');
-        return;
+      async function hashPassword(password, salt) {
+        var value = salt + '::' + password;
+        try {
+          if (crypto && crypto.subtle && typeof TextEncoder !== 'undefined') {
+            var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value));
+            return Array.prototype.map
+              .call(new Uint8Array(buf), function (b) {
+                return ('0' + b.toString(16)).slice(-2);
+              })
+              .join('');
+          }
+        } catch (e) {
+          /* доорх fallback руу онол */
+        }
+        return fallbackHash(value);
       }
-      if (!password) {
-        showAuthError('authPhoneError', 'Нууц үгээ оруулна уу.');
-        return;
+
+      // salt+hash буй бол hash тай ялгааг шалгах; хуучин demo бичлэгт ил текст нь шалгана
+      async function verifyStoredPassword(user, plain) {
+        if (!user) return false;
+        if (user.salt && user.hash) return (await hashPassword(plain, user.salt)) === user.hash;
+        return user.password === plain;
       }
-      var emailUser = await loginUser(rawLogin, password);
-      if (emailUser) {
-        updateAuthUI(emailUser);
-        closeAuthModal();
-        showProfile();
-        return;
+
+      // Хуучин demo бичлэгүүдийн ил текст нууц үгийг salt+hash руу шилжүүлнэ
+      async function migratePlaintextPasswords() {
+        var users = getUsers();
+        var changed = false;
+        for (var i = 0; i < users.length; i++) {
+          var user = users[i];
+          if (!user.salt && typeof user.password === 'string' && user.password.length) {
+            user.salt = randomSalt();
+            user.hash = await hashPassword(user.password, user.salt);
+            delete user.password;
+            changed = true;
+          }
+        }
+        if (changed) writeJSON(CUSTOMER_USERS_KEY, users);
       }
-      adminLogin(rawLogin, password);
-      return;
-    }
 
-    if (digits.length !== 8) {
-      showAuthError('authPhoneError', '8 оронтой утасны дугаараа зөв оруулна уу.');
-      return;
-    }
-    if (password.length < 6) {
-      showAuthError('authPhoneError', 'Нууц үг хамгийн багадаа 6 тэмдэгт байна.');
-      return;
-    }
-
-    var phone = '+976' + digits;
-
-    if (authMode === 'login') {
-      var user = await loginUser(phone, password);
-      if (!user) {
-        showAuthError('authPhoneError', 'Утас эсвэл нууц үг буруу байна.');
-        return;
+      // ---------- Сесс — 7 хоногийн дотор дахин ачаалахад нэвтэрсэн хэвээр ----------
+      function setSession(user) {
+        currentUser = { phone: user.phone, name: user.name || 'Хэрэглэгч' };
+        try {
+          localStorage.setItem(
+            CUSTOMER_SESSION_KEY,
+            JSON.stringify({
+              phone: currentUser.phone,
+              name: currentUser.name,
+              expiresAt: Date.now() + SESSION_DURATION_MS,
+            }),
+          );
+        } catch (e) {
+          /* хадгалах боломжгүй */
+        }
+        return currentUser;
       }
-      updateAuthUI(user);
-      closeAuthModal();
-      showProfile();
-      return;
-    }
 
-    // ---------- Бүртгүүлэх: заавал бөглөх талбарууд ----------
-    if (!userName) {
-      showAuthError('authPhoneError', 'Нэрээ оруулна уу.');
-      return;
-    }
-    if (password !== $('authConfirmPassword').value) {
-      showAuthError('authPhoneError', 'Давтан оруулсан нууц үг таарахгүй байна.');
-      return;
-    }
-    if (getUsers().some(function (u) { return normalizePhoneInput(u.phone) === digits; })) {
-      showAuthError('authPhoneError', 'Энэ дугаар бүртгэлтэй байна. "Нэвтрэх" хэсгээр орно уу.');
-      return;
-    }
+      function clearSession() {
+        currentUser = null;
+        try {
+          localStorage.removeItem(CUSTOMER_SESSION_KEY);
+        } catch (e) {
+          /* алгасна */
+        }
+      }
 
-    pendingRegistration = {
-      phone: phone,
-      name: userName,
-      password: password,
-      code: String(Math.floor(100000 + Math.random() * 900000))
-    };
-    $('authCodeSentTo').textContent = 'SMS үйлчилгээ холбогдоогүй тул demo код харуулж байна: ' + pendingRegistration.code;
-    $('authCode').value = '';
-    showAuthStep('code');
-    $('authCode').focus();
-  }
+      function getSession() {
+        try {
+          var session = JSON.parse(localStorage.getItem(CUSTOMER_SESSION_KEY) || 'null');
+          if (!session || !session.phone) return null;
+          if (typeof session.expiresAt !== 'number' || session.expiresAt < Date.now()) {
+            localStorage.removeItem(CUSTOMER_SESSION_KEY);
+            return null;
+          }
+          return session;
+        } catch (e) {
+          return null;
+        }
+      }
 
-  async function verifyOtp() {
-    var code = $('authCode').value.trim();
-    clearAuthErrors();
+      function normalizePhoneInput(value) {
+        var digits = String(value || '')
+          .replace(/[\s-]/g, '')
+          .replace(/\D/g, '');
+        return digits.indexOf('976') === 0 && digits.length > 8 ? digits.slice(3) : digits;
+      }
 
-    if (code.length !== 6) {
-      showAuthError('authCodeError', '6 оронтой кодыг оруулна уу.');
-      return;
-    }
-    if (!pendingRegistration || pendingRegistration.code !== code) {
-      showAuthError('authCodeError', 'Код буруу байна. Дахин оролдоно уу.');
-      return;
-    }
+      function seedCustomerUsers() {
+        var users = readJSON(CUSTOMER_USERS_KEY, []);
+        if (!Array.isArray(users) || !users.length) writeJSON(CUSTOMER_USERS_KEY, [DEMO_USER]);
+      }
 
-    // Бүртгэл амжилттай: нэр + salt/hash хадгална (ил текст нууц үг биш)
-    var salt = randomSalt();
-    var hash = await hashPassword(pendingRegistration.password, salt);
+      function getUsers() {
+        var users = readJSON(CUSTOMER_USERS_KEY, []);
+        return Array.isArray(users) ? users : [];
+      }
 
-    var users = getUsers();
-    users.push({
-      phone: pendingRegistration.phone,
-      name: pendingRegistration.name,
-      salt: salt,
-      hash: hash
-    });
-    writeJSON(CUSTOMER_USERS_KEY, users);
+      // Бүртгэлийг утасны дугаар (эсвэл хэрэглэгчийн имэйл байвал) хайж, нууц үгийг нь шалгана
+      async function loginUser(identifier, password) {
+        var isEmail = String(identifier || '').indexOf('@') !== -1;
+        var found = getUsers().find(function (user) {
+          if (isEmail) {
+            return String(user.email || '').toLowerCase() === String(identifier).toLowerCase();
+          }
+          return normalizePhoneInput(user.phone) === normalizePhoneInput(identifier);
+        });
+        if (!found) return null;
+        if (!(await verifyStoredPassword(found, password))) return null;
 
-    pendingRegistration = null;
+        // Хуучин demo бичлэг бол hash-руу шилжүүлж хадгална
+        if (!found.hash) {
+          found.salt = randomSalt();
+          found.hash = await hashPassword(password, found.salt);
+          delete found.password;
+          writeJSON(
+            CUSTOMER_USERS_KEY,
+            getUsers().map(function (u) {
+              return normalizePhoneInput(u.phone) === normalizePhoneInput(found.phone) ? found : u;
+            }),
+          );
+        }
+        return setSession(found);
+      }
 
-    // Амжилттай бүртгүүлсний мэдэгдэл харуулж, нэвтрэх хэсэг рүү буцаана
-    showAuthStep('phone');
-    setAuthMode('login');
-    $('authPhoneSubtitle').textContent = '✓ Бүртгүүлэгдлээ! Шинэ нууц үгээрээ нэвтэрнэ үү.';
-    $('authPassword').value = '';
-    $('authCode').value = '';
-    $('authName').value = '';
-    $('authConfirmPassword').value = '';
-    $('authPhone').focus();
-  }
+      // ---------- Нэвтрэх цонх ----------
+      function setTab(id, active) {
+        var tab = $(id);
+        tab.classList.toggle('active', active);
+        tab.setAttribute('aria-selected', active ? 'true' : 'false');
+      }
 
-  function updateAuthUI(user) {
-    var btn = $('authBtn');
-    var label = $('authBtnLabel');
-    if (user) {
-      btn.classList.add('logged-in');
-      label.textContent = user.phone ? user.phone.replace('+976', '') : 'Нэвтэрсэн';
-    } else {
-      btn.classList.remove('logged-in');
-      label.textContent = 'Нэвтрэх';
-    }
-  }
+      function setAuthMode(mode) {
+        authMode = mode;
 
-  // ---------- Профайл ----------
-  
+        var isLogin = mode === 'login';
 
-function showProfile() {
-  var section = $('profileSection');
+        $('authPhoneTitle').textContent = isLogin ? 'Нэвтрэх' : 'Бүртгүүлэх';
 
-  if (!currentUser) {
-    section.hidden = true;
-    return;
-  }
+        $('authPhoneSubtitle').textContent = isLogin
+          ? 'Утасны дугаар болон нууц үгээр нэвтэрнэ.'
+          : 'Мэдээллээ оруулж шинэ бүртгэл үүсгэнэ.';
 
-  $('profilePhoneText').textContent = currentUser.phone;
+        $('sendOtpBtn').textContent = isLogin ? 'Нэвтрэх' : 'Бүртгүүлэх';
 
-  var tbody = $('profileTableBody');
-  tbody.replaceChildren();
+        $('authPhoneLabel').textContent = 'Утасны дугаар';
 
-  var userPhone = normalizePhoneInput(currentUser.phone);
+        $('authPassword').autocomplete = isLogin ? 'current-password' : 'new-password';
 
-  // Админий localStorage-д (uudamCargoShipments) хадгалахсан бүртгэлийг уншиж шүүнэ
-  var myRecords = Uudam.listShipments().filter(function (record) {
-    return normalizePhoneInput(record.phone) === userPhone;
-  });
+        $('registerNameRow').hidden = isLogin;
+        $('confirmPasswordRow').hidden = isLogin;
 
-  if (myRecords.length === 0) {
-    var row = document.createElement('tr');
-    var cell = document.createElement('td');
+        $('authName').required = !isLogin;
+        $('authConfirmPassword').required = !isLogin;
 
-    cell.colSpan = 4;
-    cell.className = 'empty-cell';
-    cell.textContent = 'Танд бүртгэлтэй ачаа алга байна.';
+        setTab('modeLoginBtn', isLogin);
+        setTab('modeRegisterBtn', !isLogin);
 
-    row.appendChild(cell);
-    tbody.appendChild(row);
-  } else {
-    myRecords.forEach(function (record) {
-      var row = document.createElement('tr');
+        clearAuthErrors();
+        updatePhonePrefix();
+      }
 
-      [
-        record.code,
-        record.price ? record.price + ' ₮' : '—',
-        record.date,
-        record.status
-      ].forEach(function (value) {
-        var cell = document.createElement('td');
-        cell.textContent = value || '—';
-        row.appendChild(cell);
+      // Имэйл (эсвэл үсэг) бичиж эхэлбэл "+976" угтварыг нууна
+      function updatePhonePrefix() {
+        var prefix = $('authPhonePrefix');
+        var looksLikeEmail = authMode === 'login' && /[@a-zA-Z]/.test($('authPhone').value);
+        if (prefix) prefix.hidden = looksLikeEmail;
+      }
+
+      function showAuthError(id, message) {
+        var el = $(id);
+        el.textContent = message;
+        el.classList.add('show');
+      }
+
+      function clearAuthErrors() {
+        ['authPhoneError', 'authCodeError', 'resetFindError', 'resetError'].forEach(function (id) {
+          var el = $(id);
+          if (!el) return;
+          el.textContent = '';
+          el.classList.remove('show');
+        });
+      }
+
+      function showAuthStep(step) {
+        $('authStepPhone').hidden = step !== 'phone';
+        $('authStepCode').hidden = step !== 'code';
+        $('authStepReset').hidden = step !== 'reset';
+        $('authStepResetNew').hidden = step !== 'reset-new';
+      }
+
+      function openAuthModal() {
+        $('authModal').classList.add('open');
+        showAuthStep('phone');
+        setAuthMode('login');
+        $('authPhone').focus();
+      }
+
+      function closeAuthModal() {
+        $('authModal').classList.remove('open');
+        pendingRegistration = null;
+        pendingResetPhone = null;
+        $('authPassword').value = '';
+        $('authCode').value = '';
+        $('authName').value = '';
+        $('authConfirmPassword').value = '';
+        $('resetPhone').value = '';
+        $('resetPassword').value = '';
+        $('resetConfirmPassword').value = '';
+      }
+
+      function backToPhoneStep() {
+        pendingRegistration = null;
+        pendingResetPhone = null;
+        showAuthStep('phone');
+        clearAuthErrors();
+      }
+
+      // ---------- Нууц үг сэргээх (demo) ----------
+      // ЗААВАР: сервер, SMS/имэйл баталгаажуулалт байхгүй тул түлхүүр (дугаар) мэддэг
+      // хэн ч байж болохыг нь жинхэнээр батлах боломжгүй — зөвхөн туршилтын хувилбар.
+      function openPasswordReset() {
+        clearAuthErrors();
+        pendingResetPhone = null;
+        showAuthStep('reset');
+        $('resetPhone').value = '';
+        $('resetPhone').focus();
+      }
+
+      async function findAccount() {
+        clearAuthErrors();
+        var digits = normalizePhoneInput($('resetPhone').value.trim());
+        if (digits.length !== 8) {
+          showAuthError('resetFindError', '8 оронтой утасны дугаараа оруулна уу.');
+          return;
+        }
+
+        // Тухайн дугаартай ХЭРЭГЛЭГЧИЙН бүртгэл байгаа эсэхийг шалгана.
+        // Админ бүртгэл энэ жагсаалтад байдаггүй тул сэргээх замаар админ эрх олж авах боломжгүй.
+        var user = getUsers().find(function (u) {
+          return normalizePhoneInput(u.phone) === digits;
+        });
+        if (!user) {
+          showAuthError('resetFindError', 'Энэ дугаартай бүртгэл олдсонгүй.');
+          return;
+        }
+
+        pendingResetPhone = user.phone;
+        $('resetTarget').textContent =
+          user.phone.replace('+976', '') + ' дугаартай бүртгэл олдлоо. Шинэ нууц үгээ оруулна уу.';
+        $('resetPassword').value = '';
+        $('resetConfirmPassword').value = '';
+        showAuthStep('reset-new');
+        $('resetPassword').focus();
+      }
+
+      async function saveNewPassword() {
+        clearAuthErrors();
+        if (!pendingResetPhone) {
+          showAuthError('resetError', 'Эхлээд дугаараа бичиж бүртгэлээ олоорой.');
+          showAuthStep('reset');
+          return;
+        }
+
+        var password = $('resetPassword').value.trim();
+        var confirm = $('resetConfirmPassword').value.trim();
+        if (password.length < 6) {
+          showAuthError('resetError', 'Нууц үг хамгийн багадаа 6 тэмдэгт байна.');
+          return;
+        }
+        if (password !== confirm) {
+          showAuthError('resetError', 'Давтан оруулсан нууц үг таарахгүй байна.');
+          return;
+        }
+
+        var users = getUsers();
+        var target = users.find(function (u) {
+          return normalizePhoneInput(u.phone) === normalizePhoneInput(pendingResetPhone);
+        });
+        if (!target) {
+          showAuthError('resetError', 'Бүртгэл олдсонгүй.');
+          return;
+        }
+
+        var salt = randomSalt();
+        target.salt = salt;
+        target.hash = await hashPassword(password, salt);
+        delete target.password;
+        writeJSON(CUSTOMER_USERS_KEY, users);
+
+        pendingResetPhone = null;
+        showAuthStep('phone');
+        setAuthMode('login');
+        $('authPhoneSubtitle').textContent =
+          '✓ Нууц үг шинэчлэгдлээ. Шинэ нууц үгээрээ нэвтэрнэ үү.';
+        $('authPassword').value = '';
+        $('resetPassword').value = '';
+        $('resetConfirmPassword').value = '';
+      }
+
+      function closeLogoutConfirm() {
+        var modal = document.getElementById('logoutConfirmOverlay');
+        if (modal) modal.remove();
+      }
+
+      function showLogoutConfirm() {
+        closeLogoutConfirm();
+
+        var overlay = document.createElement('div');
+        overlay.id = 'logoutConfirmOverlay';
+        overlay.className = 'confirm-overlay';
+        overlay.setAttribute('role', 'dialog');
+        overlay.setAttribute('aria-modal', 'true');
+        overlay.setAttribute('aria-label', 'Гарах уу?');
+
+        var modal = document.createElement('div');
+        modal.className = 'confirm-modal';
+
+        var title = document.createElement('h3');
+        title.className = 'confirm-title';
+        title.textContent = 'Гарах уу?';
+
+        var message = document.createElement('p');
+        message.className = 'confirm-message';
+        message.textContent = 'Энэ үйлдэл таны сессийг дуусгана.';
+
+        var actions = document.createElement('div');
+        actions.className = 'confirm-actions';
+
+        var cancelBtn = document.createElement('button');
+        cancelBtn.type = 'button';
+        cancelBtn.className = 'confirm-btn secondary';
+        cancelBtn.setAttribute('data-action', 'cancel');
+        cancelBtn.textContent = 'Болих';
+        cancelBtn.addEventListener('click', closeLogoutConfirm);
+
+        var confirmBtn = document.createElement('button');
+        confirmBtn.type = 'button';
+        confirmBtn.className = 'confirm-btn primary';
+        confirmBtn.setAttribute('data-action', 'confirm');
+        confirmBtn.textContent = 'Тийм';
+        confirmBtn.addEventListener('click', function () {
+          clearSession();
+          updateAuthUI(null);
+          showProfile();
+          closeLogoutConfirm();
+        });
+
+        actions.appendChild(cancelBtn);
+        actions.appendChild(confirmBtn);
+        modal.appendChild(title);
+        modal.appendChild(message);
+        modal.appendChild(actions);
+        overlay.appendChild(modal);
+
+        overlay.addEventListener('click', function (event) {
+          if (event.target === overlay) closeLogoutConfirm();
+        });
+
+        document.body.appendChild(overlay);
+      }
+
+      function onAuthBtnClick() {
+        if (currentUser) {
+          showLogoutConfirm();
+          return;
+        }
+        openAuthModal();
+      }
+
+      // Админ: JavaScript demo эрх шалгах, амжилттай бол admin.html руу шилжүүлнэ
+      function adminLogin(email, password) {
+        if (email === ADMIN_DEMO_EMAIL && password === ADMIN_DEMO_PASSWORD) {
+          localStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify({ email: email, isAdmin: true }));
+          window.location.href = 'admin.html';
+          return;
+        }
+        showAuthError('authPhoneError', 'Имэйл эсвэл нууц үг буруу байна.');
+      }
+
+      async function submitAuthForm() {
+        var rawLogin = $('authPhone').value.trim();
+        var digits = normalizePhoneInput(rawLogin);
+        var password = $('authPassword').value.trim();
+        var userName = $('authName').value.trim();
+        clearAuthErrors();
+
+        // Имэйл хаягаар нэвтрэх: хэрэглэгчийн бүртгэлээс шалгаад, төгсгөлд нь админ (demo) шалгана
+        if (rawLogin.indexOf('@') !== -1) {
+          if (authMode !== 'login') {
+            showAuthError('authPhoneError', 'Бүртгүүлэхдээ утасны дугаараа оруулна уу.');
+            return;
+          }
+          if (!password) {
+            showAuthError('authPhoneError', 'Нууц үгээ оруулна уу.');
+            return;
+          }
+          var emailUser = await loginUser(rawLogin, password);
+          if (emailUser) {
+            updateAuthUI(emailUser);
+            closeAuthModal();
+            showProfile();
+            return;
+          }
+          adminLogin(rawLogin, password);
+          return;
+        }
+
+        if (digits.length !== 8) {
+          showAuthError('authPhoneError', '8 оронтой утасны дугаараа зөв оруулна уу.');
+          return;
+        }
+        if (password.length < 6) {
+          showAuthError('authPhoneError', 'Нууц үг хамгийн багадаа 6 тэмдэгт байна.');
+          return;
+        }
+
+        var phone = '+976' + digits;
+
+        if (authMode === 'login') {
+          var user = await loginUser(phone, password);
+          if (!user) {
+            showAuthError('authPhoneError', 'Утас эсвэл нууц үг буруу байна.');
+            return;
+          }
+          updateAuthUI(user);
+          closeAuthModal();
+          showProfile();
+          return;
+        }
+
+        // ---------- Бүртгүүлэх: заавал бөглөх талбарууд ----------
+        if (!userName) {
+          showAuthError('authPhoneError', 'Нэрээ оруулна уу.');
+          return;
+        }
+        if (password !== $('authConfirmPassword').value) {
+          showAuthError('authPhoneError', 'Давтан оруулсан нууц үг таарахгүй байна.');
+          return;
+        }
+        if (
+          getUsers().some(function (u) {
+            return normalizePhoneInput(u.phone) === digits;
+          })
+        ) {
+          showAuthError(
+            'authPhoneError',
+            'Энэ дугаар бүртгэлтэй байна. "Нэвтрэх" хэсгээр орно уу.',
+          );
+          return;
+        }
+
+        pendingRegistration = {
+          phone: phone,
+          name: userName,
+          password: password,
+          code: String(Math.floor(100000 + Math.random() * 900000)),
+        };
+        $('authCodeSentTo').textContent =
+          'SMS үйлчилгээ холбогдоогүй тул demo код харуулж байна: ' + pendingRegistration.code;
+        $('authCode').value = '';
+        showAuthStep('code');
+        $('authCode').focus();
+      }
+
+      async function verifyOtp() {
+        var code = $('authCode').value.trim();
+        clearAuthErrors();
+
+        if (code.length !== 6) {
+          showAuthError('authCodeError', '6 оронтой кодыг оруулна уу.');
+          return;
+        }
+        if (!pendingRegistration || pendingRegistration.code !== code) {
+          showAuthError('authCodeError', 'Код буруу байна. Дахин оролдоно уу.');
+          return;
+        }
+
+        // Бүртгэл амжилттай: нэр + salt/hash хадгална (ил текст нууц үг биш)
+        var salt = randomSalt();
+        var hash = await hashPassword(pendingRegistration.password, salt);
+
+        var users = getUsers();
+        users.push({
+          phone: pendingRegistration.phone,
+          name: pendingRegistration.name,
+          salt: salt,
+          hash: hash,
+        });
+        writeJSON(CUSTOMER_USERS_KEY, users);
+
+        pendingRegistration = null;
+
+        // Амжилттай бүртгүүлсний мэдэгдэл харуулж, нэвтрэх хэсэг рүү буцаана
+        showAuthStep('phone');
+        setAuthMode('login');
+        $('authPhoneSubtitle').textContent = '✓ Бүртгүүлэгдлээ! Шинэ нууц үгээрээ нэвтэрнэ үү.';
+        $('authPassword').value = '';
+        $('authCode').value = '';
+        $('authName').value = '';
+        $('authConfirmPassword').value = '';
+        $('authPhone').focus();
+      }
+
+      function updateAuthUI(user) {
+        var btn = $('authBtn');
+        var label = $('authBtnLabel');
+        if (user) {
+          btn.classList.add('logged-in');
+          label.textContent = user.phone ? user.phone.replace('+976', '') : 'Нэвтэрсэн';
+        } else {
+          btn.classList.remove('logged-in');
+          label.textContent = 'Нэвтрэх';
+        }
+      }
+
+      // ---------- Профайл ----------
+
+      function showProfile() {
+        var section = $('profileSection');
+
+        if (!currentUser) {
+          section.hidden = true;
+          return;
+        }
+
+        $('profilePhoneText').textContent = currentUser.phone;
+
+        var tbody = $('profileTableBody');
+        tbody.replaceChildren();
+
+        var userPhone = normalizePhoneInput(currentUser.phone);
+
+        // Админий localStorage-д (uudamCargoShipments) хадгалахсан бүртгэлийг уншиж шүүнэ
+        var myRecords = Uudam.listShipments().filter(function (record) {
+          return normalizePhoneInput(record.phone) === userPhone;
+        });
+
+        if (myRecords.length === 0) {
+          var row = document.createElement('tr');
+          var cell = document.createElement('td');
+
+          cell.colSpan = 4;
+          cell.className = 'empty-cell';
+          cell.textContent = 'Танд бүртгэлтэй ачаа алга байна.';
+
+          row.appendChild(cell);
+          tbody.appendChild(row);
+        } else {
+          myRecords.forEach(function (record) {
+            var row = document.createElement('tr');
+
+            [
+              record.code,
+              record.price ? record.price + ' ₮' : '—',
+              record.date,
+              record.status,
+            ].forEach(function (value) {
+              var cell = document.createElement('td');
+              cell.textContent = value || '—';
+              row.appendChild(cell);
+            });
+
+            tbody.appendChild(row);
+          });
+        }
+
+        section.hidden = false;
+      }
+
+      // ---------- Хаяг хуулах ----------
+      function copyAddr() {
+        var text = $('warehouseAddr').textContent.trim();
+        var btn = $('copyBtn');
+
+        function done() {
+          btn.textContent = 'Хуулагдлаа ✓';
+          btn.classList.add('copied');
+          setTimeout(function () {
+            btn.textContent = 'Хуулах';
+            btn.classList.remove('copied');
+          }, 1800);
+        }
+
+        function fallback() {
+          var ta = document.createElement('textarea');
+          ta.value = text;
+          ta.setAttribute('readonly', '');
+          ta.style.cssText = 'position:fixed; top:0; left:0; opacity:0;';
+          document.body.appendChild(ta);
+          ta.select();
+          var ok = false;
+          try {
+            ok = document.execCommand('copy');
+          } catch (e) {
+            /* алгасна */
+          }
+          document.body.removeChild(ta);
+          if (ok) done();
+        }
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(done).catch(fallback);
+        } else {
+          fallback();
+        }
+      }
+
+      // ---------- Ачаа шалгах ----------
+
+      // ---------- Хариуг мессежийн кутункайд харуулна ('show found' / 'show notfound') ----------
+      function setTrackMessage(kind, text) {
+        var box = $('trackResult');
+        box.textContent = text;
+        box.className = 'show ' + kind;
+        box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      // Ачааны кодоор localStorage-оос (uudamCargoShipments) хайж харуулна
+      function checkTrack() {
+        var query = $('trackInput').value.trim();
+        var normalizedQuery = normalizePhoneInput(query);
+
+        if (!query) {
+          setTrackMessage('notfound', 'Ачааны код эсвэл утасны дугаараа оруулна уу.');
+          return;
+        }
+
+        // Админий хадгалсан бүх бүртгэлийг localStorage-оос уншиж тохирохыг нь хайна
+        var records = Uudam.listShipments();
+
+        var matches = records.filter(function (record) {
+          var codeMatches = String(record.code || '').toLowerCase() === query.toLowerCase();
+
+          var phoneMatches =
+            normalizedQuery.length === 8 && normalizePhoneInput(record.phone) === normalizedQuery;
+
+          return codeMatches || phoneMatches;
+        });
+
+        if (!matches.length) {
+          setTrackMessage('notfound', 'Ийм кодтой ачаа олдсонгүй.');
+          return;
+        }
+
+        var message = matches
+          .map(function (record) {
+            return (
+              'Нэр: ' +
+              (record.name || '—') +
+              '\nАчааны код: ' +
+              record.code +
+              '\nОгноо: ' +
+              record.date +
+              '\nТөлөв: ' +
+              record.status
+            );
+          })
+          .join('\n\n────────────\n\n');
+
+        setTrackMessage('found', message);
+      }
+
+      // ---------- Тооцоолуур ----------
+      function toggleCalc() {
+        var open = $('calcPanel').classList.toggle('open');
+        $('calcFab').setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
+
+      function recalc() {
+        var r = Uudam.calcCost($('calcWeight').value, $('calcDims').value, 1);
+        $('calcTotal').textContent = Uudam.formatMoney(r.total);
+      }
+
+      // ---------- Эхлүүлэх ----------
+      $('modeLoginBtn').addEventListener('click', function () {
+        setAuthMode('login');
+      });
+      $('modeRegisterBtn').addEventListener('click', function () {
+        setAuthMode('register');
       });
 
-      tbody.appendChild(row);
-    });
-  }
-
-  section.hidden = false;
-}
-
-  // ---------- Хаяг хуулах ----------
-  function copyAddr() {
-    var text = $('warehouseAddr').textContent.trim();
-    var btn = $('copyBtn');
-
-    function done() {
-      btn.textContent = 'Хуулагдлаа ✓';
-      btn.classList.add('copied');
-      setTimeout(function () { btn.textContent = 'Хуулах'; btn.classList.remove('copied'); }, 1800);
-    }
-
-    function fallback() {
-      var ta = document.createElement('textarea');
-      ta.value = text;
-      ta.setAttribute('readonly', '');
-      ta.style.cssText = 'position:fixed; top:0; left:0; opacity:0;';
-      document.body.appendChild(ta);
-      ta.select();
-      var ok = false;
-      try { ok = document.execCommand('copy'); } catch (e) { /* алгасна */ }
-      document.body.removeChild(ta);
-      if (ok) done();
-    }
-
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(done).catch(fallback);
-    } else {
-      fallback();
-    }
-  }
-
-  // ---------- Ачаа шалгах ----------
-  
-
-// ---------- Хариуг мессежийн кутункайд харуулна ('show found' / 'show notfound') ----------
-function setTrackMessage(kind, text) {
-  var box = $('trackResult');
-  box.textContent = text;
-  box.className = 'show ' + kind;
-  box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-
-// Ачааны кодоор localStorage-оос (uudamCargoShipments) хайж харуулна
-function checkTrack() {
-  var query = $('trackInput').value.trim();
-  var normalizedQuery = normalizePhoneInput(query);
-
-  if (!query) {
-    setTrackMessage('notfound', 'Ачааны код эсвэл утасны дугаараа оруулна уу.');
-    return;
-  }
-
-  // Админий хадгалсан бүх бүртгэлийг localStorage-оос уншиж тохирохыг нь хайна
-  var records = Uudam.listShipments();
-
-  var matches = records.filter(function (record) {
-    var codeMatches =
-      String(record.code || '').toLowerCase() === query.toLowerCase();
-
-    var phoneMatches =
-      normalizedQuery.length === 8 &&
-      normalizePhoneInput(record.phone) === normalizedQuery;
-
-    return codeMatches || phoneMatches;
-  });
-
-  if (!matches.length) {
-    setTrackMessage('notfound', 'Ийм кодтой ачаа олдсонгүй.');
-    return;
-  }
-
-  var message = matches.map(function (record) {
-    return 'Нэр: ' + (record.name || '—') +
-      '\nАчааны код: ' + record.code +
-      '\nОгноо: ' + record.date +
-      '\nТөлөв: ' + record.status;
-  }).join('\n\n────────────\n\n');
-
-  setTrackMessage('found', message);
-}
-
-
-  // ---------- Тооцоолуур ----------
-  function toggleCalc() {
-    var open = $('calcPanel').classList.toggle('open');
-    $('calcFab').setAttribute('aria-expanded', open ? 'true' : 'false');
-  }
-
-  function recalc() {
-    var r = Uudam.calcCost($('calcWeight').value, $('calcDims').value, 1);
-    $('calcTotal').textContent = Uudam.formatMoney(r.total);
-  }
-
-  // ---------- Эхлүүлэх ----------
-  $('modeLoginBtn').addEventListener('click', function () { setAuthMode('login'); });
-  $('modeRegisterBtn').addEventListener('click', function () { setAuthMode('register'); });
-
-  $('showCustomerPassword').addEventListener('change', function () {
-    $('authPassword').type = this.checked ? 'text' : 'password';
-    $('authPassword').focus();
-  });
-
-  $('authModal').addEventListener('click', function (e) { if (e.target === this) closeAuthModal(); });
-  $('authPhone').addEventListener('input', updatePhonePrefix);
-  $('authPhone').addEventListener('keydown', function (e) { if (e.key === 'Enter') submitAuthForm(); });
-  $('authPassword').addEventListener('keydown', function (e) { if (e.key === 'Enter') submitAuthForm(); });
-  $('authCode').addEventListener('keydown', function (e) { if (e.key === 'Enter') verifyOtp(); });
-  $('resetPhone').addEventListener('keydown', function (e) { if (e.key === 'Enter') findAccount(); });
-  $('resetPassword').addEventListener('keydown', function (e) { if (e.key === 'Enter') saveNewPassword(); });
-  $('resetConfirmPassword').addEventListener('keydown', function (e) { if (e.key === 'Enter') saveNewPassword(); });
-  $('trackInput').addEventListener('keydown', function (e) { if (e.key === 'Enter') checkTrack(); });
-  $('calcWeight').addEventListener('input', recalc);
-  $('calcDims').addEventListener('input', recalc);
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAuthModal(); });
-
-  // Өөр tab дээр админ бүртгэл нэмж/төлөв өөрчилвөл storage event-ээр шууд шинэчилнэ
-  document.addEventListener('uudam:shipments-changed', function () {
-    if ($('trackInput').value.trim() !== '') checkTrack();
-    if (currentUser && !$('profileSection').hidden) showProfile();
-  });
-
-  (function init() {
-    seedCustomerUsers();
-
-    // Хуучин demo бичлэгүүдийн ил текст нууц үгийг salt+hash руу шилжүүлнэ (fire-and-forget)
-    migratePlaintextPasswords();
-
-    // Сесс localStorage-д 7 хоногийн хугацаатай хадгалагддаг тул дахин ачаалахад нэвтэрсэн хэвээр үлдэнэ
-    var session = getSession();
-    if (session) {
-      // Бүртгэл нь хөндэгдсэн бол (жишээ нь users цэвэрлэгдсэн) хуурмаг сесс хэрэгжэхгүй
-      var stillExists = getUsers().some(function (u) {
-        return normalizePhoneInput(u.phone) === normalizePhoneInput(session.phone);
+      $('showCustomerPassword').addEventListener('change', function () {
+        $('authPassword').type = this.checked ? 'text' : 'password';
+        $('authPassword').focus();
       });
-      if (!stillExists) {
-        clearSession();
-      } else {
-        currentUser = { phone: session.phone, name: session.name || 'Хэрэглэгч' };
-        updateAuthUI(currentUser);
-        showProfile();
+
+      $('authModal').addEventListener('click', function (e) {
+        if (e.target === this) closeAuthModal();
+      });
+      $('authPhone').addEventListener('input', updatePhonePrefix);
+      $('authPhone').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') submitAuthForm();
+      });
+      $('authPassword').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') submitAuthForm();
+      });
+      $('authCode').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') verifyOtp();
+      });
+      $('resetPhone').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') findAccount();
+      });
+      $('resetPassword').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') saveNewPassword();
+      });
+      $('resetConfirmPassword').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') saveNewPassword();
+      });
+      $('trackInput').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') checkTrack();
+      });
+      $('calcWeight').addEventListener('input', recalc);
+      $('calcDims').addEventListener('input', recalc);
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeAuthModal();
+      });
+
+      // Өөр tab дээр админ бүртгэл нэмж/төлөв өөрчилвөл storage event-ээр шууд шинэчилнэ
+      document.addEventListener('uudam:shipments-changed', function () {
+        if ($('trackInput').value.trim() !== '') checkTrack();
+        if (currentUser && !$('profileSection').hidden) showProfile();
+      });
+
+      (function init() {
+        seedCustomerUsers();
+
+        // Хуучин demo бичлэгүүдийн ил текст нууц үгийг salt+hash руу шилжүүлнэ (fire-and-forget)
+        migratePlaintextPasswords();
+
+        // Сесс localStorage-д 7 хоногийн хугацаатай хадгалагддаг тул дахин ачаалахад нэвтэрсэн хэвээр үлдэнэ
+        var session = getSession();
+        if (session) {
+          // Бүртгэл нь хөндэгдсэн бол (жишээ нь users цэвэрлэгдсэн) хуурмаг сесс хэрэгжэхгүй
+          var stillExists = getUsers().some(function (u) {
+            return normalizePhoneInput(u.phone) === normalizePhoneInput(session.phone);
+          });
+          if (!stillExists) {
+            clearSession();
+          } else {
+            currentUser = { phone: session.phone, name: session.name || 'Хэрэглэгч' };
+            updateAuthUI(currentUser);
+            showProfile();
+          }
+        }
+      })();
+      function closeVideo() {
+        var video = $('instructionVideo');
+        video.pause();
+        video.currentTime = 0;
+        $('videoModal').classList.remove('open');
+        $('videoLink').focus();
       }
-    }
-  })();
-  function closeVideo() {
-    var video = $('instructionVideo');
-    video.pause();
-    video.currentTime = 0;
-    $('videoModal').classList.remove('open');
-    $('videoLink').focus();
-  };
-
-</script>
-
-</body>
+    </script>
+  </body>
 </html>

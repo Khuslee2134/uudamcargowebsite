@@ -1,108 +1,153 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="mn">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Тооцоолуур — УУДАМ CARGO</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-</head>
-<body class="page-calc">
-
-<header>
-  <a class="brand" href="index.html" aria-label="УУДАМ CARGO нүүр">
-    <div class="logo-word">УУДАМ <span>CARGO</span></div>
-  </a>
-  <nav aria-label="Үндсэн цэс">
-    <a href="about.html">Бидний тухай</a>
-    <a href="calculator.html" class="active" aria-current="page">Тооцоолуур</a>
-  </nav>
-  <div class="header-actions">
-    <button class="menu-btn" type="button" onclick="toggleMenu()" aria-label="Цэс">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <line x1="3" y1="6" x2="21" y2="6"></line>
-        <line x1="3" y1="12" x2="21" y2="12"></line>
-        <line x1="3" y1="18" x2="21" y2="18"></line>
-      </svg>
-    </button>
-  </div>
-</header>
-
-<div class="side-drawer" id="sideDrawer">
-  <div class="drawer-overlay" onclick="toggleMenu()"></div>
-  <div class="drawer-panel">
-    <button class="drawer-close" type="button" onclick="toggleMenu()" aria-label="Хаах">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <line x1="4" y1="4" x2="20" y2="20"></line>
-        <line x1="20" y1="4" x2="4" y2="20"></line>
-      </svg>
-    </button>
-    <a href="about.html">Бидний тухай</a>
-    <a href="calculator.html" class="active">Тооцоолуур</a>
-    <a href="index.html#contact">Холбоо барих</a>
-  </div>
-</div>
-
-<main>
-  <div class="eyebrow">Тээврийн зардал</div>
-  <h1>Ачааныхаа үнийг урьдчилан мэдэж авах</h1>
-  <p class="sub">Тариф: 1 кг = <span data-rate="weight"></span>, 1 м³ = <span data-rate="volume"></span>.</p>
-
-  <div class="layout">
-    <div class="panel">
-      <div class="two-col">
-        <div class="field">
-          <label for="weight">Жин (кг)</label>
-          <input type="number" id="weight" inputmode="decimal" placeholder="жишээ: 5" min="0" step="any" value="5">
-        </div>
-        <div class="field">
-          <label for="qty">Ширхэг</label>
-          <input type="number" id="qty" inputmode="numeric" placeholder="1" min="1" step="1" value="1">
-        </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Тооцоолуур — УУДАМ CARGO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="page-calc">
+    <header>
+      <a class="brand" href="index.html" aria-label="УУДАМ CARGO нүүр">
+        <div class="logo-word">УУДАМ <span>CARGO</span></div>
+      </a>
+      <nav aria-label="Үндсэн цэс">
+        <a href="about.html">Бидний тухай</a>
+        <a href="calculator.html" class="active" aria-current="page">Тооцоолуур</a>
+      </nav>
+      <div class="header-actions">
+        <button class="menu-btn" type="button" onclick="toggleMenu()" aria-label="Цэс">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          >
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
       </div>
+    </header>
 
-      <div class="field">
-        <label for="dims">Урт × Өргөн × Өндөр (см) — заавал биш</label>
-        <input type="text" id="dims" placeholder="жишээ: 40x30x25">
+    <div class="side-drawer" id="sideDrawer">
+      <div class="drawer-overlay" onclick="toggleMenu()"></div>
+      <div class="drawer-panel">
+        <button class="drawer-close" type="button" onclick="toggleMenu()" aria-label="Хаах">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          >
+            <line x1="4" y1="4" x2="20" y2="20"></line>
+            <line x1="20" y1="4" x2="4" y2="20"></line>
+          </svg>
+        </button>
+        <a href="about.html">Бидний тухай</a>
+        <a href="calculator.html" class="active">Тооцоолуур</a>
+        <a href="index.html#contact">Холбоо барих</a>
       </div>
     </div>
 
-    <div class="panel result-panel">
-      <div class="label">Тооцоолсон нийт дүн</div>
-      <div class="total" id="total" aria-live="polite">0 ₮</div>
-      <div class="breakdown">
-        <div class="breakdown-row"><span>Жингийн үнэ (<span data-rate="weight"></span>/кг)</span><span id="bWeightCost">0 ₮</span></div>
-        <div class="breakdown-row"><span>Эзэлхүүний үнэ (<span data-rate="volume"></span>/м³)</span><span id="bVolCost">0 ₮</span></div>
-        <div class="breakdown-row"><span>Тооцсон үндэс</span><span id="bBasis">Жингээр</span></div>
+    <main>
+      <div class="eyebrow">Тээврийн зардал</div>
+      <h1>Ачааныхаа үнийг урьдчилан мэдэж авах</h1>
+      <p class="sub">
+        Тариф: 1 кг = <span data-rate="weight"></span>, 1 м³ = <span data-rate="volume"></span>.
+      </p>
+
+      <div class="layout">
+        <div class="panel">
+          <div class="two-col">
+            <div class="field">
+              <label for="weight">Жин (кг)</label>
+              <input
+                type="number"
+                id="weight"
+                inputmode="decimal"
+                placeholder="жишээ: 5"
+                min="0"
+                step="any"
+                value="5"
+              />
+            </div>
+            <div class="field">
+              <label for="qty">Ширхэг</label>
+              <input
+                type="number"
+                id="qty"
+                inputmode="numeric"
+                placeholder="1"
+                min="1"
+                step="1"
+                value="1"
+              />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="dims">Урт × Өргөн × Өндөр (см) — заавал биш</label>
+            <input type="text" id="dims" placeholder="жишээ: 40x30x25" />
+          </div>
+        </div>
+
+        <div class="panel result-panel">
+          <div class="label">Тооцоолсон нийт дүн</div>
+          <div class="total" id="total" aria-live="polite">0 ₮</div>
+          <div class="breakdown">
+            <div class="breakdown-row">
+              <span>Жингийн үнэ (<span data-rate="weight"></span>/кг)</span
+              ><span id="bWeightCost">0 ₮</span>
+            </div>
+            <div class="breakdown-row">
+              <span>Эзэлхүүний үнэ (<span data-rate="volume"></span>/м³)</span
+              ><span id="bVolCost">0 ₮</span>
+            </div>
+            <div class="breakdown-row">
+              <span>Тооцсон үндэс</span><span id="bBasis">Жингээр</span>
+            </div>
+          </div>
+          <p class="note">
+            * Жингээр тооцсон (жин × <span data-rate="weight"></span>) болон эзэлхүүнгээр тооцсон
+            (м³ × <span data-rate="volume"></span>) үнээс аль ихийг нь тооцно. Энэ бол урьдчилсан
+            тооцоолол; эцсийн үнийг агуулахаас баталгаажуулна.
+          </p>
+        </div>
       </div>
-      <p class="note">* Жингээр тооцсон (жин × <span data-rate="weight"></span>) болон эзэлхүүнгээр тооцсон (м³ × <span data-rate="volume"></span>) үнээс аль ихийг нь тооцно. Энэ бол урьдчилсан тооцоолол; эцсийн үнийг агуулахаас баталгаажуулна.</p>
-    </div>
-  </div>
-</main>
+    </main>
 
-<footer>© 2026 Uudam Cargo — Тээврийн зардлын тооцоолуур</footer>
+    <footer>© 2026 Uudam Cargo — Тээврийн зардлын тооцоолуур</footer>
 
-<script src="shared.js"></script>
-<script>
-  var $ = function (id) { return document.getElementById(id); };
+    <script src="shared.js"></script>
+    <script>
+      var $ = function (id) {
+        return document.getElementById(id);
+      };
 
-  function calc() {
-    var r = Uudam.calcCost($('weight').value, $('dims').value, $('qty').value);
-    $('total').textContent = Uudam.formatMoney(r.total);
-    $('bWeightCost').textContent = Uudam.formatMoney(r.weightCost);
-    $('bVolCost').textContent = Uudam.formatMoney(r.volumeCost);
-    $('bBasis').textContent = r.basis === 'volume' ? 'Эзэлхүүнээр' : 'Жингээр';
-  }
+      function calc() {
+        var r = Uudam.calcCost($('weight').value, $('dims').value, $('qty').value);
+        $('total').textContent = Uudam.formatMoney(r.total);
+        $('bWeightCost').textContent = Uudam.formatMoney(r.weightCost);
+        $('bVolCost').textContent = Uudam.formatMoney(r.volumeCost);
+        $('bBasis').textContent = r.basis === 'volume' ? 'Эзэлхүүнээр' : 'Жингээр';
+      }
 
-  ['weight', 'qty', 'dims'].forEach(function (id) {
-    $(id).addEventListener('input', calc);
-  });
+      ['weight', 'qty', 'dims'].forEach(function (id) {
+        $(id).addEventListener('input', calc);
+      });
 
-  Uudam.fillRates();
-  calc();
-</script>
-
-</body>
+      Uudam.fillRates();
+      calc();
+    </script>
+  </body>
 </html>
